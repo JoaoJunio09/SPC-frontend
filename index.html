@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPC - Sistema de Presença dos Catequizandos</title>
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <div class="church-logo-placeholder">
+                    <img src="assets/images/brasao_paroquia.png" alt="">
+                </div>
+                <div class="system-title">
+                    <h1>SPC</h1>
+                    <p>Presença Catequese</p>
+                </div>
+            </div>
+            
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" class="active">Início</a></li>
+                    <li><a href="#">Turmas</a></li>
+                    <li><a href="#">Catequizandos</a></li>
+                    <li><a href="#">Suporte</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CALENDÁRIO DA SEMANA -->
+    <section class="week-calendar-section">
+        <div class="container">
+            <h2 class="section-label">Agenda da Semana</h2>
+            <div class="week-grid" id="weekGrid">
+                <!-- Atributo data-date adicionado para controle via JS -->
+                <div class="day-card" data-date="2026-03-09">
+                    <span class="day-name">Seg</span>
+                    <span class="day-num">09</span>
+                </div>
+                <div class="day-card" data-date="2026-03-10">
+                    <span class="day-name">Ter</span>
+                    <span class="day-num">10</span>
+                </div>
+                <div class="day-card" data-date="2026-03-11">
+                    <span class="day-name">Qua</span>
+                    <span class="day-num">11</span>
+                </div>
+                <div class="day-card" data-date="2026-03-12">
+                    <span class="day-name">Qui</span>
+                    <span class="day-num">12</span>
+                </div>
+                <div class="day-card" data-date="2026-03-13">
+                    <span class="day-name">Sex</span>
+                    <span class="day-num">13</span>
+                </div>
+                <div class="day-card has-missa" data-date="2026-03-14">
+                    <span class="day-name">Sáb</span>
+                    <span class="day-num">14</span>
+                    <div class="event-indicator">Missa</div>
+                </div>
+                <div class="day-card has-missa active-day" data-date="2026-03-15">
+                    <span class="day-name">Dom</span>
+                    <span class="day-num">15</span>
+                    <div class="event-indicator">Missa</div>
+                </div>
+            </div>
+            
+            <!-- Botão para abrir o calendário, isolado dos dias da semana -->
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="btn-open-calendar" class="btn-primary" style="width: auto; padding: 0.8rem 2rem; background: var(--primary-dark);">
+                    Abrir calendário completo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFORMAÇÕES DO EVENTO (Atualizado dinamicamente pelo JS) -->
+    <main class="event-details-section">
+        <div class="container" id="eventContainer">
+            <!-- Conteúdo inicial injetado pelo script.js -->
+        </div>
+    </main>
+
+    <!-- MODAL CALENDÁRIO COMPLETO -->
+    <div class="modal-overlay" id="calendarModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="currentMonth">Março 2026</h2>
+                <button class="close-modal" id="btn-close-calendar">&times;</button>
+            </div>
+            
+            <div class="month-grid-header">
+                <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+            </div>
+            <div class="month-grid" id="monthGrid">
+                <!-- Dias gerados pelo JS -->
+            </div>
+
+						<div class="nextAndPreviousMonth">
+							<button class="btn-nav-month">&lt; Anterior</button>
+							<button class="btn-nav-month">Próximo &gt;</button>
+						</div>
+					
+            <div class="modal-footer">
+                <div class="legend">
+                    <div class="legend-item"><span class="circle verde"></span> Missa</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <script type="module" src="scripts/index/index_events_controller.js"></script>
+</body>
+</html>
