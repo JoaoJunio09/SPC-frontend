@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPC - Gerenciamento de Missas</title>
+		<link rel="stylesheet" href="styles/missas.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <div class="church-logo-placeholder">
+                    <img src="assets/images/brasao_paroquia.png" alt="">
+                </div>
+                <div class="system-title">
+                    <h1>SPC</h1>
+                    <p>Gerenciamento</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="turmas.html">Turmas</a></li>
+                    <li><a href="#">Catequizandos</a></li>
+                    <li><a href="missas.html" class="active">Missas</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- TÍTULO DA PÁGINA -->
+        <section class="page-intro">
+            <h2>Gerenciamento de Missas</h2>
+            <p>Cadastre, edite ou remova as missas que aparecerão no calendário do sistema.</p>
+        </section>
+
+        <!-- BOTÃO REGISTRAR -->
+        <button class="btn-large" id="btnOpenModal">Registrar Missa</button>
+
+        <!-- LISTA DE MISSAS -->
+        <section class="list-section">
+            <h3 class="list-header">Missas Registradas</h3>
+            <div class="missas-grid" id="missasGrid">
+                <!-- Injetado via JS -->
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL DE CADASTRO -->
+    <div class="modal-overlay" id="missaModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Registrar Nova Missa</h2>
+            <form id="missaForm">
+                <input type="hidden" id="missaId">
+                <div class="form-group">
+                    <label for="titulo">Título da Missa</label>
+                    <input type="text" id="titulo" placeholder="Ex: Domingo de Ramos" required>
+                </div>
+                <div class="form-group">
+                    <label for="data">Data da Missa</label>
+                    <input type="date" id="data" required>
+                </div>
+                <div class="form-group">
+                    <label for="horario">Horário</label>
+                    <input type="time" id="horario" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="btnCancel">Cancelar</button>
+                    <button type="submit" class="btn-save">Salvar Missa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script type="module" src="scripts/missas/gerenciar_missas.js"></script>
+</body>
+</html>
