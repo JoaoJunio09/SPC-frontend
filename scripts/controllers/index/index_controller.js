@@ -1,0 +1,161 @@
+import { MissaService } from "../../services/missa_service.js";
+import { UtilsDate } from "../../utils/utils_date.js";
+
+/**
+ * Objeto de Eventos Simulados
+ */
+export const eventos = {
+
+};
+
+export const dom = {
+	modal: document.getElementById('calendarModal'),
+	monthGrid: document.getElementById('monthGrid'),
+	eventContainer: document.getElementById('eventContainer'),
+	weekGrid: document.querySelector("#weekGrid"),
+	btnOpenCalender: document.querySelector("#btn-open-calendar"),
+	btnCloseCalender: document.querySelector("#btn-close-calendar"),
+};
+
+function renderWeekDays(missas) {
+	const today = new Date();
+
+	const day = today.getDay();
+	const diffToMonday = day === 0 ? -6 : 1 - day;
+
+	const monday = new Date(today);
+	monday.setDate(today.getDate() + diffToMonday);
+
+	const diasSemana = ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"];
+
+	dom.weekGrid.innerHTML = '';
+
+	for (let i = 0; i < 7; i++) {
+		const current = new Date(monday);
+		current.setDate(monday.getDate() + i);
+
+		const year = current.getFullYear();
+		const month = String(current.getMonth()+1).padStart(2,'0');
+		const dayNum = String(current.getDate()).padStart(2,'0');
+
+		const dateString = `${year}-${month}-${dayNum}`;
+
+		const card = document.createElement('div');
+		card.classList.add('day-card');
+		card.setAttribute('data-date', dateString);
+
+		card.innerHTML = `
+			<span class="day-name">${diasSemana[i]}</span>
+			<span class="day-num">${dayNum}</span>
+		`;
+
+		missas.forEach(missa => {
+			if (UtilsDate.formatDateTimeThisMissa(missa.dateTime) === dateString) {
+				card.classList.add("has-missa");
+
+				const indicator = document.createElement("div");
+				indicator.classList.add("event-indicator");
+				indicator.innerText = "Missa";
+
+				card.appendChild(indicator);
+			}
+		});
+
+		// marcar hoje
+		const todayString = new Date().toISOString().slice(0,10);
+
+		if(dateString === todayString) {
+			card.classList.add("active-day");
+			carregarEvento(dateString);
+		}
+
+		// evento click
+		card.addEventListener("click", () => {
+			document
+			.querySelectorAll(".day-card")
+			.forEach(c => c.classList.remove("active-day"));
+
+			card.classList.add("active-day");
+
+			carregarEvento(dateString);
+		});
+
+		dom.weekGrid.appendChild(card);
+	}
+}
+
+export async function carregarEvento(data) {
+	let missa = null;
+
+	const missas = await MissaService.findAllMissa();
+	
+	missas.forEach(m => {
+		if (UtilsDate.formatDateTimeThisMissa(m.dateTime) === data) {
+			missa = m;
+		}
+	});
+	
+	dom.eventContainer.innerHTML = '';
+
+	if (missa) {
+
+		const day = missa.dateTime.slice(8, 10);
+		const month = missa.dateTime.slice(5, 7);
+		const date = `${day} de ${UtilsDate.returnsMonthAsAString(month)}`;
+
+		dom.eventContainer.innerHTML = `
+			<div class="event-card missa-card">
+				<div class="card-header">
+					<span class="badge">Missa</span>
+					<h2>Missa: ${missa.title}</h2>
+				</div>
+				<div class="card-body">
+					<div class="info-item">
+						<span class="label">Dia:</span>
+						<span class="value">${date}</span>
+					</div>
+					<div class="info-item">
+						<span class="label">Horário:</span>
+						<span class="value">19h na Matriz</span>
+					</div>
+				</div>
+				<button class="btn-primary">Registrar Presença</button>
+			</div>
+		`;
+	} 
+	else {
+		const year = new Date().getFullYear();
+		const month = String(new Date().getMonth()+1).padStart(2,'0');
+		const dayNum = String(new Date().getDate()).padStart(2,'0');
+		const dateString = `${year}-${month}-${dayNum}`;
+
+		if (data === dateString) {
+			dom.eventContainer.innerHTML = `
+				<div class="no-event-message">
+					<p>Não há missa hoje</p>
+				</div>
+			`;
+		} 
+		else {			
+			dom.eventContainer.innerHTML = `
+				<div class="no-event-message">
+					<p>Não há missa na data ${data}</p>
+				</div>
+			`;
+		}
+	}
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+	const missas = await MissaService.findAllMissa();
+	console.log(missas);
+
+	renderWeekDays(missas);
+
+	const active = document.querySelector(".day-card.active-day");
+
+	if(active){
+		carregarEvento(active.getAttribute("data-date"));
+	}
+});

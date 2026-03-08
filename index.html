@@ -26,10 +26,10 @@
             
             <nav class="main-nav">
                 <ul>
-                    <li><a href="#" class="active">Início</a></li>
-                    <li><a href="#">Turmas</a></li>
-                    <li><a href="#">Catequizandos</a></li>
-                    <li><a href="#">Suporte</a></li>
+                    <li><a href="index.html" class="active">Início</a></li>
+                    <li><a href="turmas.html">Turmas</a></li>
+                    <li><a href="">Catequizandos</a></li>
+                    <li><a href="missas.html">Missas</a></li>
                 </ul>
             </nav>
         </div>
@@ -40,37 +40,7 @@
         <div class="container">
             <h2 class="section-label">Agenda da Semana</h2>
             <div class="week-grid" id="weekGrid">
-                <!-- Atributo data-date adicionado para controle via JS -->
-                <div class="day-card" data-date="2026-03-09">
-                    <span class="day-name">Seg</span>
-                    <span class="day-num">09</span>
-                </div>
-                <div class="day-card" data-date="2026-03-10">
-                    <span class="day-name">Ter</span>
-                    <span class="day-num">10</span>
-                </div>
-                <div class="day-card" data-date="2026-03-11">
-                    <span class="day-name">Qua</span>
-                    <span class="day-num">11</span>
-                </div>
-                <div class="day-card" data-date="2026-03-12">
-                    <span class="day-name">Qui</span>
-                    <span class="day-num">12</span>
-                </div>
-                <div class="day-card" data-date="2026-03-13">
-                    <span class="day-name">Sex</span>
-                    <span class="day-num">13</span>
-                </div>
-                <div class="day-card has-missa" data-date="2026-03-14">
-                    <span class="day-name">Sáb</span>
-                    <span class="day-num">14</span>
-                    <div class="event-indicator">Missa</div>
-                </div>
-                <div class="day-card has-missa active-day" data-date="2026-03-15">
-                    <span class="day-name">Dom</span>
-                    <span class="day-num">15</span>
-                    <div class="event-indicator">Missa</div>
-                </div>
+                
             </div>
             
             <!-- Botão para abrir o calendário, isolado dos dias da semana -->
@@ -104,10 +74,10 @@
                 <!-- Dias gerados pelo JS -->
             </div>
 
-						<div class="nextAndPreviousMonth">
-							<button class="btn-nav-month">&lt; Anterior</button>
-							<button class="btn-nav-month">Próximo &gt;</button>
-						</div>
+            <div class="nextAndPreviousMonth">
+                <button class="btn-nav-month">&lt; Anterior</button>
+                <button class="btn-nav-month">Próximo &gt;</button>
+            </div>
 					
             <div class="modal-footer">
                 <div class="legend">
@@ -117,6 +87,7 @@
         </div>
     </div>
 
-   <script type="module" src="scripts/index/index_events_controller.js"></script>
+   <script type="module" src="scripts/controllers/index/index_controller.js"></script>
+   <script type="module" src="scripts/controllers/index/calendary.js"></script>
 </body>
 </html>

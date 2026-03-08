@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPC - Sistema de Presença dos Catequizandos</title>
+		<link rel="stylesheet" href="styles/turmas.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- HEADER PADRÃO SPC -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <div class="church-logo-placeholder">
+                    <!-- Placeholder para o brasão da paróquia -->
+                    <img src="assets/images/brasao_paroquia.png" alt="Logo" onerror="this.src='https://via.placeholder.com/50/F59E0B/FFFFFF?text=P'">
+                </div>
+                <div class="system-title">
+                    <h1>SPC</h1>
+                    <p>Gerenciamento</p>
+                </div>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="turmas.html" class="active">Turmas</a></li>
+                    <li><a href="#">Catequizandos</a></li>
+                    <li><a href="missas.html">Missas</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- TÍTULO DA PÁGINA -->
+        <section class="page-intro">
+            <h2>Gestão de Turmas e Catequistas</h2>
+            <p>Controle a alocação de catequistas e visualize o desempenho de presença dos catequizandos.</p>
+        </section>
+
+        <!-- SEÇÃO CATEQUISTAS -->
+        <section class="list-section">
+            <h3 class="list-header">Catequistas da Paróquia</h3>
+            
+            <button class="btn-large" onclick="openModal('modalAddCatequista')">
+                <span>➕</span> ADICIONAR CATEQUISTA
+            </button>
+
+            <div id="lista-catequistas" class="grid-cards">
+                <!-- Injetado via JS -->
+            </div>
+        </section>
+
+        <!-- SEÇÃO TURMAS -->
+        <section class="list-section">
+            <h3 class="list-header">Turmas da Catequese</h3>
+            <div id="lista-turmas" class="grid-cards">
+                <!-- Injetado via JS -->
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL ADICIONAR CATEQUISTA -->
+    <div id="modalAddCatequista" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Novo Catequista</h3></div>
+            <div class="form-group">
+                <label>Nome do Catequista</label>
+                <input type="text" id="add-nome" placeholder="Digite o nome completo">
+            </div>
+            <div class="form-group">
+                <label>Selecione a Turma</label>
+                <select id="add-turma">
+                    <option value="PRIMEIRA ETAPA">PRIMEIRA ETAPA</option>
+                    <option value="SEGUNDA ETAPA">SEGUNDA ETAPA</option>
+                    <option value="EUCARISTIA">EUCARISTIA</option>
+                    <option value="PRÉ-CRISMA">PRÉ-CRISMA</option>
+                    <option value="CRISMA">CRISMA</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-save" onclick="saveNewCatequista()">CADASTRAR</button>
+                <button class="btn btn-cancel" onclick="closeModal('modalAddCatequista')">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR CATEQUISTA -->
+    <div id="modalEditCatequista" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Editar Catequista</h3></div>
+            <input type="hidden" id="edit-id">
+            <div class="form-group">
+                <label>Nome do Catequista</label>
+                <input type="text" id="edit-nome">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-save" onclick="updateCatequista()">SALVAR</button>
+                <button class="btn btn-cancel" onclick="closeModal('modalEditCatequista')">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ALTERAR TURMA -->
+    <div id="modalChangeTurma" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Alterar Turma</h3></div>
+            <input type="hidden" id="change-id">
+            <div class="form-group">
+                <label>Selecione a nova turma:</label>
+                <select id="change-turma-select">
+                    <option value="PRIMEIRA ETAPA">PRIMEIRA ETAPA</option>
+                    <option value="SEGUNDA ETAPA">SEGUNDA ETAPA</option>
+                    <option value="EUCARISTIA">EUCARISTIA</option>
+                    <option value="PRÉ-CRISMA">PRÉ-CRISMA</option>
+                    <option value="CRISMA">CRISMA</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-save" onclick="updateTurma()">SALVAR ALTERAÇÃO</button>
+                <button class="btn btn-cancel" onclick="closeModal('modalChangeTurma')">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL VISUALIZAR CATEQUIZANDOS -->
+    <div id="modalViewCatequizandos" class="modal-overlay">
+        <div class="modal-content" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 id="view-turma-title">Catequizandos</h3>
+            </div>
+            <div id="lista-alunos-modal">
+                <!-- Lista de alunos aqui -->
+            </div>
+            <div class="modal-footer" style="grid-template-columns: 1fr;">
+                <button class="btn btn-cancel" onclick="closeModal('modalViewCatequizandos')">FECHAR</button>
+            </div>
+        </div>
+    </div>
+
+<script type="module" src="scripts/turmas/gerenciar_turmas.js"></script>
+</body>
+</html>
