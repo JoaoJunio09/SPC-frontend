@@ -1,5 +1,7 @@
 import { MissaService } from "../../services/missa_service.js";
 import { UtilsDate } from "../../utils/utils_date.js";
+import { loadTemplate } from "../../utils/template_loader.js";
+import { Loading } from "../../utils/loading.js";
 
 /**
  * Objeto de Eventos Simulados
@@ -62,7 +64,8 @@ function renderWeekDays(missas) {
 		});
 
 		// marcar hoje
-		const todayString = new Date().toISOString().slice(0,10);
+		const now = new Date();
+		const todayString = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
 
 		if(dateString === todayString) {
 			card.classList.add("active-day");
@@ -147,9 +150,14 @@ export async function carregarEvento(data) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+	await loadTemplate("../../../templates/loading.html");
 
-	const missas = await MissaService.findAllMissa();
-	console.log(missas);
+	Loading.showLoading();
+
+	const missas = await MissaService.findAllMissa()
+		.then()
+		.catch(() => { console.log(error) })
+		.finally(() => { Loading.hideLoading() });
 
 	renderWeekDays(missas);
 

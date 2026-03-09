@@ -1,0 +1,89 @@
+/* =========================================
+	COMPONENT: MODAL DE LOADING (SPC)
+	========================================= */
+.loading-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(15, 23, 42, 0.8); /* Overlay escuro semitransparente */
+	display: none; /* Escondido por padrão */
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999; /* Acima de tudo */
+	backdrop-filter: blur(4px); /* Suaviza o fundo para foco total no loading */
+}
+
+.loading-box {
+	background: var(--white);
+	padding: 2.5rem;
+	border-radius: 24px;
+	box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.5rem;
+	max-width: 320px;
+	width: 90%;
+	text-align: center;
+}
+
+/* Spinner animado - Estilo Clean */
+.spinner {
+	width: 60px;
+	height: 60px;
+	border: 6px solid #F1F5F9;
+	border-top: 6px solid var(--primary);
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: var(--text-main);
+	margin: 0;
+}
+
+.loading-subtext {
+	font-size: 0.9rem;
+	color: var(--text-muted);
+	margin-top: -0.5rem;
+}
+
+/* Outros Modais Genéricos */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(15, 23, 42, 0.7);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 2000;
+	padding: 20px;
+}
+
+.modal-content {
+	background: var(--white);
+	width: 100%;
+	max-width: 500px;
+	border-radius: 24px;
+	padding: 2.5rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+	.header-container { flex-direction: column; gap: 1rem; }
+	.main-nav ul { gap: 15px; }
+	.btn-large { width: 100%; }
+}
