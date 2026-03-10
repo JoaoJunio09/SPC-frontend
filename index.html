@@ -5,31 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPC - Sistema de Presença dos Catequizandos</title>
     <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/toast.css">
     <link rel="stylesheet" href="styles/modal_loading.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons para os Toasts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
     <!-- HEADER -->
     <header class="main-header">
         <div class="container header-container">
+            <!-- Área de Logo e Título -->
             <div class="logo-area">
                 <div class="church-logo-placeholder">
-                    <img src="assets/images/brasao_paroquia.png" alt="">
+                    <img src="assets/images/brasao_paroquia.png" alt="Logo Paróquia" id="">
                 </div>
                 <div class="system-title">
                     <h1>SPC</h1>
                     <p>Presença Catequese</p>
                 </div>
             </div>
+
+            <!-- Botão de Menu para Celulares -->
+            <button class="menu-toggle" id="btnMenu">
+                ☰ MENU
+            </button>
             
-            <nav class="main-nav">
+            <!-- Navegação principal -->
+            <nav class="main-nav" id="mainNav">
                 <ul>
                     <li><a href="index.html" class="active">Início</a></li>
                     <li><a href="turmas.html">Turmas</a></li>
-                    <li><a href="">Catequizandos</a></li>
                     <li><a href="#">Catequizandos</a></li>
                     <li><a href="missas.html">Missas</a></li>
                 </ul>
@@ -87,10 +100,13 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
+
+    <div id="toast-container"></div>
 
     <script type="module" src="scripts/controllers/index/index_controller.js"></script>
     <script type="module" src="scripts/controllers/index/calendary.js"></script>
     <script type="module" src="scripts/utils/loading.js"></script>
+    <script type="module" src="scripts/utils/header.js"></script>
 </body>
 </html>

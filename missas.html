@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPC - Gerenciamento de Missas</title>
-		<link rel="stylesheet" href="styles/missas.css">
+    <link rel="stylesheet" href="styles/missas.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/modal_loading.css">
+    <link rel="stylesheet" href="styles/toast.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -14,16 +17,24 @@
     <!-- HEADER -->
     <header class="main-header">
         <div class="container header-container">
+            <!-- Área de Logo e Título -->
             <div class="logo-area">
                 <div class="church-logo-placeholder">
-                    <img src="assets/images/brasao_paroquia.png" alt="">
+                    <img src="assets/images/brasao_paroquia.png" alt="Logo Paróquia" id="">
                 </div>
                 <div class="system-title">
                     <h1>SPC</h1>
-                    <p>Gerenciamento</p>
+                    <p>Presença Catequese</p>
                 </div>
             </div>
-            <nav class="main-nav">
+
+            <!-- Botão de Menu para Celulares -->
+            <button class="menu-toggle" id="btnMenu">
+                ☰ MENU
+            </button>
+            
+            <!-- Navegação principal -->
+            <nav class="main-nav" id="mainNav">
                 <ul>
                     <li><a href="index.html">Início</a></li>
                     <li><a href="turmas.html">Turmas</a></li>
@@ -58,18 +69,17 @@
         <div class="modal-content">
             <h2 id="modalTitle">Registrar Nova Missa</h2>
             <form id="missaForm">
-                <input type="hidden" id="missaId">
                 <div class="form-group">
-                    <label for="titulo">Título da Missa</label>
-                    <input type="text" id="titulo" placeholder="Ex: Domingo de Ramos" required>
+                    <label for="title">Título da Missa</label>
+                    <input type="text" id="title" placeholder="Ex: Domingo de Ramos" required>
                 </div>
                 <div class="form-group">
-                    <label for="data">Data da Missa</label>
-                    <input type="date" id="data" required>
+                    <label for="date">Data da Missa</label>
+                    <input type="date" id="date" required>
                 </div>
                 <div class="form-group">
-                    <label for="horario">Horário</label>
-                    <input type="time" id="horario" required>
+                    <label for="time">Horário</label>
+                    <input type="time" id="time" required>
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" id="btnCancel">Cancelar</button>
@@ -79,6 +89,7 @@
         </div>
     </div>
 
-<script type="module" src="scripts/missas/gerenciar_missas.js"></script>
+    <script type="module" src="scripts/controllers/missas/missa_controller.js"></script>
+    <script type="module" src="scripts/utils/header.js"></script>
 </body>
 </html>

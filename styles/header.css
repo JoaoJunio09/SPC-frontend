@@ -1,0 +1,190 @@
+/* AS VARIÁVEIS ABAIXO SÃO AS ORIGINAIS DO SEU PROJETO.
+	NÃO FORAM ALTERADAS, APENAS REPLICADAS PARA O HEADER FUNCIONAR.
+*/
+:root {
+	--primary: #F59E0B;
+	--primary-dark: #D97706;
+	--secondary: #EA580C;
+	--bg-site: #F8FAFC;
+	--text-main: #1E293B;
+	--text-muted: #64748B;
+	--white: #FFFFFF;
+	--shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* CSS ESPECÍFICO DO HEADER (REFATORADO)
+*/
+
+.main-header {
+	background-color: var(--white);
+	padding: 1.5rem 0;
+	box-shadow: var(--shadow);
+	border-bottom: 4px solid var(--primary);
+	position: relative;
+	z-index: 1000;
+}
+
+.header-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 20px 20px;
+}
+
+.logo-area {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.church-logo-placeholder {
+	width: 60px;
+	height: 60px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 10px;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: var(--text-muted);
+}
+
+.church-logo-placeholder img {
+	width: 250px; /* Tamanho controlado para não quebrar layout */
+	height: auto;
+	display: block;
+}
+
+.system-title h1 {
+	font-size: 1.5rem;
+	font-weight: 800;
+	color: var(--primary-dark);
+	line-height: 1;
+}
+
+.system-title p {
+	font-size: 0.9rem;
+	color: var(--text-muted);
+	margin: 0;
+}
+
+/* Menu de Desktop */
+.main-nav ul {
+	display: flex;
+	list-style: none;
+	gap: 30px;
+}
+
+.main-nav a {
+	text-decoration: none;
+	color: var(--text-main);
+	font-weight: 600;
+	font-size: 1.1rem;
+	transition: color 0.2s;
+}
+
+.main-nav a:hover, .main-nav a.active {
+	color: var(--primary-dark);
+}
+
+/* Botão de Menu Mobile (Escondido no Desktop) */
+.menu-toggle {
+	display: none;
+	background-color: var(--primary);
+	color: white;
+	border: none;
+	padding: 12px 24px;
+	border-radius: 12px;
+	font-size: 1.2rem;
+	font-weight: 800;
+	cursor: pointer;
+	width: 100%;
+	max-width: 250px;
+	margin: 15px auto 0;
+	text-align: center;
+	box-shadow: var(--shadow);
+	transition: background 0.2s;
+}
+
+.menu-toggle:active {
+	background-color: var(--primary-dark);
+}
+
+/* MEDIA QUERY PARA MOBILE (ABAIXO DE 850PX)
+*/
+@media (max-width: 850px) {
+	.header-container {
+			flex-direction: column;
+			align-items: center;
+			padding: 30px 0 10px 0;
+	}
+
+	.logo-area {
+			flex-direction: column;
+			text-align: center;
+			gap: 10px;
+	}
+
+	.church-logo-placeholder img {
+			width: 380px; /* Maior no mobile para centralizar */
+			margin: 0 auto;
+	}
+
+	.system-title h1 {
+			font-size: 1.8rem;
+			margin-top: 20px;
+	}
+
+	.system-title p {
+			font-size: 1rem;
+	}
+
+	/* Habilita o botão de menu */
+	.menu-toggle {
+			display: block;
+	}
+
+	/* Transforma o Nav em menu expansível */
+	.main-nav {
+			width: 100%;
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.3s ease-in-out, opacity 0.25s ease;
+			opacity: 0;
+	}
+
+	/* Classe controlada pelo JavaScript */
+	.main-nav.open {
+			max-height: 500px; /* Valor alto o suficiente para os itens */
+			opacity: 1;
+			margin-top: 15px;
+	}
+
+	.main-nav ul {
+			flex-direction: column;
+			gap: 0;
+			width: 100%;
+			border-top: 1px solid #E2E8F0;
+			padding-top: 10px;
+	}
+
+	.main-nav li {
+			width: 100%;
+			text-align: center;
+	}
+
+	.main-nav a {
+			display: block;
+			padding: 16px; /* Padding grande para fácil clique */
+			font-size: 1.3rem; /* Fonte grande e legível */
+			border-bottom: 1px solid #F1F5F9;
+	}
+
+	.main-nav li:last-child a {
+			border-bottom: none;
+	}
+}

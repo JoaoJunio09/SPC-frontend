@@ -22,7 +22,7 @@ async function findAll() {
 }
 
 async function findById(missaId) {
-	const url = FIND_BY_ID_MISSA_URL.replace('missaId', missaId);
+	const url = FIND_BY_ID_MISSA_URL.replace('{missaId}', missaId);
 	const response = await fetch(url, {
 		'method': 'GET',
 		'headers': {
@@ -64,7 +64,7 @@ async function update(missa) {
 }
 
 async function deleteMissa(missaId) {
-	const url = DELETE_MISSA_URL.replace('missaId', missaId);
+	const url = DELETE_MISSA_URL.replace('{missaId}', missaId);
 	const response = await fetch(url, {
 		'method': 'DELETE',
 		'headers': {

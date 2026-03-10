@@ -2,6 +2,7 @@ import { MissaService } from "../../services/missa_service.js";
 import { UtilsDate } from "../../utils/utils_date.js";
 import { loadTemplate } from "../../utils/template_loader.js";
 import { Loading } from "../../utils/loading.js";
+import { Toast } from "../../utils/toast.js";
 
 /**
  * Objeto de Eventos Simulados
@@ -90,7 +91,9 @@ function renderWeekDays(missas) {
 export async function carregarEvento(data) {
 	let missa = null;
 
-	const missas = await MissaService.findAllMissa();
+	const missas = await MissaService.findAllMissa()
+		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
+		.finally(() => { Loading.hideLoading() });
 	
 	missas.forEach(m => {
 		if (UtilsDate.formatDateTimeThisMissa(m.dateTime) === data) {
@@ -101,7 +104,6 @@ export async function carregarEvento(data) {
 	dom.eventContainer.innerHTML = '';
 
 	if (missa) {
-
 		const day = missa.dateTime.slice(8, 10);
 		const month = missa.dateTime.slice(5, 7);
 		const date = `${day} de ${UtilsDate.returnsMonthAsAString(month)}`;
@@ -155,8 +157,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	Loading.showLoading();
 
 	const missas = await MissaService.findAllMissa()
-		.then()
-		.catch(() => { console.log(error) })
+		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
 		.finally(() => { Loading.hideLoading() });
 
 	renderWeekDays(missas);

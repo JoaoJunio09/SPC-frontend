@@ -30,73 +30,7 @@ body {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 20px;
-}
-
-/* HEADER */
-.main-header {
-    background-color: var(--white);
-    padding: 1.5rem 0;
-    box-shadow: var(--shadow);
-    border-bottom: 4px solid var(--primary);
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.church-logo-placeholder {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: var(--text-muted);
-}
-
-.church-logo-placeholder img {
-	width: 350px;
-}
-
-.system-title h1 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--primary-dark);
-    line-height: 1;
-}
-
-.system-title p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-
-.main-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-}
-
-.main-nav a {
-    text-decoration: none;
-    color: var(--text-main);
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition: color 0.2s;
-}
-
-.main-nav a:hover, .main-nav a.active {
-    color: var(--primary-dark);
+    overflow-x: hidden;
 }
 
 /* CALENDÁRIO DA SEMANA */

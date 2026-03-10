@@ -4,28 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPC - Sistema de Presença dos Catequizandos</title>
-		<link rel="stylesheet" href="styles/turmas.css">
+    <link rel="stylesheet" href="styles/turmas.css">
+    <link rel="stylesheet" href="styles/header.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- HEADER PADRÃO SPC -->
+    <!-- HEADER -->
     <header class="main-header">
         <div class="container header-container">
+            <!-- Área de Logo e Título -->
             <div class="logo-area">
                 <div class="church-logo-placeholder">
-                    <!-- Placeholder para o brasão da paróquia -->
-                    <img src="assets/images/brasao_paroquia.png" alt="Logo" onerror="this.src='https://via.placeholder.com/50/F59E0B/FFFFFF?text=P'">
+                    <img src="assets/images/brasao_paroquia.png" alt="Logo Paróquia" id="">
                 </div>
                 <div class="system-title">
                     <h1>SPC</h1>
-                    <p>Gerenciamento</p>
+                    <p>Presença Catequese</p>
                 </div>
             </div>
 
-            <nav class="main-nav">
+            <!-- Botão de Menu para Celulares -->
+            <button class="menu-toggle" id="btnMenu">
+                ☰ MENU
+            </button>
+            
+            <!-- Navegação principal -->
+            <nav class="main-nav" id="mainNav">
                 <ul>
                     <li><a href="index.html">Início</a></li>
                     <li><a href="turmas.html" class="active">Turmas</a></li>
@@ -143,6 +150,7 @@
         </div>
     </div>
 
-<script type="module" src="scripts/turmas/gerenciar_turmas.js"></script>
+    <script type="module" src="scripts/controllers/turmas/gerenciar_turmas.js"></script>
+    <script type="module" src="scripts/utils/header.js"></script>
 </body>
 </html>
