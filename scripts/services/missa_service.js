@@ -41,7 +41,7 @@ async function create(missa) {
 	const response = await fetch(CREATE_MISSA_URL, {
 		'method': 'POST',
 		'headers': {
-			'Accept': 'application/json'
+			'Content-Type': 'application/json'
 		},
 		'body': JSON.stringify(missa)
 	});
@@ -56,6 +56,9 @@ async function create(missa) {
 async function update(missa) {
 	const response = await fetch(UPDATE_MISSA_URL, {
 		'method': 'UPDATE',
+		'headers': {
+			'Content-Type': 'application/json'
+		},
 		'body': JSON.stringify(missa)
 	});
 

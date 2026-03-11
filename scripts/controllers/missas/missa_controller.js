@@ -36,16 +36,14 @@ dom.form.onsubmit = async (e) => {
 
 	if (id !== null) {	
 		await MissaService.updateMissa(missa)
-			.then(() => {})
-			.catch(() => {});
+			.then(() => { Toast.showToast({ message: 'Atualizado com sucesso', type: 'success' }) })
+			.catch(() => { Toast.showToast({ message: 'Erro ao atualizar Missa', type: 'error' }) });
 	} 
 	else {
-		await MissaService.createMissa(missa)
-			.then(() => {})
-			.catch(() => {});
+		await MissaService.updateMissa(missa)
+			.then(() => { Toast.showToast({ message: 'Criado com sucesso', type: 'success' }) })
+			.catch(() => { Toast.showToast({ message: 'Erro ao registrar Missa', type: 'error' }) });
 	}
-
-	console.log(missa);
 
 	renderizarMissas();
 	closeModal();
