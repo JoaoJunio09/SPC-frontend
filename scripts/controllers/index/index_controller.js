@@ -53,7 +53,7 @@ function renderWeekDays(missas) {
 		`;
 
 		missas.forEach(missa => {
-			if (UtilsDate.formatDateTimeThisMissa(missa.dateTime) === dateString) {
+			if (UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime) === dateString) {
 				card.classList.add("has-missa");
 
 				const indicator = document.createElement("div");
@@ -96,7 +96,7 @@ export async function carregarEvento(data) {
 		.finally(() => { Loading.hideLoading() });
 	
 	missas.forEach(m => {
-		if (UtilsDate.formatDateTimeThisMissa(m.dateTime) === data) {
+		if (UtilsDate.formatDateTimeThisMissaForDate(m.dateTime) === data) {
 			missa = m;
 		}
 	});

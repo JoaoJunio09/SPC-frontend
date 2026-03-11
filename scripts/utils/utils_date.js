@@ -1,5 +1,9 @@
-function formatDateTimeThisMissa(dateTime) {
+function formatDateTimeThisMissaForDate(dateTime) {
 	return dateTime.slice(0, 10);
+}
+
+function formatDateTimeThisMissaForTime(dateTime) {
+	return dateTime.slice(11, 16);
 }
 
 function returnsMonthAsAString(month) {
@@ -20,6 +24,7 @@ function returnsMonthAsAString(month) {
 }
 
 export const UtilsDate = {
-	formatDateTimeThisMissa,
+	formatDateTimeThisMissaForDate,
+	formatDateTimeThisMissaForTime,
 	returnsMonthAsAString
 };

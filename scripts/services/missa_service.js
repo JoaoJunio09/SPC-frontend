@@ -40,6 +40,9 @@ async function findById(missaId) {
 async function create(missa) {
 	const response = await fetch(CREATE_MISSA_URL, {
 		'method': 'POST',
+		'headers': {
+			'Accept': 'application/json'
+		},
 		'body': JSON.stringify(missa)
 	});
 

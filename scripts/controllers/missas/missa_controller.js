@@ -3,6 +3,7 @@ import { MissaService } from "../../services/missa_service.js";
 import { Toast } from "../../utils/toast.js";
 import { Loading } from "../../utils/loading.js";
 import { loadTemplate } from "../../utils/template_loader.js";
+import { UtilsDate } from "../../utils/utils_date.js";
 
 let id = null;
 
@@ -25,11 +26,12 @@ dom.btnCancel.addEventListener('click', () => {
 dom.form.onsubmit = async (e) => {
 	e.preventDefault();
 
+	const dateTime = `${dom.form.querySelector("#date").value}T${dom.form.querySelector("#time").value}`;
+
 	let missa = {
 		id: id,
 		title: dom.form.querySelector("#title").value,
-		date: dom.form.querySelector("#date").value,
-		time: dom.form.querySelector("#time").value
+		dateTime: dateTime,
 	};
 
 	if (id !== null) {	
@@ -38,10 +40,12 @@ dom.form.onsubmit = async (e) => {
 			.catch(() => {});
 	} 
 	else {
-		await MissaService.create(missa)
+		await MissaService.createMissa(missa)
 			.then(() => {})
 			.catch(() => {});
 	}
+
+	console.log(missa);
 
 	renderizarMissas();
 	closeModal();
@@ -83,8 +87,8 @@ async function getData(e) {
 	const missa = await MissaService.findByIdMissa(id);
 
 	dom.form.querySelector("#title").value = missa.title;
-	dom.form.querySelector("#date").value = missa.dateTime;
-	dom.form.querySelector("#time").value = missa.dateTime;
+	dom.form.querySelector("#date").value = UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime);
+	dom.form.querySelector("#time").value = UtilsDate.formatDateTimeThisMissaForTime(missa.dateTime);
 }
 
 async function openModal(e) {
