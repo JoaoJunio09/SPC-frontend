@@ -55,7 +55,7 @@ async function create(missa) {
 
 async function update(missa) {
 	const response = await fetch(UPDATE_MISSA_URL, {
-		'method': 'UPDATE',
+		'method': 'PUT',
 		'headers': {
 			'Content-Type': 'application/json'
 		},
