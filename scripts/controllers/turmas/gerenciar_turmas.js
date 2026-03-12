@@ -1,7 +1,7 @@
 /* MANTENDO A LÓGICA JS ORIGINAL CONFORME SOLICITADO */
         let catequistas = [
             { id: 1, nome: "João Pereira", turma: "PRIMEIRA ETAPA" },
-            { id: 2, nome: "Maria Souza", turma: "CRISMA" },
+            { id: 2, nome: "Stella Souza", turma: "PRÉ CRISMA" },
             { id: 3, nome: "Antônio Silva", turma: "EUCARISTIA" }
         ];
 

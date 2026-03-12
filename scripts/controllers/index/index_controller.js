@@ -127,7 +127,7 @@ export async function carregarEvento(data) {
 						<span class="value">19h na Matriz</span>
 					</div>
 				</div>
-				<button class="btn-primary">Registrar Presença</button>
+				<button class="btn-primary"><a href="../../../registrarPresenca.html">Registrar Presença</a></button>
 			`;
 
 			dom.eventContainer.appendChild(event_card);
