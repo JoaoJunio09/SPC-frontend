@@ -94,22 +94,25 @@ export async function carregarEvento(data) {
 	const missas = await MissaService.findAllMissa()
 		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
 		.finally(() => { Loading.hideLoading() });
+
+	dom.eventContainer.innerHTML = '';
 	
 	missas.forEach(m => {
 		if (UtilsDate.formatDateTimeThisMissaForDate(m.dateTime) === data) {
 			missa = m;
 		}
-	});
-	
-	dom.eventContainer.innerHTML = '';
 
-	if (missa) {
-		const day = missa.dateTime.slice(8, 10);
-		const month = missa.dateTime.slice(5, 7);
-		const date = `${day} de ${UtilsDate.returnsMonthAsAString(month)}`;
+		if (missa) {
+			document.querySelector('.no-event-message').style.display = 'none';
 
-		dom.eventContainer.innerHTML = `
-			<div class="event-card missa-card">
+			const day = missa.dateTime.slice(8, 10);
+			const month = missa.dateTime.slice(5, 7);
+			const date = `${day} de ${UtilsDate.returnsMonthAsAString(month)}`;
+
+			const event_card = document.createElement('div');
+			event_card.classList.add('event-card');
+			event_card.classList.add('missa-card');
+			event_card.innerHTML = `
 				<div class="card-header">
 					<span class="badge">Missa</span>
 					<h2>Missa: ${missa.title}</h2>
@@ -125,30 +128,32 @@ export async function carregarEvento(data) {
 					</div>
 				</div>
 				<button class="btn-primary">Registrar Presença</button>
-			</div>
-		`;
-	} 
-	else {
-		const year = new Date().getFullYear();
-		const month = String(new Date().getMonth()+1).padStart(2,'0');
-		const dayNum = String(new Date().getDate()).padStart(2,'0');
-		const dateString = `${year}-${month}-${dayNum}`;
+			`;
 
-		if (data === dateString) {
-			dom.eventContainer.innerHTML = `
-				<div class="no-event-message">
-					<p>Não há missa hoje</p>
-				</div>
-			`;
-		} 
-		else {			
-			dom.eventContainer.innerHTML = `
-				<div class="no-event-message">
-					<p>Não há missa na data ${data}</p>
-				</div>
-			`;
+			dom.eventContainer.appendChild(event_card);
 		}
-	}
+		else {
+			const year = new Date().getFullYear();
+			const month = String(new Date().getMonth()+1).padStart(2,'0');
+			const dayNum = String(new Date().getDate()).padStart(2,'0');
+			const dateString = `${year}-${month}-${dayNum}`;
+
+			if (data === dateString) {
+				dom.eventContainer.innerHTML = `
+					<div class="no-event-message">
+						<p>Não há missa hoje</p>
+					</div>
+				`;
+			} 
+			else {			
+				dom.eventContainer.innerHTML = `
+					<div class="no-event-message">
+						<p>Não há missa na data ${data}</p>
+					</div>
+				`;
+			}
+		}
+	});
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
