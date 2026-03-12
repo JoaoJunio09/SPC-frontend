@@ -1,0 +1,107 @@
+/* --- ESTILO DO MODAL DE CONFIRMAÇÃO (SPC) --- */
+
+.confirm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.7); /* Slate 900 com opacidade */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+.confirm-modal-overlay.active {
+    opacity: 1;
+}
+
+.confirm-modal-box {
+    background-color: var(--white);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.confirm-modal-overlay.active .confirm-modal-box {
+    transform: scale(1);
+}
+
+.confirm-modal-icon {
+    width: 64px;
+    height: 64px;
+    background-color: #FEF3C7; /* Amber 100 */
+    color: var(--primary-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.confirm-modal-message {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 2rem;
+    line-height: 1.4;
+}
+
+.confirm-modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.confirm-btn {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.confirm-btn-cancel {
+    background-color: #F1F5F9;
+    color: var(--text-muted);
+}
+
+.confirm-btn-cancel:hover {
+    background-color: #E2E8F0;
+    color: var(--text-main);
+}
+
+.confirm-btn-confirm {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.confirm-btn-confirm:hover {
+    background-color: #C2410C;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+}
+
+/* Responsividade Mobile */
+@media (max-width: 480px) {
+    .confirm-modal-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .confirm-btn {
+        width: 100%;
+        padding: 1rem;
+    }
+}

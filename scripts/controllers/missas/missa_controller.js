@@ -4,6 +4,7 @@ import { Toast } from "../../utils/toast.js";
 import { Loading } from "../../utils/loading.js";
 import { loadTemplate } from "../../utils/template_loader.js";
 import { UtilsDate } from "../../utils/utils_date.js";
+import { confirmModal } from "../../utils/confirmation.js";
 
 let id = null;
 
@@ -40,7 +41,7 @@ dom.form.onsubmit = async (e) => {
 			.catch(() => { Toast.showToast({ message: 'Erro ao atualizar Missa', type: 'error' }) });
 	} 
 	else {
-		await MissaService.updateMissa(missa)
+		await MissaService.createMissa(missa)
 			.then(() => { Toast.showToast({ message: 'Criado com sucesso', type: 'success' }) })
 			.catch(() => { Toast.showToast({ message: 'Erro ao registrar Missa', type: 'error' }) });
 	}
@@ -74,10 +75,25 @@ function initializeButtons() {
 	});
 
 	document.querySelectorAll(".btn-remove").forEach(btn => {
-		btn.addEventListener('click', (e) => { 
-			console.log('remove');
+		btn.addEventListener('click', async (e) => { 
+			await remove(e);
 		});
 	});
+}
+
+async function remove(e) {
+	const missaId = Number.parseInt(e.target.closest('.missa-card').dataset.id);
+
+	if (await confirmModal("Deseja remover Missa?")) {
+		await MissaService.deleteMissa(missaId)
+			.then(() => {
+				renderizarMissas();
+				Toast.showToast({ message: 'Missa removida com sucesso', type: 'sucecss' });
+			})
+			.catch((e) => {
+				Toast.showToast({ message: 'Não foi possível remover Missa', type: 'error' }) ;
+			})
+	}
 }
 
 async function getData(e) {
