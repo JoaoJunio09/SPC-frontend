@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Presenças - SPC</title>
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/confirmar_presenca.css">
+    <link rel="stylesheet" href="styles/modal_confirmation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <div class="church-logo-placeholder">
+                    <img src="assets/images/brasao_paroquia.png" alt="Brasão" onerror="this.src='https://via.placeholder.com/60/F59E0B/FFFFFF?text=⛪'">
+                </div>
+                <div class="system-title">
+                    <h1>SPC</h1>
+                    <p>Presença Catequese</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="page-intro">
+            <h2>Confirmar Presenças Registradas</h2>
+            <p>Verifique a lista de catequizandos presentes antes de finalizar o registro.</p>
+        </section>
+
+        <section class="review-section">
+            <div class="review-list" id="reviewList">
+                <!-- Lista de presentes injetada aqui -->
+            </div>
+
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <p>Nenhum catequizando marcado como presente.</p>
+            </div>
+        </section>
+
+        <section class="review-actions">
+            <button class="btn-back" onclick="window.location.href='registrarPresenca.html'">
+                <i data-lucide="arrow-left"></i> Voltar e Alterar
+            </button>
+            <button class="btn-confirm-submit" id="btnSubmit">
+                <i data-lucide="check-circle-2"></i> Confirmar Presenças
+            </button>
+        </section>
+    </main>
+
+    <script type="module">
+        import { initConfirmacao } from './scripts/controllers/presenca/confirmar_presenca_controller.js';
+        window.onload = () => {
+            initConfirmacao();
+            if(window.lucide) lucide.createIcons();
+        };
+    </script>
+</body>
+</html>

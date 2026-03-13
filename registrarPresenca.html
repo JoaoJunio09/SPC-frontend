@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/header.css">
     <link rel="stylesheet" href="styles/registrar_presenca.css">
-    <link rel="stylesheet" href="styles/modal_confirmation.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -42,7 +41,6 @@
     </header>
 
     <main class="container">
-        <!-- Título da Página -->
         <section class="page-intro">
             <h2>Registrar Presença na Missa</h2>
             <p>Selecione uma turma ou pesquise um catequizando específico.</p>
@@ -65,13 +63,13 @@
                 </button>
                 <div class="accordion-content" id="accordionContent">
                     <div class="turmas-grid" id="listaTurmas">
-                        <!-- Turmas serão injetadas aqui -->
+                        <!-- Turmas injetadas via controller -->
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Listagem de Catequizandos (Aparece após busca ou seleção de turma) -->
+        <!-- Listagem de Catequizandos -->
         <section class="attendance-section" id="attendanceSection" style="display: none;">
             <div class="section-header">
                 <h3 id="tituloListagem">Catequizandos</h3>
@@ -79,20 +77,19 @@
             </div>
             
             <div class="catequizandos-list" id="listaCatequizandos">
-                <!-- Cards de catequizandos serão injetados aqui -->
+                <!-- Cards injetados via controller -->
             </div>
 
-            <!-- Botão de Confirmação Final -->
+            <!-- Botão de Revisão (Redireciona para confirmação) -->
             <div class="actions-footer">
-                <button class="btn-confirm-final" onclick="confirmarRegistro()">
-                    <i data-lucide="check-circle-2"></i>
-                    Confirmar Registro de Presença
+                <button class="btn-confirm-final" onclick="irParaRevisao()">
+                    <i data-lucide="eye"></i>
+                    Revisar e Confirmar Registro (<span id="countSelected">0</span>)
                 </button>
             </div>
         </section>
     </main>
 
-    <!-- Scripts -->
     <script type="module">
         import { initPresenca } from './scripts/controllers/presenca/presenca_controller.js';
         window.onload = () => {
@@ -105,6 +102,5 @@
             document.getElementById('mainNav').classList.toggle('open');
         }
     </script>
-    <script type="module" src="scripts/controllers/presenca/presenca_controller.js"></script>
 </body>
 </html>
