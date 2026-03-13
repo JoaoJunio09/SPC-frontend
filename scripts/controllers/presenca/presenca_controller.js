@@ -1,3 +1,6 @@
+import { EtapaService } from "../../services/etapa_service.js";
+import { CatequizandoService } from "../../services/catequizando_service.js";
+
 // Mock de dados para demonstração
 const turmasMock = [
     { id: 1, nome: "1ª Etapa - Sábado", catequista: "Luciana" },
@@ -15,6 +18,11 @@ const catequizandosMock = [
 
 // Lista temporária em memória
 let presencasSelecionadas = [];
+let turmas = [];
+
+document.addEventListener('click', async () => {
+    turmas = await EtapaService.findAllEtapa();
+});
 
 export function initPresenca() {
     // Carrega do sessionStorage caso o usuário volte da página de confirmação
@@ -54,24 +62,32 @@ function toggleAccordion() {
 
 function listarCatequizandos(turmaId, nomeTurma) {
     document.getElementById('accordionContent').classList.remove('open');
+
     const filtrados = catequizandosMock.filter(c => c.turmaId === turmaId);
+
     renderizarLista(filtrados, `Turma: ${nomeTurma}`);
 }
 
-function filtrarCatequizando() {
-    const termo = document.getElementById('inputBusca').value.toLowerCase();
-    if (termo.length < 2) return;
-    const filtrados = catequizandosMock.filter(c => c.nome.toLowerCase().includes(termo));
+async function filtrarCatequizando() {
+    const nome = document.getElementById('inputBusca').value.toLowerCase();
+    if (nome.length < 2) return;
+
+    // busco no banco com um método de pesquisa por nome do catequizando.
+
+    const catequizandos = await CatequizandoService.findAllCatequizando();
+
+    const filtrados = catequizandos.filter(c => c.nome.toLowerCase().includes(nome));
+
     renderizarLista(filtrados, "Resultados da Busca");
     document.getElementById('accordionContent').classList.remove('open');
 }
 
-function renderizarLista(alunos, titulo) {
+function renderizarLista(catequizandos, titulo) {
     const container = document.getElementById('listaCatequizandos');
     document.getElementById('tituloListagem').innerText = titulo;
     document.getElementById('attendanceSection').style.display = 'block';
 
-    container.innerHTML = alunos.map(c => {
+    container.innerHTML = catequizandos.map(c => {
         const estaPresente = presencasSelecionadas.some(p => p.catequizandoId === c.id);
         const nomeTurma = turmasMock.find(t => t.id === c.turmaId)?.nome || "Catequese";
 
