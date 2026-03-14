@@ -2,6 +2,7 @@ const BASE_URL = "http://localhost:8080";
 
 const FIND_ALL_CATEQUIZANDOS_URL = `${BASE_URL}/api/catequizandos/v1`;
 const FIND_BY_ID_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1/{catequizandoId}`;
+const FIND_BY_ETAPA_ID_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1/findByEtapaId/{etapaId}`;
 const SEARCH_BY_FULLNAME_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1/search-by?fullName={fullName}`;
 const CREATE_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1`;
 const UPDATE_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1`;
@@ -22,8 +23,8 @@ async function findAll() {
 	return await response.json();
 }
 
-async function findById(etapaId) {
-	const url = FIND_BY_ID_CATEQUIZANDO_URL.replace('{etapaId}', etapaId);
+async function findById(catequizandoId) {
+	const url = FIND_BY_ID_CATEQUIZANDO_URL.replace('{catequizandoId}', catequizandoId);
 	const response = await fetch(url, {
 		'method': 'GET',
 		'headers': {
@@ -33,6 +34,22 @@ async function findById(etapaId) {
 
 	if (!response.ok) {
 		throw new Error("Erro ao obter catequizando [findById]");
+	}
+
+	return await response.json();
+}
+
+async function findByEtapaId(etapaId) {
+	const url = FIND_BY_ETAPA_ID_CATEQUIZANDO_URL.replace('{etapaId}', etapaId);
+	const response = await fetch(url, {
+		'method': 'GET',
+		'headers': {
+			'Accept': 'application/json'
+		}
+	});
+
+	if (!response.ok) {
+		throw new Error("Erro ao obter catequizando [findByEtapaId]");
 	}
 
 	return await response.json();
@@ -106,6 +123,7 @@ async function deleteCatequizando(catequizandoId) {
 export const CatequizandoService = {
 	findAllCatequizando: findAll,
 	findByIdCatequizando: findById,
+	findByEtapaIdCatequizando: findByEtapaId,
 	searchByFullNameCatequizando: searchByFullName,
 	createCatequizando: create,
 	updateCatequizando: update,

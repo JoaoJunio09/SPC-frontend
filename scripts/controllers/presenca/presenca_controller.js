@@ -1,23 +1,9 @@
 import { EtapaService } from "../../services/etapa_service.js";
 import { CatequizandoService } from "../../services/catequizando_service.js";
 
-// Mock de dados para demonstração
-const turmasMock = [
-  { id: 1, nome: "1ª Etapa - Sábado", catequista: "Luciana" },
-  { id: 2, nome: "1ª Etapa - Domingo", catequista: "Juliana" },
-  { id: 3, nome: "Pré-Crisma", catequista: "Stella" }
-];
-
-const catequizandosMock = [
-  { id: 101, nome: "Maria Oliveira", turmaId: 1, turmaNome: "1ª Etapa - Sábado", catequista: "Luciana" },
-  { id: 102, nome: "João Pereira", turmaId: 1, turmaNome: "1ª Etapa - Sábado",catequista: "Luciana" },
-  { id: 103, nome: "Ana Costa", turmaId: 2, turmaNome: "1ª Etapa - Domingo", catequista: "Juliana" },
-  { id: 104, nome: "Pedro Santos", turmaId: 3, turmaNome: "Pré-Crisma", catequista: "Stella" },
-  { id: 105, nome: "Lucas Souza", turmaId: 1, turmaNome: "1ª Etapa - Sábado", catequista: "Luciana" }
-];
-
 // Lista temporária em memória
 let presencasSelecionadas = [];
+let catequizandos = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -61,21 +47,21 @@ function toggleAccordion() {
   content.classList.toggle('open');
 }
 
-function listarCatequizandos(turmaId, nomeTurma) {
+async function listarCatequizandos(etapaId, nomeTurma) {
   document.getElementById('accordionContent').classList.remove('open');
 
-  const filtrados = catequizandosMock.filter(c => c.turmaId === turmaId);
+	catequizandos = await CatequizandoService.findByEtapaIdCatequizando(etapaId);
 
-  renderList(filtrados, `Turma: ${nomeTurma}`);
+  renderList(catequizandos, `Turma: ${nomeTurma}`);
 }
 
 async function filtrarCatequizando() {
   const nome = document.getElementById('inputBusca').value.toLowerCase();
   if (nome.length < 2) return;
 
-  const filtrados = await CatequizandoService.searchByFullNameCatequizando(nome);
+  catequizandos = await CatequizandoService.searchByFullNameCatequizando(nome);
 
-  renderList(filtrados, "Resultados da Busca");
+  renderList(catequizandos, "Resultados da Busca");
   document.getElementById('accordionContent').classList.remove('open');
 }
 
@@ -86,17 +72,16 @@ function renderList(catequizandos, titulo) {
 
   container.innerHTML = catequizandos.map(c => {
     const estaPresente = presencasSelecionadas.some(p => p.catequizandoId === c.id);
-    const nomeTurma = turmasMock.find(t => t.id === c.turmaId)?.nome || "Catequese";
 
     return `
-    <div class="catequizando-card">
+    <div class="catequizando-card" data-id="${c.id}" data-etapa-id="${c.etapa.id}">
       <div class="student-info">
         <h4>${c.fullName}</h4>
         <p>${c.etapa.etapa} | Catequista: ${c.etapa.catequista.fullName}</p>
       </div>
       <div class="attendance-controls">
         <button class="btn-toggle presente ${estaPresente ? 'active' : ''}" 
-              onclick="marcarPresenca(${c.id}, '${c.nome}', '${nomeTurma}', '${c.catequista}')">
+              onclick="marcarPresenca(${c.id}, '${c.fullName}', '${c.etapa.etapa}', '${c.etapa.catequista.fullName}')">
           <i data-lucide="check"></i> Presença
         </button>
         <button class="btn-toggle ausente ${!estaPresente ? 'active' : ''}" 
@@ -121,17 +106,18 @@ function marcarAusencia(id) {
   atualizarUI();
 }
 
-function atualizarUI() {
+async function atualizarUI() {
   atualizarContador();
-  // Re-renderiza a lista para atualizar os estados dos botões
   const currentTitle = document.getElementById('tituloListagem').innerText;
   if (currentTitle === "Resultados da Busca") {
     filtrarCatequizando();
-  } else {
-    const turmaId = catequizandosMock.find(c => c.nome === listaCatequizandos.querySelector('h4')?.innerText)?.turmaId;
-    if(turmaId) {
-      const t = turmasMock.find(x => x.id === turmaId);
-      listarCatequizandos(t.id, t.nome);
+  } 
+	else {
+		const catequizandoName = document.querySelector('#listaCatequizandos').querySelector('h4').innerText;
+		const etapaId = catequizandos.find(c => c.fullName === catequizandoName).etapa.id;
+    if(etapaId) {
+      const etapa = await EtapaService.findByIdEtapa(etapaId);
+      listarCatequizandos(etapa.id, etapa.etapa);
     }
   }
 }
@@ -143,8 +129,8 @@ function atualizarContador() {
 
 function irParaRevisao() {
   if (presencasSelecionadas.length === 0) {
-      alert("Selecione ao menos um catequizando presente.");
-      return;
+		alert("Selecione ao menos um catequizando presente.");
+		return;
   }
   sessionStorage.setItem("presencasSelecionadas", JSON.stringify(presencasSelecionadas));
   window.location.href = 'confirmarPresenca.html';

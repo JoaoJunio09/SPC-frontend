@@ -3,6 +3,7 @@ import { confirmModal } from '../../utils/confirmation.js';
 export function initConfirmacao() {
     const dados = sessionStorage.getItem("presencasSelecionadas");
     const presentes = dados ? JSON.parse(dados) : [];
+    console.log(presentes)
 
     const container = document.getElementById('reviewList');
     const empty = document.getElementById('emptyState');
