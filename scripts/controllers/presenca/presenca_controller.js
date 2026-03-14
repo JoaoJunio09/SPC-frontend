@@ -125,7 +125,7 @@ function atualizarUI() {
   atualizarContador();
   // Re-renderiza a lista para atualizar os estados dos botões
   const currentTitle = document.getElementById('tituloListagem').innerText;
-  if (currentTitle === "Resultados da Buscaa") {
+  if (currentTitle === "Resultados da Busca") {
     filtrarCatequizando();
   } else {
     const turmaId = catequizandosMock.find(c => c.nome === listaCatequizandos.querySelector('h4')?.innerText)?.turmaId;
