@@ -57,56 +57,56 @@ async function renderTurmas() {
 }
 
 function toggleAccordion() {
-    const content = document.getElementById('accordionContent');
-    content.classList.toggle('open');
+  const content = document.getElementById('accordionContent');
+  content.classList.toggle('open');
 }
 
 function listarCatequizandos(turmaId, nomeTurma) {
-    document.getElementById('accordionContent').classList.remove('open');
+  document.getElementById('accordionContent').classList.remove('open');
 
-    const filtrados = catequizandosMock.filter(c => c.turmaId === turmaId);
+  const filtrados = catequizandosMock.filter(c => c.turmaId === turmaId);
 
-    renderList(filtrados, `Turma: ${nomeTurma}`);
+  renderList(filtrados, `Turma: ${nomeTurma}`);
 }
 
 async function filtrarCatequizando() {
-    const nome = document.getElementById('inputBusca').value.toLowerCase();
-    if (nome.length < 2) return;
+  const nome = document.getElementById('inputBusca').value.toLowerCase();
+  if (nome.length < 2) return;
 
-    const filtrados = await CatequizandoService.searchByFullNameCatequizando(nome);
+  const filtrados = await CatequizandoService.searchByFullNameCatequizando(nome);
 
-    renderList(filtrados, "Resultados da Busca");
-    document.getElementById('accordionContent').classList.remove('open');
+  renderList(filtrados, "Resultados da Busca");
+  document.getElementById('accordionContent').classList.remove('open');
 }
 
 function renderList(catequizandos, titulo) {
-    const container = document.getElementById('listaCatequizandos');
-    document.getElementById('tituloListagem').innerText = titulo;
-    document.getElementById('attendanceSection').style.display = 'block';
+  const container = document.getElementById('listaCatequizandos');
+  document.getElementById('tituloListagem').innerText = titulo;
+  document.getElementById('attendanceSection').style.display = 'block';
 
-    container.innerHTML = catequizandos.map(c => {
-      const estaPresente = presencasSelecionadas.some(p => p.catequizandoId === c.id);
-      const nomeTurma = turmasMock.find(t => t.id === c.turmaId)?.nome || "Catequese";
+  container.innerHTML = catequizandos.map(c => {
+    const estaPresente = presencasSelecionadas.some(p => p.catequizandoId === c.id);
+    const nomeTurma = turmasMock.find(t => t.id === c.turmaId)?.nome || "Catequese";
 
-      return `
-      <div class="catequizando-card">
-        <div class="student-info">
-          <h4>${c.fullName}</h4>
-          <p>${c.etapa.etapa} | Catequista: ${c.etapa.catequista.fullName}</p>
-        </div>
-        <div class="attendance-controls">
-          <button class="btn-toggle presente ${estaPresente ? 'active' : ''}" 
-                onclick="marcarPresenca(${c.id}, '${c.nome}', '${nomeTurma}', '${c.catequista}')">
-            <i data-lucide="check"></i> Presença
-          </button>
-          <button class="btn-toggle ausente ${!estaPresente ? 'active' : ''}" 
-                onclick="marcarAusencia(${c.id})">
-            Ausência
-          </button>
-        </div>
+    return `
+    <div class="catequizando-card">
+      <div class="student-info">
+        <h4>${c.fullName}</h4>
+        <p>${c.etapa.etapa} | Catequista: ${c.etapa.catequista.fullName}</p>
       </div>
-    `}).join('');
-    if(window.lucide) lucide.createIcons();
+      <div class="attendance-controls">
+        <button class="btn-toggle presente ${estaPresente ? 'active' : ''}" 
+              onclick="marcarPresenca(${c.id}, '${c.nome}', '${nomeTurma}', '${c.catequista}')">
+          <i data-lucide="check"></i> Presença
+        </button>
+        <button class="btn-toggle ausente ${!estaPresente ? 'active' : ''}" 
+              onclick="marcarAusencia(${c.id})">
+          Ausência
+        </button>
+      </div>
+    </div>
+  `}).join('');
+  if(window.lucide) lucide.createIcons();
 }
 
 function marcarPresenca(id, nome, turma, catequista) {
@@ -137,21 +137,21 @@ function atualizarUI() {
 }
 
 function atualizarContador() {
-    const el = document.getElementById('countSelected');
-    if(el) el.innerText = presencasSelecionadas.length;
+  const el = document.getElementById('countSelected');
+  if(el) el.innerText = presencasSelecionadas.length;
 }
 
 function irParaRevisao() {
-    if (presencasSelecionadas.length === 0) {
-        alert("Selecione ao menos um catequizando presente.");
-        return;
-    }
-    sessionStorage.setItem("presencasSelecionadas", JSON.stringify(presencasSelecionadas));
-    window.location.href = 'confirmarPresenca.html';
+  if (presencasSelecionadas.length === 0) {
+      alert("Selecione ao menos um catequizando presente.");
+      return;
+  }
+  sessionStorage.setItem("presencasSelecionadas", JSON.stringify(presencasSelecionadas));
+  window.location.href = 'confirmarPresenca.html';
 }
 
 function resetarPagina() {
-    presencasSelecionadas = [];
-    sessionStorage.removeItem("presencasSelecionadas");
-    location.reload();
+  presencasSelecionadas = [];
+  sessionStorage.removeItem("presencasSelecionadas");
+  location.reload();
 }
