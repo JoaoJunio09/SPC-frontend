@@ -105,6 +105,7 @@ export async function carregarEvento(data) {
 			const event_card = document.createElement('div');
 			event_card.classList.add('event-card');
 			event_card.classList.add('missa-card');
+			event_card.setAttribute('missa-id', missa.id)
 			event_card.innerHTML = `
 				<div>
 					<div class="card-header">
@@ -121,7 +122,7 @@ export async function carregarEvento(data) {
 							<span class="value">19h na Matriz</span>
 						</div>
 					</div>
-					<button class="btn-primary"><a href="../../../registrarPresenca.html">Registrar Presença</a></button>
+					<button class="btn-primary" id="btn-register-attendance">Registrar Presença</button>
 				</div>	
 			`;
 
@@ -151,6 +152,8 @@ export async function carregarEvento(data) {
 			`;
 		}
 	}
+
+	initializeButtons();
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -170,3 +173,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 		carregarEvento(active.getAttribute("data-date"));
 	}
 });
+
+function initializeButtons() {
+	document.querySelectorAll('#btn-register-attendance').forEach(btn => {
+		btn.addEventListener('click', (e) => {
+			localStorage.setItem('missaId', e.target.closest('.event-card').getAttribute('missa-id'));
+			window.location.href = '../../../registrarPresenca.html';
+		});
+	});
+}

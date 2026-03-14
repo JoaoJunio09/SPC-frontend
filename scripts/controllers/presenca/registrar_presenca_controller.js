@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 export function initPresenca() {
-  // Carrega do sessionStorage caso o usuário volte da página de confirmação
   const salvas = sessionStorage.getItem("presencasSelecionadas");
   if (salvas) {
     presencasSelecionadas = JSON.parse(salvas);
@@ -81,7 +80,7 @@ function renderList(catequizandos, titulo) {
       </div>
       <div class="attendance-controls">
         <button class="btn-toggle presente ${estaPresente ? 'active' : ''}" 
-              onclick="marcarPresenca(${c.id}, '${c.firstName}', '${c.etapa.etapa}', '${c.etapa.catequista.firstName}')">
+              onclick="marcarPresenca(${c.id}, ${localStorage.getItem('missaId')}, '${c.firstName}', '${c.etapa.etapa}', '${c.etapa.catequista.firstName}')">
           <i data-lucide="check"></i> Presença
         </button>
         <button class="btn-toggle ausente ${!estaPresente ? 'active' : ''}" 
@@ -94,9 +93,17 @@ function renderList(catequizandos, titulo) {
   if(window.lucide) lucide.createIcons();
 }
 
-function marcarPresenca(id, nome, turma, catequista) {
+function marcarPresenca(id, missaId, catequizandoName, etapaName, CatequistaName ) {
   if (!presencasSelecionadas.some(p => p.catequizandoId === id)) {
-    presencasSelecionadas.push({ catequizandoId: id, nome, turma, catequista });
+    presencasSelecionadas.push({ 
+      catequizandoId: id, 
+      missaId: missaId, 
+      status: 'PRESENTE', 
+      justification: null, 
+      catequizandoName: catequizandoName,
+      etapaName: etapaName,
+      catequistaName: CatequistaName
+    });
   }
   atualizarUI();
 }

@@ -1,0 +1,109 @@
+/* --- ESTILOS DO MESSAGE MODAL (SPC) --- */
+
+.message-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.75); /* Slate 900 */
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.message-modal-overlay.active {
+    opacity: 1;
+}
+
+.message-modal {
+    background-color: var(--white);
+    width: 90%;
+    max-width: 420px;
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.message-modal-overlay.active .message-modal {
+    transform: translateY(0);
+}
+
+/* Ícones e Cores por Tipo */
+.message-modal-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+/* Success */
+.message-modal.success .message-modal-icon {
+    background-color: #DCFCE7;
+    color: #166534;
+}
+.message-modal.success .message-modal-btn {
+    background-color: #166534;
+}
+
+/* Error */
+.message-modal.error .message-modal-icon {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+.message-modal.error .message-modal-btn {
+    background-color: #991B1B;
+}
+
+/* Info */
+.message-modal.info .message-modal-icon {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+}
+.message-modal.info .message-modal-btn {
+    background-color: #1E40AF;
+}
+
+.message-modal-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+}
+
+.message-modal-text {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.message-modal-btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.1s;
+}
+
+.message-modal-btn:hover {
+    filter: brightness(1.1);
+}
+
+.message-modal-btn:active {
+    transform: scale(0.98);
+}
