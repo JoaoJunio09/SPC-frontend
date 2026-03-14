@@ -4,12 +4,7 @@ import { loadTemplate } from "../../utils/template_loader.js";
 import { Loading } from "../../utils/loading.js";
 import { Toast } from "../../utils/toast.js";
 
-/**
- * Objeto de Eventos Simulados
- */
-export const eventos = {
-
-};
+export const eventos = {};
 
 export const dom = {
 	modal: document.getElementById('calendarModal'),
@@ -89,71 +84,73 @@ function renderWeekDays(missas) {
 }
 
 export async function carregarEvento(data) {
-	let missa = null;
-
 	const missas = await MissaService.findAllMissa()
 		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
 		.finally(() => { Loading.hideLoading() });
 
 	dom.eventContainer.innerHTML = '';
+	let thereIsMassToday = false;
 	
-	missas.forEach(m => {
-		if (UtilsDate.formatDateTimeThisMissaForDate(m.dateTime) === data) {
-			missa = m;
-		}
+	missas.forEach(missa => {
+		
+		if (UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime) === data) {
+			if (document.querySelector('.no-event-message')) {
+				document.querySelector('.no-event-message').style.display = 'none';
+			}
 
-		if (missa) {
-			document.querySelector('.no-event-message').style.display = 'none';
-
-			const day = missa.dateTime.slice(8, 10);
-			const month = missa.dateTime.slice(5, 7);
-			const date = `${day} de ${UtilsDate.returnsMonthAsAString(month)}`;
+			let day = missa.dateTime.slice(8, 10);
+			let month = missa.dateTime.slice(5, 7);
+			let date = `${day} de ${UtilsDate.returnsMonthAsAString(month)}`;
 
 			const event_card = document.createElement('div');
 			event_card.classList.add('event-card');
 			event_card.classList.add('missa-card');
 			event_card.innerHTML = `
-				<div class="card-header">
-					<span class="badge">Missa</span>
-					<h2>Missa: ${missa.title}</h2>
-				</div>
-				<div class="card-body">
-					<div class="info-item">
-						<span class="label">Dia:</span>
-						<span class="value">${date}</span>
+				<div>
+					<div class="card-header">
+						<span class="badge">Missa</span>
+						<h2>Missa: ${missa.title}</h2>
 					</div>
-					<div class="info-item">
-						<span class="label">Horário:</span>
-						<span class="value">19h na Matriz</span>
+					<div class="card-body">
+						<div class="info-item">
+							<span class="label">Dia:</span>
+							<span class="value">${date}</span>
+						</div>
+						<div class="info-item">
+							<span class="label">Horário:</span>
+							<span class="value">19h na Matriz</span>
+						</div>
 					</div>
-				</div>
-				<button class="btn-primary"><a href="../../../registrarPresenca.html">Registrar Presença</a></button>
+					<button class="btn-primary"><a href="../../../registrarPresenca.html">Registrar Presença</a></button>
+				</div>	
 			`;
 
 			dom.eventContainer.appendChild(event_card);
-		}
-		else {
-			const year = new Date().getFullYear();
-			const month = String(new Date().getMonth()+1).padStart(2,'0');
-			const dayNum = String(new Date().getDate()).padStart(2,'0');
-			const dateString = `${year}-${month}-${dayNum}`;
-
-			if (data === dateString) {
-				dom.eventContainer.innerHTML = `
-					<div class="no-event-message">
-						<p>Não há missa hoje</p>
-					</div>
-				`;
-			} 
-			else {			
-				dom.eventContainer.innerHTML = `
-					<div class="no-event-message">
-						<p>Não há missa na data ${data}</p>
-					</div>
-				`;
-			}
+			thereIsMassToday = true;
 		}
 	});
+
+	if (!thereIsMassToday) {
+		const year = new Date().getFullYear();
+		const month = String(new Date().getMonth()+1).padStart(2,'0');
+		const dayNum = String(new Date().getDate()).padStart(2,'0');
+		const dateString = `${year}-${month}-${dayNum}`;
+
+		if (data === dateString) {
+			dom.eventContainer.innerHTML = `
+				<div class="no-event-message">
+					<p>Não há missa hoje</p>
+				</div>
+			`;
+		} 
+		else {			
+			dom.eventContainer.innerHTML = `
+				<div class="no-event-message">
+					<p>Não há missa na data ${data}</p>
+				</div>
+			`;
+		}
+	}
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

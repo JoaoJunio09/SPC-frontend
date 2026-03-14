@@ -34,7 +34,7 @@ async function renderTurmas() {
   container.innerHTML = turmas.map(t => `
     <div class="turma-card" data-id="${t.id}">
       <h4>${t.etapa}</h4>
-      <p>Catequista: ${t.catequista.fullName}</p>
+      <p>Catequista: ${t.catequista.firstName}</p>
       <button class="btn-list-students" onclick="listarCatequizandos(${t.id}, '${t.etapa}')">
         Listar Catequizandos
       </button>
@@ -76,12 +76,12 @@ function renderList(catequizandos, titulo) {
     return `
     <div class="catequizando-card" data-id="${c.id}" data-etapa-id="${c.etapa.id}">
       <div class="student-info">
-        <h4>${c.fullName}</h4>
-        <p>${c.etapa.etapa} | Catequista: ${c.etapa.catequista.fullName}</p>
+        <h4>${c.firstName}</h4>
+        <p>${c.etapa.etapa} | Catequista: ${c.etapa.catequista.firstName}</p>
       </div>
       <div class="attendance-controls">
         <button class="btn-toggle presente ${estaPresente ? 'active' : ''}" 
-              onclick="marcarPresenca(${c.id}, '${c.fullName}', '${c.etapa.etapa}', '${c.etapa.catequista.fullName}')">
+              onclick="marcarPresenca(${c.id}, '${c.firstName}', '${c.etapa.etapa}', '${c.etapa.catequista.firstName}')">
           <i data-lucide="check"></i> Presença
         </button>
         <button class="btn-toggle ausente ${!estaPresente ? 'active' : ''}" 
@@ -114,7 +114,7 @@ async function atualizarUI() {
   } 
 	else {
 		const catequizandoName = document.querySelector('#listaCatequizandos').querySelector('h4').innerText;
-		const etapaId = catequizandos.find(c => c.fullName === catequizandoName).etapa.id;
+		const etapaId = catequizandos.find(c => c.firstName === catequizandoName).etapa.id;
     if(etapaId) {
       const etapa = await EtapaService.findByIdEtapa(etapaId);
       listarCatequizandos(etapa.id, etapa.etapa);
