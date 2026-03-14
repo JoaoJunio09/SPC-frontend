@@ -56,10 +56,10 @@ async function listarCatequizandos(etapaId, nomeTurma) {
 }
 
 async function filtrarCatequizando() {
-  const nome = document.getElementById('inputBusca').value.toLowerCase();
-  if (nome.length < 2) return;
+  const firstName = document.getElementById('inputBusca').value.toLowerCase();
+  if (firstName.length < 1) return;
 
-  catequizandos = await CatequizandoService.searchByFullNameCatequizando(nome);
+  catequizandos = await CatequizandoService.searchByFirstNameCatequizando(firstName);
 
   renderList(catequizandos, "Resultados da Busca");
   document.getElementById('accordionContent').classList.remove('open');

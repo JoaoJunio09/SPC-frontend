@@ -3,7 +3,7 @@ const BASE_URL = "http://localhost:8080";
 const FIND_ALL_CATEQUIZANDOS_URL = `${BASE_URL}/api/catequizandos/v1`;
 const FIND_BY_ID_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1/{catequizandoId}`;
 const FIND_BY_ETAPA_ID_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1/findByEtapaId/{etapaId}`;
-const SEARCH_BY_FULLNAME_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1/search-by?fullName={fullName}`;
+const SEARCH_BY_FULLNAME_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1/search-by?firstName={firstName}`;
 const CREATE_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1`;
 const UPDATE_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1`;
 const DELETE_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1/{catequizandoId}`;
@@ -55,8 +55,8 @@ async function findByEtapaId(etapaId) {
 	return await response.json();
 }
 
-async function searchByFullName(fullName) {
-	const url = SEARCH_BY_FULLNAME_CATEQUIZANDO_URL.replace('{fullName}', fullName);
+async function searchByFirstName(firstName) {
+	const url = SEARCH_BY_FULLNAME_CATEQUIZANDO_URL.replace('{firstName}', firstName);
 	const response = await fetch(url, {
 		'method': 'GET',
 		'headers': {
@@ -65,7 +65,7 @@ async function searchByFullName(fullName) {
 	});
 
 	if (!response.ok) {
-		throw new Error("Erro ao obter catequizandos [searchByFullName]");
+		throw new Error("Erro ao obter catequizandos [searchByFirstName");
 	}
 
 	return await response.json();
@@ -124,7 +124,7 @@ export const CatequizandoService = {
 	findAllCatequizando: findAll,
 	findByIdCatequizando: findById,
 	findByEtapaIdCatequizando: findByEtapaId,
-	searchByFullNameCatequizando: searchByFullName,
+	searchByFirstNameCatequizando: searchByFirstName,
 	createCatequizando: create,
 	updateCatequizando: update,
 	deleteCatequizando: deleteCatequizando
