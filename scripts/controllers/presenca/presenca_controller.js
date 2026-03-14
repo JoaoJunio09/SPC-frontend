@@ -128,7 +128,7 @@ function atualizarUI() {
   if (currentTitle === "Resultados da Busca") {
     filtrarCatequizando();
   } else {
-    const turmaId = catequizandosMock.find(c => c.nome === listaCatequizandos.querySelector('h4')?.innerText)?.turmaId;
+    const turmaId = catequizandosMock.find(c => c.nome === cat.querySelector('h4')?.innerText)?.turmaId;
     if(turmaId) {
       const t = turmasMock.find(x => x.id === turmaId);
       listarCatequizandos(t.id, t.nome);
