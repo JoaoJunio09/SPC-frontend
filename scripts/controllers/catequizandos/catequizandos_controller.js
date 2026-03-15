@@ -24,8 +24,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 		const steps = await EtapaService.findAllEtapa()
 			.catch(() => { throw new Error("Não foi possível carrefar as Etapas") });
 
-		await loadStepsAndCatechistsInTheFilter(catechists, steps)
-			.finally(() => Loading.hideLoading());
+		await loadStepsAndCatechistsInTheFilter(catechists, steps);
+
+		Loading.hideLoading();
 	}
 	catch (e) {
 		Toast.showToast({ message: e.message, type: 'error' });
