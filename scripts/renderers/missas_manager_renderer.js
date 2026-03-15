@@ -8,6 +8,11 @@ export function rendererMissasManager(missas, grid) {
 		const fragment = template.content.cloneNode(true);
 		const missa_card = fragment.querySelector(".missa-card");
 
+		if (missa.registeredAttendance) {
+			missa_card.classList.add('missa-card-register-presence');
+			missa_card.querySelector(".missa-actions").classList.add('missa-actions-register-presence');
+		}
+
 		missa_card.dataset.id = missa.id;
 
 		const title = missa_card.querySelector("#title");
