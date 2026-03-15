@@ -103,6 +103,14 @@ export async function carregarEvento(data) {
 			let date = `${day} de ${UtilsDate.returnsMonthAsAString(month)}`;
 
 			const event_card = document.createElement('div');
+
+			let actions_buttons_style = null;
+
+			if (missa.registeredAttendance) {
+				event_card.classList.add('event-card-register-presence');
+				actions_buttons_style = 'btn-primary-register-presence';
+			}
+
 			event_card.classList.add('event-card');
 			event_card.classList.add('missa-card');
 			event_card.setAttribute('missa-id', missa.id)
@@ -122,7 +130,9 @@ export async function carregarEvento(data) {
 							<span class="value">19h na Matriz</span>
 						</div>
 					</div>
-					<button class="btn-primary" id="btn-register-attendance">Registrar Presença</button>
+					<button class="btn-primary ${(actions_buttons_style !== null) ? actions_buttons_style : ''}" id="btn-register-attendance">
+						${(actions_buttons_style !== null) ? "Presença na Missa já foi registrada" : "Registrar Presença" }
+					</button>
 				</div>	
 			`;
 

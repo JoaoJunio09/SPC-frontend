@@ -9,6 +9,10 @@
     --event-novena: #EF4444;
     --white: #FFFFFF;
     --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --success-bg: #ECFDF5;
+    --success-border: #10B981;
+    --success-text: #065F46;
+    --disabled-btn: #CBD5E1;
 }
 
 a {
@@ -116,10 +120,18 @@ body {
 /* EVENT CARD */
 .event-card {
     background: var(--white);
+    border-left: 5px solid var(--success-border);
+    opacity: 0.9;
     border-radius: 24px;
     padding: 2.5rem;
     box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
     border: 1px solid #E2E8F0;
+}
+
+.event-card-register-presence {
+   background-color: var(--success-bg);
+    border-left: 5px solid var(--success-border);
+    opacity: 0.9;
 }
 
 .card-header .badge {
@@ -170,7 +182,7 @@ body {
 
 /* BUTTONS */
 .btn-primary {
-    background: var(--secondary);
+    background: var(--secondary);    
     color: white;
     border: none;
     padding: 1.2rem 2.5rem;
@@ -182,9 +194,16 @@ body {
     transition: background 0.2s;
 }
 
-.btn-primary:hover {
-    background: #C2410C;
+.btn-primary-register-presence {
+    background-color: var(--disabled-btn);
+    color: #64748B;
+    cursor: not-allowed;
+    pointer-events: none;
 }
+
+.btn-primary-register-presence:hover { background-color: var(--disabled-btn); }
+
+.btn-primary:hover {background: #C2410C; }
 
 /* MODAL */
 .modal-overlay {
