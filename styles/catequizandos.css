@@ -1,0 +1,240 @@
+/* --- ESTILOS DA PÁGINA DE CATEQUIZANDOS (SPC) --- */
+
+:root {
+    --primary: #2563EB;
+    --primary-dark: #1E40AF;
+    --secondary: #EA580C;
+    --bg-site: #F8FAFC;
+    --text-main: #0F172A;
+    --text-muted: #64748B;
+    --white: #FFFFFF;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    
+    /* Frequência Colors */
+    --high-green: #22C55E;
+    --medium-yellow: #EAB308;
+    --low-red: #EF4444;
+}
+
+.catequizandos-page {
+    padding-bottom: 3rem;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-site);
+}
+
+/* Page Intro */
+.page-intro {
+    padding: 2.5rem 0 2rem;
+}
+
+.page-intro h1 {
+    font-size: 2rem;
+    color: var(--text-main);
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.page-intro p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* Toolbar de Filtros */
+.toolbar-filtros {
+    margin-bottom: 2rem;
+}
+
+.card-filtros {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.filtros-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.filtro-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filtro-group label {
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.filtro-group select, 
+.date-group input {
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #E2E8F0;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text-main);
+    background-color: #F8FAFC;
+}
+
+/* Período */
+.filtros-periodo {
+    padding: 1rem;
+    background-color: #F1F5F9;
+    border-radius: 12px;
+}
+
+.periodo-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.inputs-date {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.date-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.date-group span {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.filtro-aviso {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Tabela de Catequizandos */
+.tabela-section {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.tabela-container {
+    overflow-x: auto;
+}
+
+.tabela-catequizandos {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabela-catequizandos thead th {
+    background-color: #F8FAFC;
+    padding: 1rem 1.5rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    border-bottom: 2px solid #E2E8F0;
+}
+
+.tabela-catequizandos tbody tr {
+    border-bottom: 1px solid #F1F5F9;
+    transition: background 0.2s;
+}
+
+.tabela-catequizandos tbody tr:hover {
+    background-color: #F8FAFC;
+}
+
+.tabela-catequizandos td {
+    padding: 1.2rem 1.5rem;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.text-center { text-align: center; }
+
+/* Badges de Frequência */
+.freq-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.freq-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    min-width: 60px;
+}
+
+.freq-high { background-color: #DCFCE7; color: var(--high-green); }
+.freq-medium { background-color: #FEF9C3; color: var(--medium-yellow); }
+.freq-low { background-color: #FEE2E2; color: var(--low-red); }
+
+/* Estado Vazio */
+.estado-vazio {
+    padding: 5rem 2rem;
+    text-align: center;
+}
+
+.vazio-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.vazio-icon {
+    width: 64px;
+    height: 64px;
+    color: #CBD5E1;
+    margin-bottom: 1.5rem;
+}
+
+.estado-vazio h3 {
+    font-size: 1.3rem;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+}
+
+.estado-vazio p {
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .filtros-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .inputs-date {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .date-group {
+        width: 100%;
+    }
+    
+    .date-group input {
+        flex: 1;
+    }
+}

@@ -106,7 +106,7 @@ export async function carregarEvento(data) {
 
 			let actions_buttons_style = null;
 
-			if (missa.registeredAttendance) {
+			if (missa.registeredAttendance == true) {
 				event_card.classList.add('event-card-register-presence');
 				actions_buttons_style = 'btn-primary-register-presence';
 			}

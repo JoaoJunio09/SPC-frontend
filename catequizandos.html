@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catequizandos - SPC</title>
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/modal_loading.css">
+    <link rel="stylesheet" href="styles/modal_message.css">
+    <link rel="stylesheet" href="styles/toast.css">
+    <link rel="stylesheet" href="styles/catequizandos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (Apenas para renderização dos ícones no layout) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="container header-container">
+            <!-- Área de Logo e Título -->
+            <div class="logo-area">
+                <div class="church-logo-placeholder">
+                    <img src="assets/images/brasao_paroquia.png" alt="Logo Paróquia" id="">
+                </div>
+                <div class="system-title">
+                    <h1>SPC</h1>
+                    <p>Presença Catequese</p>
+                </div>
+            </div>
+
+            <!-- Botão de Menu para Celulares -->
+            <button class="menu-toggle" id="btnMenu">
+                ☰ MENU
+            </button>
+            
+            <!-- Navegação principal -->
+            <nav class="main-nav" id="mainNav">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="turmas.html">Turmas</a></li>
+                    <li><a href="catequizandos.html" class="active">Catequizandos</a></li>
+                    <li><a href="missas.html">Missas</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container catequizandos-page">
+        
+        <!-- PAGE INTRO -->
+        <section class="page-intro">
+            <h1>Catequizandos</h1>
+            <p>Consulte a frequência dos catequizandos filtrando por etapa e catequista.</p>
+        </section>
+
+        <!-- TOOLBAR DE FILTROS -->
+        <section class="toolbar-filtros">
+            <div class="card-filtros">
+                <div class="filtros-main">
+                    <div class="filtro-group">
+                        <label for="filtro-etapa">Etapa</label>
+                        <select id="filtro-etapa">
+                            <option value="">[Selecione a etapa]</option>
+                        </select>
+                    </div>
+
+                    <div class="filtro-group">
+                        <label for="filtro-catequista">Catequista</label>
+                        <select id="filtro-catequista">
+                            <option value="">[Selecione o catequista]</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filtros-periodo">
+                    <p class="periodo-label">Filtrar frequência por período</p>
+                    <div class="inputs-date">
+                        <div class="date-group">
+                            <span>De:</span>
+                            <input type="date">
+                        </div>
+                        <div class="date-group">
+                            <span>Até:</span>
+                            <input type="date">
+                        </div>
+                    </div>
+                </div>
+
+                <p class="filtro-aviso">
+                    <i data-lucide="info" size="14"></i>
+                    * Para visualizar os catequizandos é necessário selecionar Etapa e Catequista.
+                </p>
+            </div>
+        </section>
+
+        <!-- TABELA DE CATEQUIZANDOS -->
+        <section class="tabela-section">
+            <div class="tabela-container">
+                <table class="tabela-catequizandos" id="tabela-dados" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Nome do Catequizando</th>
+                            <th>Etapa da Catequese</th>
+                            <th>Catequista</th>
+                            <th class="text-center">Frequência Atual</th>
+                            <th class="text-center">Frequência Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- O conteúdo será injetado via JS -->
+                    </tbody>
+                </table>
+
+                <!-- ESTADO VAZIO INICIAL -->
+                <div class="estado-vazio" id="estado-vazio-filtros">
+                    <div class="vazio-content">
+                        <i data-lucide="users" class="vazio-icon"></i>
+                        <h3>Filtre os catequizandos por ETAPA e CATEQUISTA</h3>
+                        <p>Selecione uma etapa e um catequista para visualizar os catequizandos e suas frequências.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEMPLATE DE CATEQUIZANDO (COMENTADO PARA USO POSTERIOR EM JS) -->
+        
+        <!-- <template id="catequizando-row-template">
+            <tr class="catequizando-row">
+                <td>João da Silva</td>
+                <td>1º Etapa</td>
+                <td>Luciana</td>
+                <td class="text-center">
+                    <div class="freq-wrapper">
+                        <span class="freq-badge freq-high">95%</span>
+                    </div>
+                </td>
+                <td class="text-center">
+                    <div class="freq-wrapper">
+                        <span class="freq-badge freq-medium">75%</span>
+                    </div>
+                </td>
+            </tr>
+        </template> -->
+       
+    </main>
+
+		<template id="template-message-modal">
+        <div class="message-modal-overlay">
+            <div class="message-modal">
+                <div class="message-modal-icon"></div>
+                <h2 class="message-modal-title"></h2>
+                <p class="message-modal-text"></p>
+                <button class="message-modal-btn">OK</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Apenas para renderizar os ícones do layout estático
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    </script>
+		<script type="module" src="scripts/utils/header.js"></script>
+		<script type="module" src="scripts/controllers/catequizandos/catequizandos_controller.js"></script>
+</body>
+</html>
