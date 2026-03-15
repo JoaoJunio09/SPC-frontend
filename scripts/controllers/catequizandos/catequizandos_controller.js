@@ -19,31 +19,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 	Loading.showLoading();
 
 	try {
-		let catechists = [];
-		let steps = [];
+		const [catechists, steps] = await Promise.all([
+			CatequistaService.findAllCatequistas(),
+			EtapaService.findAllEtapa()
+		]);
 
-		await Promise.all(() => {
-			catechists = CatequistaService.findAllCatequistas()
-			steps = EtapaService.findAllEtapa()
-		})
-		.then(() => {
-			loadStepsAndCatechistsInTheFilter(catechists, steps);
-		})
-		.catch(() => { 
-			setTimeout(() => {
-				window.location.href = '../../../index.html';
-			}, 5000);
-
-			throw new Error("Não foi possível carregar os dados de filtragem");
-		})
-		.finally(() => Loading.hideLoading());;
+		loadStepsAndCatechistsInTheFilter(catechists, steps);
 	}
 	catch (e) {
-		Toast.showToast({ message: e.message, type: 'error' });
+		setTimeout(() => {
+			window.location.href = '../../../index.html';
+		}, 5000);
+		
+		Toast.showToast({ 
+			message: 'Não foi possível carregar os dados de filtragem', 
+			type: 'error' 
+		});
+	}
+	finally {
+		Loading.hideLoading();
 	}
 });
 
-async function loadStepsAndCatechistsInTheFilter(catechists, steps) {
+function loadStepsAndCatechistsInTheFilter(catechists, steps) {
 	catechists.forEach(catechist => {
 		dom.filter_catechist.innerHTML += `
 			<option value="${catechist.firstName}">${catechist.firstName}</option>
