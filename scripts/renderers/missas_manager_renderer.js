@@ -1,3 +1,5 @@
+import { UtilsDate } from '../utils/utils_date.js';
+
 export function rendererMissasManager(missas, grid) {
 	grid.innerHTML = '';
 
@@ -11,8 +13,14 @@ export function rendererMissasManager(missas, grid) {
 		const title = missa_card.querySelector("#title");
 		const date = missa_card.querySelector("#date");
 		title.textContent = missa.title;
-		date.textContent = missa.dateTime;
+		date.textContent = formatDateTime(missa.dateTime);
 
 		grid.appendChild(missa_card);
 	});
+}
+
+function formatDateTime(dateTime) {
+	const day = UtilsDate.formatDateTimeThisMissaForDate(dateTime).slice(8, 10);
+	const month = UtilsDate.returnsMonthAsAString(UtilsDate.formatDateTimeThisMissaForDate(dateTime).slice(5, 7));
+	return `Dia ${day}, de ${month}`;
 }

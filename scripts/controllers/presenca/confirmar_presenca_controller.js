@@ -41,7 +41,7 @@ export async function initConfirmacao() {
       MessageModal.show({ 
         type: 'success', 
         title: 'Sucesso', 
-        message: 'Presenças foram registradas com sucesso' 
+        message: 'Presenças foram registradas com sucesso'
       });
 
       sessionStorage.removeItem("presencasSelecionadas");

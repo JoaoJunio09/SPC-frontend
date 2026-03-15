@@ -1,13 +1,8 @@
 import { EtapaService } from "../../services/etapa_service.js";
 import { CatequizandoService } from "../../services/catequizando_service.js";
 
-// Lista temporária em memória
 let presencasSelecionadas = [];
 let catequizandos = [];
-
-document.addEventListener('DOMContentLoaded', async () => {
-
-});
 
 export function initPresenca() {
   const salvas = sessionStorage.getItem("presencasSelecionadas");
@@ -73,27 +68,28 @@ function renderList(catequizandos, titulo) {
     const estaPresente = presencasSelecionadas.some(p => p.catequizandoId === c.id);
 
     return `
-    <div class="catequizando-card" data-id="${c.id}" data-etapa-id="${c.etapa.id}">
-      <div class="student-info">
-        <h4>${c.firstName}</h4>
-        <p>${c.etapa.etapa} | Catequista: ${c.etapa.catequista.firstName}</p>
+      <div class="catequizando-card" data-id="${c.id}" data-etapa-id="${c.etapa.id}">
+        <div class="student-info">
+          <h4>${c.firstName}</h4>
+          <p>${c.etapa.etapa} | Catequista: ${c.etapa.catequista.firstName}</p>
+        </div>
+        <div class="attendance-controls">
+          <button class="btn-toggle presente ${estaPresente ? 'active' : ''}" 
+                onclick="marcarPresenca(${c.id}, ${localStorage.getItem('missaId')}, '${c.firstName}', '${c.etapa.etapa}', '${c.etapa.catequista.firstName}')">
+            <i data-lucide="check"></i> Presença
+          </button>
+          <button class="btn-toggle ausente ${!estaPresente ? 'active' : ''}" 
+                onclick="marcarAusencia(${c.id})">
+            Ausência
+          </button>
+        </div>
       </div>
-      <div class="attendance-controls">
-        <button class="btn-toggle presente ${estaPresente ? 'active' : ''}" 
-              onclick="marcarPresenca(${c.id}, ${localStorage.getItem('missaId')}, '${c.firstName}', '${c.etapa.etapa}', '${c.etapa.catequista.firstName}')">
-          <i data-lucide="check"></i> Presença
-        </button>
-        <button class="btn-toggle ausente ${!estaPresente ? 'active' : ''}" 
-              onclick="marcarAusencia(${c.id})">
-          Ausência
-        </button>
-      </div>
-    </div>
-  `}).join('');
+    `
+  }).join('');
   if(window.lucide) lucide.createIcons();
 }
 
-function marcarPresenca(id, missaId, catequizandoName, etapaName, CatequistaName ) {
+function marcarPresenca(id, missaId, catequizandoName, etapaName, catequistaName) {
   if (!presencasSelecionadas.some(p => p.catequizandoId === id)) {
     presencasSelecionadas.push({ 
       catequizandoId: id, 
@@ -102,7 +98,7 @@ function marcarPresenca(id, missaId, catequizandoName, etapaName, CatequistaName
       justification: null, 
       catequizandoName: catequizandoName,
       etapaName: etapaName,
-      catequistaName: CatequistaName
+      catequistaName: catequistaName
     });
   }
   atualizarUI();
