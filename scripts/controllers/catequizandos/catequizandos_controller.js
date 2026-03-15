@@ -7,16 +7,49 @@ import { MessageModal } from '../../utils/modal_message.js';
 import { Toast } from '../../utils/toast.js';
 import { Loading } from '../../utils/loading.js';
 import { loadTemplate } from '../../utils/template_loader.js';
+import { rendererCatechuments } from '../../renderers/catechuments_renderer.js';
 
 const dom = {
 	filter_step: document.getElementById("filtro-etapa"),
 	filter_catechist: document.getElementById("filtro-catequista"),
+	table: document.getElementById("tabela-dados"),
+	tbody: document.getElementById("tabela-dados").querySelector('tbody'),
+	emptyStateInitial: document.getElementById("estado-vazio-filtros"),
 };
+
+const filter_variables = {
+	catechist_value: "",
+	step_value: ""
+}
+
+dom.filter_step.addEventListener('input', async (e) => {
+	filter_variables.step_value = e.target.value;
+	await filter();
+});
+
+dom.filter_catechist.addEventListener('input', async (e) => {
+	filter_variables.catechist_value = e.target.value;
+	await filter();
+});
+
+async function filter() {
+	if (filter_variables.catechist_value === "" || filter_variables.step_value === "") {
+		return;
+	}
+
+	const catechist = filter_variables.catechist_value;
+	const step = filter_variables.step_value;
+
+	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechist, step);
+
+	await rendererCatechuments(dom.emptyStateInitial, dom.table, dom.tbody, catechumens);
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
 	await loadTemplate("../../../templates/loading.html");
+	await loadTemplate("../../../templates/catechumens_template.html");
 
-	Loading.showLoading();
+	// Loading.showLoading();
 
 	try {
 		const [catechists, steps] = await Promise.all([
