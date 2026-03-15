@@ -19,14 +19,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 	Loading.showLoading();
 
 	try {
-		const catechists = await CatequistaService.findAllCatequistas()
-			.catch(() => { throw new Error("Não foi possível carrefar os Catequistas") });
-		const steps = await EtapaService.findAllEtapa()
-			.catch(() => { throw new Error("Não foi possível carrefar as Etapas") });
+		let catechists = [];
+		let steps = [];
 
-		await loadStepsAndCatechistsInTheFilter(catechists, steps);
+		await Promise.all(() => {
+			catechists = CatequistaService.findAllCatequistas()
+			steps = EtapaService.findAllEtapa()
+		})
+		.then(() => {
+			loadStepsAndCatechistsInTheFilter(catechists, steps);
+		})
+		.catch(() => { 
+			setTimeout(() => {
+				window.location.href = '../../../index.html';
+			}, 5000);
 
-		Loading.hideLoading();
+			throw new Error("Não foi possível carregar os dados de filtragem");
+		})
+		.finally(() => Loading.hideLoading());;
 	}
 	catch (e) {
 		Toast.showToast({ message: e.message, type: 'error' });
