@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	await loadTemplate("../../../templates/loading.html");
 	await loadTemplate("../../../templates/catechumens_template.html");
 
-	// Loading.showLoading();
+	Loading.showLoading();
 
 	try {
 		const [catechists, steps] = await Promise.all([
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			EtapaService.findAllEtapa()
 		]);
 
-		loadStepsAndCatechistsInTheFilter(catechists, steps);
+		loadCatechistsAndStepsInTheFilter(catechists, steps);
 	}
 	catch (e) {
 		setTimeout(() => {
@@ -94,7 +94,7 @@ function calculateFrequency(totalMasses, totalMassesToThisToday, attendanceAtMas
 	return [frequencyActual, frequencyTotal];
 }
 
-function loadStepsAndCatechistsInTheFilter(catechists, steps) {
+function loadCatechistsAndStepsInTheFilter(catechists, steps) {
 	catechists.forEach(catechist => {
 		dom.filter_catechist.innerHTML += `
 			<option value="${catechist.firstName}">${catechist.firstName}</option>

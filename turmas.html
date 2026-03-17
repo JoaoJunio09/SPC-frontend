@@ -6,9 +6,17 @@
     <title>SPC - Sistema de Presença dos Catequizandos</title>
     <link rel="stylesheet" href="styles/turmas.css">
     <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/toast.css">
+    <link rel="stylesheet" href="styles/modal_loading.css">
+    <link rel="stylesheet" href="styles/modal_message.css">
+    <link rel="stylesheet" href="styles/modal_confirmation.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (Apenas para renderização dos ícones no layout) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -150,7 +158,15 @@
         </div>
     </div>
 
-    <script type="module" src="scripts/controllers/turmas/gerenciar_turmas.js"></script>
+    <div id="toast-container"></div>
+
+    <script>
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    </script>
+
+    <script type="module" src="scripts/controllers/turmas_and_catequistas/steps_and_catechists_controller.js"></script>
     <script type="module" src="scripts/utils/header.js"></script>
 </body>
 </html>
