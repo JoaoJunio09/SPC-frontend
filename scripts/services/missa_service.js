@@ -2,6 +2,7 @@ const BASE_URL = "http://localhost:8080";
 
 const FIND_ALL_MISSAS_URL = `${BASE_URL}/api/missas/v1`;
 const FIND_BY_ID_MISSA_URL = `${BASE_URL}/api/missas/v1/{missaId}`;
+const FIND_BY_OCCURRED_TO_THIS_TODAY_MISSAS_URL = `${BASE_URL}/api/missas/v1/findByOccurredToThisToday`;
 const CREATE_MISSA_URL = `${BASE_URL}/api/missas/v1`;
 const UPDATE_MISSA_URL = `${BASE_URL}/api/missas/v1`;
 const DELETE_MISSA_URL = `${BASE_URL}/api/missas/v1/{missaId}`;
@@ -32,6 +33,21 @@ async function findById(missaId) {
 
 	if (!response.ok) {
 		throw new Error("Erro ao obter missa [findById]");
+	}
+
+	return await response.json();
+}
+
+async function findByOccurredToThisToday() {
+	const response = await fetch(FIND_BY_OCCURRED_TO_THIS_TODAY_MISSAS_URL, {
+		'method': 'GET',
+		'headers': {
+			'Accept': 'application/json'
+		}
+	});
+
+	if (!response.ok) {
+		throw new Error("Erro ao obter missas [findByOccurredToThisToday]");
 	}
 
 	return await response.json();
@@ -88,6 +104,7 @@ async function deleteMissa(missaId) {
 export const MissaService = {
 	findAllMissa: findAll,
 	findByIdMissa: findById,
+	findByOccurredToThisTodayMissa: findByOccurredToThisToday,
 	createMissa: create,
 	updateMissa: update,
 	deleteMissa: deleteMissa

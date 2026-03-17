@@ -2,6 +2,7 @@ const BASE_URL = "http://localhost:8080";
 
 const FIND_ALL_PRESENCAS_URL = `${BASE_URL}/api/presencas/v1`;
 const FIND_BY_ID_PRESENCA_URL = `${BASE_URL}/api/presencas/v1/{presencaId}`;
+const FIND_BY_CATECHUMEN_ID_PRESENCA_URL = `${BASE_URL}/api/presencas/v1/findByCatechumenId/{catechumenId}`;
 const CREATE_PRESENCA_URL = `${BASE_URL}/api/presencas/v1`;
 const UPDATE_PRESENCA_URL = `${BASE_URL}/api/presencas/v1`;
 const DELETE_PRESENCA_URL = `${BASE_URL}/api/presencas/v1/{presencaId}`;
@@ -32,6 +33,22 @@ async function findById(presencaId) {
 
 	if (!response.ok) {
 		throw new Error("Erro ao obter presença [findById]");
+	}
+
+	return await response.json();
+}
+
+async function findByCatechumenId(catechumenId) {
+	const url = FIND_BY_CATECHUMEN_ID_PRESENCA_URL.replace('{catechumenId}', catechumenId);
+	const response = await fetch(url, {
+		'method': 'GET',
+		'headers': {
+			'Accept': 'application/json'
+		}
+	});
+
+	if (!response.ok) {
+		throw new Error("Erro ao obter presença [findByCatechumenId]");
 	}
 
 	return await response.json();
@@ -88,6 +105,7 @@ async function deletePresenca(presencaId) {
 export const PresencaService = {
 	findAllPresenca: findAll,
 	findByIdPresenca: findById,
+	findByCatechumenIdPresenca: findByCatechumenId,
 	createPresenca: create,
 	updatePresenca: update,
 	deletePresenca: deletePresenca

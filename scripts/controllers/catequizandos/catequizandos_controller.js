@@ -32,19 +32,6 @@ dom.filter_catechist.addEventListener('input', async (e) => {
 	await filter();
 });
 
-async function filter() {
-	if (filter_variables.catechist_value === "" || filter_variables.step_value === "") {
-		return;
-	}
-
-	const catechist = filter_variables.catechist_value;
-	const step = filter_variables.step_value;
-
-	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechist, step);
-
-	await rendererCatechuments(dom.emptyStateInitial, dom.table, dom.tbody, catechumens);
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
 	await loadTemplate("../../../templates/loading.html");
 	await loadTemplate("../../../templates/catechumens_template.html");
@@ -73,6 +60,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 		Loading.hideLoading();
 	}
 });
+
+async function filter() {
+	if (filter_variables.catechist_value === "" || filter_variables.step_value === "") {
+		return;
+	}
+
+	const catechist = filter_variables.catechist_value;
+	const step = filter_variables.step_value;
+
+	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechist, step);
+
+	await rendererCatechuments(dom.emptyStateInitial, dom.table, dom.tbody, catechumens);
+}
+
+export async function proccessTheFrequencyOfCatechumens(catechumen) {
+	const masses = await MissaService.findAllMissa();
+	const massesToThisToday = await MissaService.findByOccurredToThisTodayMissa();
+	const presencesOfCatechumen = await PresencaService.findByCatechumenIdPresenca(catechumen.id);
+
+	const totalMasses = masses.length;
+	const totalMassesToThisToday = massesToThisToday.length;
+	const attendanceAtMasses = presencesOfCatechumen.length;
+
+	return calculateFrequency(totalMasses, totalMassesToThisToday, attendanceAtMasses);
+}
+
+function calculateFrequency(totalMasses, totalMassesToThisToday, attendanceAtMasses) {
+
+	const frequencyActual = (attendanceAtMasses * 100) / totalMassesToThisToday;
+	const frequencyTotal = (attendanceAtMasses * 100) / totalMasses;;
+
+	return [frequencyActual, frequencyTotal];
+}
 
 function loadStepsAndCatechistsInTheFilter(catechists, steps) {
 	catechists.forEach(catechist => {
