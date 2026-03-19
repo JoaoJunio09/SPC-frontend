@@ -22,16 +22,6 @@ const filter_variables = {
 	step_value: ""
 }
 
-dom.filter_step.addEventListener('input', async (e) => {
-	filter_variables.step_value = e.target.value;
-	await filter();
-});
-
-dom.filter_catechist.addEventListener('input', async (e) => {
-	filter_variables.catechist_value = e.target.value;
-	await filter();
-});
-
 document.addEventListener('DOMContentLoaded', async () => {
 	await loadTemplate("../../../templates/loading.html");
 	await loadTemplate("../../../templates/catechumens_template.html");
@@ -61,6 +51,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 	}
 });
 
+dom.filter_step.addEventListener('input', async (e) => {
+	filter_variables.step_value = e.target.value;
+	await filter();
+});
+
+dom.filter_catechist.addEventListener('input', async (e) => {
+	filter_variables.catechist_value = e.target.value;
+	await filter();
+});
+
 async function filter() {
 	if (filter_variables.catechist_value === "" || filter_variables.step_value === "") {
 		return;
@@ -72,6 +72,20 @@ async function filter() {
 	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechist, step);
 
 	await rendererCatechuments(dom.emptyStateInitial, dom.table, dom.tbody, catechumens);
+}
+
+function loadCatechistsAndStepsInTheFilter(catechists, steps) {
+	catechists.forEach(catechist => {
+		dom.filter_catechist.innerHTML += `
+			<option value="${catechist.firstName}">${catechist.firstName}</option>
+		`;
+	});
+
+	steps.forEach(step => {
+		dom.filter_step.innerHTML += `
+			<option value="${step.etapa}">${step.etapa}</option>
+		`;
+	});
 }
 
 export async function proccessTheFrequencyOfCatechumens(catechumen) {
@@ -92,18 +106,4 @@ function calculateFrequency(totalMasses, totalMassesToThisToday, attendanceAtMas
 	const frequencyTotal = (attendanceAtMasses * 100) / totalMasses;;
 
 	return [frequencyActual, frequencyTotal];
-}
-
-function loadCatechistsAndStepsInTheFilter(catechists, steps) {
-	catechists.forEach(catechist => {
-		dom.filter_catechist.innerHTML += `
-			<option value="${catechist.firstName}">${catechist.firstName}</option>
-		`;
-	});
-
-	steps.forEach(step => {
-		dom.filter_step.innerHTML += `
-			<option value="${step.etapa}">${step.etapa}</option>
-		`;
-	});
 }
