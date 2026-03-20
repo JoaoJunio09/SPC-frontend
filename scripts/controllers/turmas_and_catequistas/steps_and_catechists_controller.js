@@ -6,6 +6,13 @@ import { Loading } from '../../utils/loading.js';
 import { loadTemplate } from '../../utils/template_loader.js';
 import { Toast } from '../../utils/toast.js';
 
+class TheCatechistDataIsNull extends Error {
+	constructor(message) {
+		super(message);
+		this.name = "TheCatechistDataIsNull";
+	}
+}
+
 class Step {
 
 };
@@ -16,38 +23,19 @@ class Catechist {
 	lastName = null;
 
 	setData(firstName, lastName) {
+		if (firstName === "" || lastName === "") {
+			throw new TheCatechistDataIsNull("Preencha todas as informações");
+		}
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
 
-	async edit() {
-		try {
-			getDataCatechist(this.id, true);
-			
-			await CatequistaService.updateCatequista({
-				id: this.id,
-				firstName: this.firstName,
-				lastName: this.lastName
-			})
-			.then(() => {
-				Toast.showToast({ 
-					message: 'Editado com sucesso', 
-					type: 'success' 
-				});
-
-				setTimeout(() => location.reload(), 2500);
-			});
+	toJSON() {
+		return {
+			id: this.id,
+			firstName: this.firstName,
+			lastName: this.lastName
 		}
-		catch (e) {
-			Toast.showToast({ 
-				message: 'Não foi possível editar os dados da(o) Catequista', 
-				type: 'error' 
-			});
-		}
-	}
-
-	async save(data) {
-
 	}
 };
 
@@ -66,17 +54,17 @@ const dom = {
 	listCatechumensOfSteps: document.querySelector("#lista-alunos-modal"),
 	editCatechist: {
 		modalEditCatechist: document.querySelector("#modalEditCatequista"),
-		btnSave: document.querySelector("#modalEditCatequista").querySelector(".btn-save"),
+		btnEdit: document.querySelector("#modalEditCatequista").querySelector(".btn-save"),
 		btnCancel: document.querySelector("#modalEditCatequista").querySelector(".btn-cancel"),
 	}
 }
 
 dom.editCatechist.btnCancel.addEventListener('click', () => {
-	closeModalEditCatechist()
+	closeModalEditCatechist();
 });
 
-dom.editCatechist.btnSave.addEventListener('click', () => {
-	objects.catechist.edit();
+dom.editCatechist.btnEdit.addEventListener('click', async () => {
+	await editCatechist();
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -133,33 +121,56 @@ function initializeButtonsCatechists() {
 	);
 }
 
-async function getDataCatechist(id, save) {
-	if (save) {
-		objects.catechist.setData(
-			document.querySelector("#edit-first-name-catechist").value,
-			document.querySelector("#edit-last-name-catechist").value
-		);
+async function editCatechist() {
+	try {
+		getDataCatechist();
+
+		await CatequistaService.updateCatequista(objects.catechist.toJSON());
+		lists.catechists = await CatequistaService.findAllCatequistas();
+
+		dom.listCatechists.innerHTML = "";
+		loadCatechistsAndSteps(lists.catechists, lists.steps);
+
+		Toast.showToast({
+			message: 'Atualizado com sucesso',
+			type: 'success'
+		});
+
+		closeModalEditCatechist();
 	}
-	else {
-		const catechist = await CatequistaService.findByIdCatequista(id);
-		objects.catechist.id = catechist.id;
-		document.querySelector("#edit-first-name-catechist").value = catechist.firstName;
-		document.querySelector("#edit-last-name-catechist").value = catechist.lastName;
+	catch (e) {
+		if (e instanceof TheCatechistDataIsNull) {
+			Toast.showToast({ 
+				message: e.message, 
+				type: 'error' 
+			});
+		}
 	}
 }
 
-function changeStepCatechist(e) {
-	const id = e.target.closest('.card')?.getAttribute('data-id');
+function getDataCatechist() {
+	const firstName = document.querySelector("#edit-first-name-catechist").value;
+	const lastName = document.querySelector("#edit-last-name-catechist").value
+	
+	objects.catechist.setData(
+		firstName,
+		lastName
+	);
 }
 
-function removeCatechist(e) {
-	const id = e.target.closest('.card')?.getAttribute('data-id');
+async function fillCatechistForm(id) {
+	const catechist = await CatequistaService.findByIdCatequista(id);
+
+	objects.catechist.id = catechist.id;
+
+	document.querySelector("#edit-first-name-catechist").value = catechist.firstName;
+	document.querySelector("#edit-last-name-catechist").value = catechist.lastName;
 }
 
 async function openModalEditCatechist(e) {
-	const id = e.target.closest('.card')?.getAttribute('data-id');
 	dom.editCatechist.modalEditCatechist.style.display = 'flex';
-	await getDataCatechist(id, false);
+	const id = e.target.closest('.card')?.getAttribute('data-id');
+	await fillCatechistForm(id);
 }
 
 function closeModalEditCatechist() {
