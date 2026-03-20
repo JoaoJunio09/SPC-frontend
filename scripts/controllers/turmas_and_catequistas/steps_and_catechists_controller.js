@@ -1,7 +1,9 @@
-import { rendererCardCatechists } from '../../renderers/card_catechists_renderer.js';
-import { rendererCardSteps } from '../../renderers/card_steps_renderer.js';
+import { rendererCardCatechists } from '../../renderers/steps_and_catechists/card_catechists_renderer.js';
+import { rendererCardSteps } from '../../renderers/steps_and_catechists/card_steps_renderer.js';
+import { rendererCardViewCatechumens } from '../../renderers/steps_and_catechists/card_view_catechumens_renderer.js';
 import { CatequistaService } from '../../services/catequista_service.js';
 import { EtapaService } from '../../services/etapa_service.js';
+import { CatequizandoService } from '../../services/catequizando_service.js';
 import { Loading } from '../../utils/loading.js';
 import { loadTemplate } from '../../utils/template_loader.js';
 import { Toast } from '../../utils/toast.js';
@@ -69,8 +71,9 @@ dom.editCatechist.btnEdit.addEventListener('click', async () => {
 
 document.addEventListener('DOMContentLoaded', async () => {
 	await loadTemplate("../../../templates/loading.html");
-	await loadTemplate("../../../templates/turmas_and_catequistas/card_catechists_template.html");
-	await loadTemplate("../../../templates/turmas_and_catequistas/card_steps_template.html");
+	await loadTemplate("../../../templates/steps_and_catechists/card_catechists_template.html");
+	await loadTemplate("../../../templates/steps_and_catechists/card_steps_template.html");
+	await loadTemplate("../../../templates/steps_and_catechists/card_view_catechumens.html");
 
 	Loading.showLoading();
 
@@ -101,6 +104,7 @@ function loadCatechistsAndSteps(catechists, steps) {
 	rendererCardSteps(steps, dom.listSteps);
 
 	initializeButtonsCatechists();
+	initializeButtonsSteps();
 }
 
 function initializeButtonsCatechists() {
@@ -119,6 +123,23 @@ function initializeButtonsCatechists() {
 	btnsRemove.forEach(
 		btn => btn.addEventListener('click', async (e) => removeCatechist(e))
 	);
+}
+
+function initializeButtonsSteps() {
+	const btnsViewCatechumens = document.querySelectorAll(".btn-view-catechumens");
+
+	btnsViewCatechumens.forEach(
+		btn => btn.addEventListener('click', async (e) => await viewCatechumens(e))
+	);
+}
+
+async function viewCatechumens(e) {
+	const catechistName = e.target.closest('.card').getAttribute('catechist-firstName');
+	const step = e.target.closest('.card').getAttribute('step');
+
+	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechistName, step);
+
+	rendererCardViewCatechumens(catechumens);
 }
 
 async function editCatechist() {
