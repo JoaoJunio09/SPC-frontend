@@ -4,8 +4,6 @@ import { loadTemplate } from "../../utils/template_loader.js";
 import { Loading } from "../../utils/loading.js";
 import { Toast } from "../../utils/toast.js";
 
-export const eventos = {};
-
 export const dom = {
 	modal: document.getElementById('calendarModal'),
 	monthGrid: document.getElementById('monthGrid'),

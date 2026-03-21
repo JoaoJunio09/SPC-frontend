@@ -1,8 +1,14 @@
 import { dom } from "./index_controller.js";
 import { carregarEvento } from "./index_controller.js";
-import { eventos } from "./index_controller.js";
+import { MissaService } from "../../services/missa_service.js";
+import { UtilsDate } from "../../utils/utils_date.js";
 
 let currentDate = new Date();
+let masses_dates = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+	masses_dates = await MissaService.findAllMassesDates();
+});
 
 function renderMonthDays() {
 	dom.monthGrid.innerHTML = '';
@@ -39,9 +45,9 @@ function renderMonthDays() {
 		dayDiv.innerText = day;
 		initializeEventDayCalendar(dayDiv);
 
-		if (eventos[dateString]) {
-			if (eventos[dateString].tipo === "missa") {
-				dayDiv.classList.add("missa");
+		for (let i = 0; i < masses_dates.length; i++) {
+			if (UtilsDate.formatDateTimeThisMissaForDate(masses_dates[i]) === dateString) {
+				dayDiv.classList.add('missa');
 			}
 		}
 
