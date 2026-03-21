@@ -9,8 +9,7 @@ import { rendererCatechuments } from '../../renderers/catechuments_renderer.js';
 import { formatStep } from '../../utils/format_step.js';
 
 const dom = {
-	filter_step: document.getElementById("filtro-etapa"),
-	filter_catechist: document.getElementById("filtro-catequista"),
+	filter_step_and_catechist: document.getElementById("filter-step-and-catechist"),
 	table: document.getElementById("tabela-dados"),
 	tbody: document.getElementById("tabela-dados").querySelector('tbody'),
 	emptyStateInitial: document.getElementById("estado-vazio-filtros"),
@@ -25,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	await loadTemplate("../../../templates/loading.html");
 	await loadTemplate("../../../templates/catechumens_template.html");
 
-	Loading.showLoading();
+	// Loading.showLoading();
 
 	try {
 		const [catechists, steps] = await Promise.all([
@@ -36,27 +35,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 		loadCatechistsAndStepsInTheFilter(catechists, steps);
 	}
 	catch (e) {
-		setTimeout(() => {
-			window.location.href = '../../../index.html';
-		}, 5000);
+		// setTimeout(() => {
+		// 	window.location.href = '../../../index.html';
+		// }, 5000);
 		
-		Toast.showToast({ 
-			message: 'Não foi possível carregar os dados de filtragem', 
-			type: 'error' 
-		});
+		// Toast.showToast({ 
+		// 	message: 'Não foi possível carregar os dados de filtragem', 
+		// 	type: 'error' 
+		// });
 	}
 	finally {
 		Loading.hideLoading();
 	}
 });
 
-dom.filter_step.addEventListener('input', async (e) => {
-	filter_variables.step_value = e.target.value;
-	await filter();
-});
+dom.filter_step_and_catechist.addEventListener('input', async (e) => {
+	const value = e.target.value.split('-');
+	const step_value = value[0];
+	const catechist_value = value[1];
 
-dom.filter_catechist.addEventListener('input', async (e) => {
-	filter_variables.catechist_value = e.target.value;
+	filter_variables.catechist_value = catechist_value;
+	filter_variables.step_value = step_value;
 	await filter();
 });
 
@@ -74,15 +73,13 @@ async function filter() {
 }
 
 function loadCatechistsAndStepsInTheFilter(catechists, steps) {
-	catechists.forEach(catechist => {
-		dom.filter_catechist.innerHTML += `
-			<option value="${catechist.firstName}">${catechist.firstName}</option>
-		`;
-	});
-
 	steps.forEach(step => {
-		dom.filter_step.innerHTML += `
-			<option value="${step.etapa}">${formatStep(step.etapa)}</option>
-		`;
+		catechists.forEach(catechist => {
+			if (catechist.stepOfCatechistResponseDTO.id === step.id) {
+				dom.filter_step_and_catechist.innerHTML += `
+					<option value="${step.etapa}-${catechist.firstName}">${formatStep(step.etapa)} - ${catechist.firstName+" "+catechist.lastName}</option>
+				`;
+			}
+		});
 	});
 }
