@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	await loadTemplate("../../../templates/loading.html");
 	await loadTemplate("../../../templates/catechumens_template.html");
 
-	// Loading.showLoading();
+	Loading.showLoading();
 
 	try {
 		const [catechists, steps] = await Promise.all([
@@ -35,14 +35,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 		loadCatechistsAndStepsInTheFilter(catechists, steps);
 	}
 	catch (e) {
-		// setTimeout(() => {
-		// 	window.location.href = '../../../index.html';
-		// }, 5000);
+		setTimeout(() => {
+			window.location.href = '../../../index.html';
+		}, 5000);
 		
-		// Toast.showToast({ 
-		// 	message: 'Não foi possível carregar os dados de filtragem', 
-		// 	type: 'error' 
-		// });
+		Toast.showToast({ 
+			message: 'Não foi possível carregar os dados de filtragem', 
+			type: 'error' 
+		});
 	}
 	finally {
 		Loading.hideLoading();

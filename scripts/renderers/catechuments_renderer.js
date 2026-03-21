@@ -19,7 +19,7 @@ export async function rendererCatechuments(emptyState, table, tbody, catechumens
 
 		const [frequencyActual, frequencyTotal] = await proccessTheFrequencyOfCatechumens(catechumen);
 
-		tr.querySelector("#firstName").textContent = catechumen.firstName;
+		tr.querySelector("#firstName").textContent = `${catechumen.firstName} ${catechumen.lastName}`;
 		tr.querySelector("#catechistFirstName").textContent = catechumen.etapa.catequista.firstName;
 		tr.querySelector("#step").textContent = formatStep(catechumen.etapa.etapa);
 

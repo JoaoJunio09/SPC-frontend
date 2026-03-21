@@ -10,7 +10,7 @@ export function rendererCardCatechumen(list, catechumens) {
 
 		let [frequencyActual, frequencyTotal] = await proccessTheFrequencyOfCatechumens(catechumen);
 
-		card.querySelector(".catechumen-firstName").textContent = catechumen.firstName;
+		card.querySelector(".catechumen-firstName").textContent = `${catechumen.firstName} ${catechumen.lastName}`;
 		card.querySelector(".catechument-birthDate").textContent = catechumen.birthDate;
 
 		card.querySelector(".presence-actual").textContent = `${frequencyActual.toFixed(1) + "%"}`;

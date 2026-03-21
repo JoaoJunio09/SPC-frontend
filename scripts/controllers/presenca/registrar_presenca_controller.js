@@ -72,7 +72,7 @@ function renderList(catequizandos, titulo) {
     return `
       <div class="catequizando-card" data-id="${c.id}" data-etapa-id="${c.etapa.id}">
         <div class="student-info">
-          <h4>${c.firstName}</h4>
+          <h4>${c.firstName+" "+c.lastName}</h4>
           <p>${formatStep(c.etapa.etapa)} | Catequista: ${c.etapa.catequista.firstName}</p>
         </div>
         <div class="attendance-controls">
