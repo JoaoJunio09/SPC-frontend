@@ -14,6 +14,9 @@ export async function proccessTheFrequencyOfCatechumens(catechumen) {
 }
 
 function calculateFrequency(totalMasses, totalMassesToThisToday, attendanceAtMasses) {
+	if (totalMassesToThisToday < 1 || attendanceAtMasses < 1) {
+		return [0, 0];
+	}
 
 	const frequencyActual = (attendanceAtMasses * 100) / totalMassesToThisToday;
 	const frequencyTotal = (attendanceAtMasses * 100) / totalMasses;;
