@@ -1,0 +1,16 @@
+<template id="card-catechumens-template">
+	<div id="card" class="card-catechumen">
+		<div class="catequizando-header">
+			<span class="catechumen-firstName"></span>
+			<span class="catechument-birthDate"></span>
+		</div>
+		<div class="progress-container">
+			<div class="progress-label progress-label-actual"><span>Presença Atual</span><strong class="presence-actual">${percAtual}%</strong></div>
+			<div class="progress-bar"><div class="progress-fill bg-green" style="width: ${percAtual}%"></div></div>
+		</div>
+		<div class="progress-container">
+			<div class="progress-label progress-label-total"><span>Presença Total Ano</span><strong class="presence-total">${percTotal}%</strong></div>
+			<div class="progress-bar"><div class="progress-fill bg-orange" style="width: ${percTotal}%"></div></div>
+		</div>
+	</div>
+</template>

@@ -15,10 +15,6 @@ class TheCatechistDataIsNull extends Error {
 	}
 }
 
-class Step {
-
-};
-
 class Catechist {
 	id = null;
 	firstName = null;
@@ -74,6 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	await loadTemplate("../../../templates/steps_and_catechists/card_catechists_template.html");
 	await loadTemplate("../../../templates/steps_and_catechists/card_steps_template.html");
 	await loadTemplate("../../../templates/steps_and_catechists/card_view_catechumens.html");
+	await loadTemplate("../../../templates/steps_and_catechists/card_catechumens.html");
 
 	Loading.showLoading();
 
@@ -139,7 +136,7 @@ async function viewCatechumens(e) {
 
 	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechistName, step);
 
-	rendererCardViewCatechumens(catechumens);
+	rendererCardViewCatechumens(catechumens, step);
 }
 
 async function editCatechist() {

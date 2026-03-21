@@ -151,19 +151,27 @@ transition: opacity 0.2s;
 .btn:hover { opacity: 0.85; }
 
 /* MODAIS PADRÃO SPC */
+
+.card-catechumen {
+	box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.079);
+	border-radius: 8px;
+	padding: 10px;
+	margin-top: 25px;
+}
+
 .modal-overlay {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background: rgba(15, 23, 42, 0.7);
-display: none;
-align-items: center;
-justify-content: center;
-z-index: 2000;
-padding: 20px;
-backdrop-filter: blur(2px);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(15, 23, 42, 0.7);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 2000;
+	padding: 20px;
+	backdrop-filter: blur(2px);
 }
 
 .modal-content {
@@ -215,14 +223,14 @@ margin-top: 2rem;
 
 /* LISTA DE ALUNOS NO MODAL */
 .catequizando-item {
-border-bottom: 1px solid #F1F5F9;
-padding: 1.2rem 0;
+	border-bottom: 1px solid #F1F5F9;
+	padding: 1.2rem 0;
 }
 
 .catequizando-header {
-display: flex;
-justify-content: space-between;
-margin-bottom: 10px;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
 }
 
 .catequizando-name { font-weight: 700; color: var(--text-main); }
@@ -230,11 +238,11 @@ margin-bottom: 10px;
 
 .progress-container { margin-bottom: 12px; }
 .progress-label {
-display: flex;
-justify-content: space-between;
-font-size: 0.85rem;
-margin-bottom: 6px;
-font-weight: 600;
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.85rem;
+	margin-bottom: 6px;
+	font-weight: 600;
 }
 
 .progress-bar {
