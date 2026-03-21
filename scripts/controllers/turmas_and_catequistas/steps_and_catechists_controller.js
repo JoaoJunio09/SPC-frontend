@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	await loadTemplate("../../../templates/steps_and_catechists/card_catechists_template.html");
 	await loadTemplate("../../../templates/steps_and_catechists/card_steps_template.html");
 	await loadTemplate("../../../templates/steps_and_catechists/card_view_catechumens.html");
-	await loadTemplate("../../../templates/steps_and_catechists/card_catechumens.html");
+	await loadTemplate("../../../templates/steps_and_catechists/card_catechumens_template.html");
 
 	Loading.showLoading();
 
