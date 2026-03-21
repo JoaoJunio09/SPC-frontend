@@ -1,4 +1,4 @@
-import { proccessTheFrequencyOfCatechumens } from "../controllers/catequizandos/catequizandos_controller.js";
+import { proccessTheFrequencyOfCatechumens } from "../controllers/catequizandos/process_frequency.js";
 
 export async function rendererCatechuments(emptyState, table, tbody, catechumens) {
 	const template = document.getElementById("catechumens-row-template");

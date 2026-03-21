@@ -1,21 +1,23 @@
+import { proccessTheFrequencyOfCatechumens } from "../../controllers/catequizandos/process_frequency.js";
+
+
 export function rendererCardCatechumen(list, catechumens) {
 	const template = document.getElementById("card-catechumens-template");
 
-	const percActual = 50+"%";
-	const percTotal = 33.3+"%";
-
-	catechumens.forEach(catechumen => {
+	catechumens.forEach(async catechumen => {
 		const frag = template.content.cloneNode(true);
 		const card = frag.querySelector("#card");
+
+		let [frequencyActual, frequencyTotal] = await proccessTheFrequencyOfCatechumens(catechumen);
 
 		card.querySelector(".catechumen-firstName").textContent = catechumen.firstName;
 		card.querySelector(".catechument-birthDate").textContent = catechumen.birthDate;
 
-		card.querySelector(".presence-actual").textContent = `${percActual}`;
-		card.querySelector(".bg-green").style.width = `${percActual}`;
+		card.querySelector(".presence-actual").textContent = `${frequencyActual.toFixed(1) + "%"}`;
+		card.querySelector(".bg-green").style.width = `${frequencyActual.toFixed(1) + "%"}`;
 
-		card.querySelector(".presence-total").textContent = `${percTotal}`;
-		card.querySelector(".bg-orange").style.width = `${percTotal}`;
+		card.querySelector(".presence-total").textContent = `${frequencyTotal.toFixed(1) + "%"}`;
+		card.querySelector(".bg-orange").style.width = `${frequencyTotal.toFixed(1) + "%"}`;
 
 		list.appendChild(card);
 	});
