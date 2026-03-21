@@ -6,6 +6,7 @@
     <title>Registrar Presença - SPC</title>
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/toast.css">
     <link rel="stylesheet" href="styles/registrar_presenca.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,11 +85,13 @@
             <div class="actions-footer">
                 <button class="btn-confirm-final" onclick="irParaRevisao()">
                     <i data-lucide="eye"></i>
-                    Revisar e Confirmar Registro (<span id="countSelected">0</span>)
+                    Revisar (<span id="countSelected">0</span>)
                 </button>
             </div>
         </section>
     </main>
+
+    <div id="toast-container"></div>
 
     <script type="module">
         import { initPresenca } from './scripts/controllers/presenca/registrar_presenca_controller.js';

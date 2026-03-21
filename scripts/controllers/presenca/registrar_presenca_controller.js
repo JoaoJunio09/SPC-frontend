@@ -1,5 +1,7 @@
 import { EtapaService } from "../../services/etapa_service.js";
 import { CatequizandoService } from "../../services/catequizando_service.js";
+import { Toast } from "../../utils/toast.js";
+import { formatStep } from "../../utils/format_step.js";
 
 let presencasSelecionadas = [];
 let catequizandos = [];
@@ -27,7 +29,7 @@ async function renderTurmas() {
   const container = document.getElementById('listaTurmas');
   container.innerHTML = turmas.map(t => `
     <div class="turma-card" data-id="${t.id}">
-      <h4>${t.etapa}</h4>
+      <h4>${formatStep(t.etapa)}</h4>
       <p>Catequista: ${t.catequista.firstName}</p>
       <button class="btn-list-students" onclick="listarCatequizandos(${t.id}, '${t.etapa}')">
         Listar Catequizandos
@@ -46,7 +48,7 @@ async function listarCatequizandos(etapaId, nomeTurma) {
 
 	catequizandos = await CatequizandoService.findByEtapaIdCatequizando(etapaId);
 
-  renderList(catequizandos, `Turma: ${nomeTurma}`);
+  renderList(catequizandos, `Turma: ${formatStep(nomeTurma)}`);
 }
 
 async function filtrarCatequizando() {
@@ -71,7 +73,7 @@ function renderList(catequizandos, titulo) {
       <div class="catequizando-card" data-id="${c.id}" data-etapa-id="${c.etapa.id}">
         <div class="student-info">
           <h4>${c.firstName}</h4>
-          <p>${c.etapa.etapa} | Catequista: ${c.etapa.catequista.firstName}</p>
+          <p>${formatStep(c.etapa.etapa)} | Catequista: ${c.etapa.catequista.firstName}</p>
         </div>
         <div class="attendance-controls">
           <button class="btn-toggle presente ${estaPresente ? 'active' : ''}" 
@@ -132,7 +134,10 @@ function atualizarContador() {
 
 function irParaRevisao() {
   if (presencasSelecionadas.length === 0) {
-		alert("Selecione ao menos um catequizando presente.");
+		Toast.showToast({
+      message: 'Selecione ao menos 1 catequizando',
+      type: 'info'
+    });
 		return;
   }
   sessionStorage.setItem("presencasSelecionadas", JSON.stringify(presencasSelecionadas));

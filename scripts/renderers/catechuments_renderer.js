@@ -1,4 +1,5 @@
 import { proccessTheFrequencyOfCatechumens } from "../controllers/catequizandos/process_frequency.js";
+import { formatStep } from "../utils/format_step.js";
 
 export async function rendererCatechuments(emptyState, table, tbody, catechumens) {
 	const template = document.getElementById("catechumens-row-template");
@@ -20,7 +21,7 @@ export async function rendererCatechuments(emptyState, table, tbody, catechumens
 
 		tr.querySelector("#firstName").textContent = catechumen.firstName;
 		tr.querySelector("#catechistFirstName").textContent = catechumen.etapa.catequista.firstName;
-		tr.querySelector("#step").textContent = catechumen.etapa.etapa;
+		tr.querySelector("#step").textContent = formatStep(catechumen.etapa.etapa);
 
 		tr.querySelector(".freq-high").textContent = frequencyActual.toFixed(1) + "%";
 		tr.querySelector(".freq-medium").textContent = frequencyTotal.toFixed(1) + "%";

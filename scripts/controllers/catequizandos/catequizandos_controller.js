@@ -6,6 +6,7 @@ import { Toast } from '../../utils/toast.js';
 import { Loading } from '../../utils/loading.js';
 import { loadTemplate } from '../../utils/template_loader.js';
 import { rendererCatechuments } from '../../renderers/catechuments_renderer.js';
+import { formatStep } from '../../utils/format_step.js';
 
 const dom = {
 	filter_step: document.getElementById("filtro-etapa"),
@@ -81,7 +82,7 @@ function loadCatechistsAndStepsInTheFilter(catechists, steps) {
 
 	steps.forEach(step => {
 		dom.filter_step.innerHTML += `
-			<option value="${step.etapa}">${step.etapa}</option>
+			<option value="${step.etapa}">${formatStep(step.etapa)}</option>
 		`;
 	});
 }

@@ -1,6 +1,7 @@
 import { confirmModal } from '../../utils/confirmation.js';
 import { PresencaService } from '../../services/presenca_service.js';
 import { MessageModal } from '../../utils/modal_message.js';
+import { formatStep } from "../../utils/format_step.js";
 
 export async function initConfirmacao() {
   const dados = sessionStorage.getItem("presencasSelecionadas");
@@ -19,7 +20,7 @@ export async function initConfirmacao() {
       <div class="review-card">
         <div class="review-info">
           <h4>${p.catequizandoName}</h4>
-          <p>${p.etapaName} • Catequista: ${p.catequistaName}</p>
+          <p>${formatStep(p.etapaName)} • Catequista: ${p.catequistaName}</p>
         </div>
         <div class="review-badge">Presente</div>
       </div>

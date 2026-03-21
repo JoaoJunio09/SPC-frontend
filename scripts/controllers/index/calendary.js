@@ -74,6 +74,8 @@ function initializeEventDayCalendar(dayDiv) {
   });
 }
 
+// CRIAR UMA ROTA PARA RETORNAR OS DIAS QUE TEM MISSA;
+
 const btnPrev = document.querySelectorAll(".btn-nav-month")[0];
 const btnNext = document.querySelectorAll(".btn-nav-month")[1];
 

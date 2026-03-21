@@ -1,3 +1,5 @@
+import { formatStep } from "../../utils/format_step.js";
+
 export function rendererCardCatechists(catechists, listCatechists) {
 	const template = document.getElementById("card-catechists-template");
 	
@@ -8,7 +10,7 @@ export function rendererCardCatechists(catechists, listCatechists) {
 		card.setAttribute('data-id', catechist.id);
 
 		card.querySelector("#firstName").textContent = catechist.firstName;
-		card.querySelector(".tag-step").textContent = catechist.stepOfCatechistResponseDTO.stepEnum;
+		card.querySelector(".tag-step").innerHTML = `<strong>${formatStep(catechist.stepOfCatechistResponseDTO.stepEnum)}</strong>`;
 
 		listCatechists.appendChild(card);
 	});

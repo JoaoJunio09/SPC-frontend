@@ -1,3 +1,5 @@
+import { formatStep } from "../../utils/format_step.js";
+
 export function rendererCardSteps(steps, listSteps) {
 	const template = document.getElementById("card-steps-template");
 	
@@ -8,7 +10,7 @@ export function rendererCardSteps(steps, listSteps) {
 		card.setAttribute('catechist-firstName', step.catequista.firstName);
 		card.setAttribute('step', step.etapa);
 		
-		card.querySelector("#step").textContent = step.etapa;
+		card.querySelector("#step").textContent = formatStep(step.etapa);
 		card.querySelector("#firstNameCatechist").textContent = step.catequista.firstName;
 
 		listSteps.appendChild(card);
