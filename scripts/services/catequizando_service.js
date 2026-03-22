@@ -1,4 +1,4 @@
-const BASE_URL = "https://spc-springboot-production.up.railway.app/";
+const BASE_URL = "https://spc-springboot-production.up.railway.app";
 
 const FIND_ALL_CATEQUIZANDOS_URL = `${BASE_URL}/api/catequizandos/v1`;
 const FIND_BY_ID_CATEQUIZANDO_URL = `${BASE_URL}/api/catequizandos/v1/{catequizandoId}`;
