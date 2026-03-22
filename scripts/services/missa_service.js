@@ -1,12 +1,13 @@
-const BASE_URL = "https://spc-springboot-production.up.railway.app";
+const BASE_URL_PROD = "https://spc-springboot-production.up.railway.app";
+const BASE_URL_DEV = "http://localhost:8080";
 
-const FIND_ALL_MISSAS_URL = `${BASE_URL}/api/missas/v1`;
-const FIND_BY_ID_MISSA_URL = `${BASE_URL}/api/missas/v1/{missaId}`;
-const FIND_BY_OCCURRED_TO_THIS_TODAY_MISSAS_URL = `${BASE_URL}/api/missas/v1/findByOccurredToThisToday`;
-const FIND_ALL_MASSES_DATES_URL = `${BASE_URL}/api/missas/v1/findAllMassesDates`;
-const CREATE_MISSA_URL = `${BASE_URL}/api/missas/v1`;
-const UPDATE_MISSA_URL = `${BASE_URL}/api/missas/v1`;
-const DELETE_MISSA_URL = `${BASE_URL}/api/missas/v1/{missaId}`;
+const FIND_ALL_MISSAS_URL = `${BASE_URL_DEV}/api/missas/v1`;
+const FIND_BY_ID_MISSA_URL = `${BASE_URL_DEV}/api/missas/v1/{missaId}`;
+const FIND_BY_OCCURRED_TO_THIS_TODAY_MISSAS_URL = `${BASE_URL_DEV}/api/missas/v1/findByOccurredToThisToday`;
+const FIND_ALL_MASSES_DATES_URL = `${BASE_URL_DEV}/api/missas/v1/findAllMassesDates`;
+const CREATE_MISSA_URL = `${BASE_URL_DEV}/api/missas/v1`;
+const UPDATE_MISSA_URL = `${BASE_URL_DEV}/api/missas/v1`;
+const DELETE_MISSA_URL = `${BASE_URL_DEV}/api/missas/v1/{missaId}`;
 
 async function findAll() {
 	const response = await fetch(FIND_ALL_MISSAS_URL, {

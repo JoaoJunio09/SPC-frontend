@@ -1,11 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login | Sistema de Presença de Catequizandos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SPC</title>
+    <link rel="stylesheet" href="styles/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-	
+
+    <main class="login-container">
+        <section class="login-card">
+            
+            <!-- Logo e Cabeçalho do Card -->
+            <header class="login-header">
+                <div class="logo-wrapper">
+                    <img src="assets/images/brasao_paroquia.png" alt="Brasão da Paróquia" onerror="this.src='https://via.placeholder.com/80/F59E0B/FFFFFF?text=⛪'">
+                </div>
+                <div class="brand">
+                    <h1>SPC</h1>
+                    <p>Sistema de Presença</p>
+                </div>
+            </header>
+
+            <!-- Formulário de Acesso -->
+            <form class="login-form" action="#" method="POST">
+                <div class="input-group">
+                    <label for="access-code">Código de acesso</label>
+                    <input 
+                        type="text"
+                        id="access-code" 
+                        name="access-code" 
+                        placeholder="Digite o código" 
+                        required 
+                        autocomplete="off"
+                        inputmode="numeric"
+                    >
+                    <small class="input-hint">O código já foi fornecido pela paróquia.</small>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    Entrar
+                </button>
+            </form>
+
+            <footer class="login-footer">
+                <p>&copy; 2026 Paróquia São Sebastião</p>
+            </footer>
+
+        </section>
+    </main>
+
 </body>
 </html>

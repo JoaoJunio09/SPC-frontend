@@ -1,0 +1,196 @@
+/* --- VARIÁVEIS DO SISTEMA SPC --- */
+:root {
+    --primary: #F59E0B;
+    --primary-dark: #D97706;
+    --secondary: #EA580C;
+    --bg-site: #F8FAFC;
+    --text-main: #1E293B;
+    --text-muted: #64748B;
+    --white: #FFFFFF;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* --- RESET E BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-site);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* --- LAYOUT CENTRALIZADO --- */
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    justify-content: center;
+}
+
+/* --- CARD DE LOGIN --- */
+.login-card {
+    background-color: var(--white);
+    width: 100%;
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    
+    /* Animação de Entrada */
+    animation: fadeInSlide 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- CABEÇALHO DO LOGIN --- */
+.login-header {
+    margin-bottom: 2.5rem;
+}
+
+.logo-wrapper {
+    margin-bottom: 1rem;
+}
+
+.logo-wrapper img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+		margin-bottom: -25px;
+		margin-top: -25px;
+}
+
+.brand h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    line-height: 1;
+}
+
+.brand p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* --- FORMULÁRIO --- */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: left;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.input-group label {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-main);
+    padding-left: 4px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+    font-family: inherit;
+    border: 2px solid #E2E8F0;
+    border-radius: 12px;
+    background-color: #F8FAFC;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--primary);
+    background-color: var(--white);
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+}
+
+.input-group input::placeholder {
+    color: #94A3B8;
+}
+
+.input-hint {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    padding-left: 4px;
+}
+
+/* --- BOTÃO --- */
+.btn-login {
+    width: 100%;
+    padding: 1.1rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--white);
+    background-color: var(--secondary);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(234, 88, 12, 0.2);
+}
+
+.btn-login:hover {
+    background-color: #C2410C;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(234, 88, 12, 0.3);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+/* --- RODAPÉ --- */
+.login-footer {
+    margin-top: 2.5rem;
+    border-top: 1px solid #F1F5F9;
+    padding-top: 1.5rem;
+}
+
+.login-footer p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+        align-items: flex-start;
+        padding-top: 10vh;
+    }
+
+    .login-card {
+        padding: 2rem 1.5rem;
+        border-radius: 20px;
+    }
+
+    .brand h1 {
+        font-size: 2rem;
+    }
+}
