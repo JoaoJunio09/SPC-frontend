@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "spc-springboot-production.up.railway.app";
 
 const FIND_ALL_MISSAS_URL = `${BASE_URL}/api/missas/v1`;
 const FIND_BY_ID_MISSA_URL = `${BASE_URL}/api/missas/v1/{missaId}`;
