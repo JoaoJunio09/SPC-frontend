@@ -7,12 +7,24 @@ function toggleMenu() {
 
 	// Atualiza o texto do botão para dar feedback visual
 	if (nav.classList.contains('open')) {
-			btn.innerHTML = '✕ FECHAR';
+		btn.innerHTML = '✕ FECHAR';
 	} else {
-			btn.innerHTML = '☰ MENU';
+		btn.innerHTML = '☰ MENU';
+	}
+}
+
+function initSystem() {
+	const systemNameLogin = document.querySelector(".system-title p");
+	if (localStorage.getItem('nameCommunityOrParish') == "SAO_SEBASTIAO") {
+		systemNameLogin.innerHTML = 'Paróquia <strong>São Sebastião</strong>';
+	}
+	else {
+		systemNameLogin.innerHTML = 'Capela <strong>Divino Espírito Santo</strong>';
 	}
 }
 
 document.querySelector("#btnMenu").addEventListener('click', () => {
 	toggleMenu();
 });
+
+document.addEventListener('DOMContentLoaded', initSystem);
