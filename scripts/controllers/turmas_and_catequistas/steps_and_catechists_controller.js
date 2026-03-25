@@ -7,6 +7,7 @@ import { CatequizandoService } from '../../services/catequizando_service.js';
 import { Loading } from '../../utils/loading.js';
 import { loadTemplate } from '../../utils/template_loader.js';
 import { Toast } from '../../utils/toast.js';
+import { verifyAuth } from '../../auth/verify_auth.js';
 
 class TheCatechistDataIsNull extends Error {
 	constructor(message) {
@@ -66,6 +67,8 @@ dom.editCatechist.btnEdit.addEventListener('click', async () => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
+	verifyAuth();
+
 	await loadTemplate("../../../templates/loading.html");
 	await loadTemplate("../../../templates/steps_and_catechists/card_catechists_template.html");
 	await loadTemplate("../../../templates/steps_and_catechists/card_steps_template.html");
@@ -76,8 +79,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	try {
 		const [catechists, steps] = await Promise.all([
-			CatequistaService.findByNameCommunityOrParish(localStorage.getItem('nameCommunityOrParish')),
-			EtapaService.findByNameCommunityOrParish(localStorage.getItem('nameCommunityOrParish'))
+			CatequistaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish')),
+			EtapaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'))
 		]);
 
 		lists.catechists = catechists;

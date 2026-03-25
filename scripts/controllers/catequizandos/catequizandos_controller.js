@@ -1,12 +1,11 @@
 import { CatequizandoService } from '../../services/catequizando_service.js';
-import { CatequistaService } from '../../services/catequista_service.js';
 import { EtapaService } from '../../services/etapa_service.js';
-import { MessageModal } from '../../utils/modal_message.js';
 import { Toast } from '../../utils/toast.js';
 import { Loading } from '../../utils/loading.js';
 import { loadTemplate } from '../../utils/template_loader.js';
 import { rendererCatechuments } from '../../renderers/catechuments_renderer.js';
 import { formatStep } from '../../utils/format_step.js';
+import { verifyAuth } from '../../auth/verify_auth.js';
 
 const dom = {
 	filter_step_and_catechist: document.getElementById("filter-step-and-catechist"),
@@ -21,28 +20,26 @@ const filter_variables = {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+	verifyAuth();
+
 	await loadTemplate("../../../templates/loading.html");
 	await loadTemplate("../../../templates/catechumens_template.html");
 
 	Loading.showLoading();
 
 	try {
-		const [catechists, steps] = await Promise.all([
-			CatequistaService.findAllCatequistas(),
-			EtapaService.findAllEtapa()
-		]);
-
-		loadCatechistsAndStepsInTheFilter(catechists, steps);
+		const steps = await EtapaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
+		loadCatechistsAndStepsInTheFilter(steps);
 	}
 	catch (e) {
-		setTimeout(() => {
-			window.location.href = '../../../index.html';
-		}, 5000);
-		
 		Toast.showToast({ 
 			message: 'Não foi possível carregar os dados de filtragem', 
 			type: 'error' 
 		});
+
+		setTimeout(() => {
+			window.location.href = '../../../index.html';
+		}, 5000);
 	}
 	finally {
 		Loading.hideLoading();
@@ -72,14 +69,50 @@ async function filter() {
 	await rendererCatechuments(dom.emptyStateInitial, dom.table, dom.tbody, catechumens);
 }
 
-function loadCatechistsAndStepsInTheFilter(catechists, steps) {
+function loadCatechistsAndStepsInTheFilter(steps) {
+
+	let array_names_catechists = [];
+
 	steps.forEach(step => {
-		catechists.forEach(catechist => {
-			if (catechist.stepOfCatechistResponseDTO.id === step.id) {
+		if (step.catequistas.length === 1) {
+			step.catequistas.forEach(catechist => {
 				dom.filter_step_and_catechist.innerHTML += `
-					<option value="${step.etapa}-${catechist.firstName}">${formatStep(step.etapa)} - ${catechist.firstName+" "+catechist.lastName}</option>
+					<option value="${step.etapa}-${catechist.firstName}">
+						${formatStep(step.etapa)} - ${catechist.firstName+" "+catechist.lastName}
+					</option>
 				`;
-			}
-		});
+			});
+		}
+		else if (step.catequistas.length > 1) {
+			step.catequistas.forEach(catechist => {
+				array_names_catechists.push(catechist.firstName);
+			});
+
+			const [value, textOption] = defineValueAndOptionOfCatechists(array_names_catechists, step);
+
+			dom.filter_step_and_catechist.innerHTML += `
+				<option value="${value}">
+					${textOption}
+				</option>
+			`;
+		};
 	});
+}
+
+function defineValueAndOptionOfCatechists(names, step) {
+	let value = "";
+	let textOption = "";
+
+	for (let i = 0; i < names.length; i++) {
+		if (i === 0) {
+			textOption = formatStep(step.etapa) + " - ";
+			value += `${step.etapa}-${names[0]}`;
+		}
+
+		names.length - i === 1 
+			? textOption += `${names[i]}`
+			: textOption += `${names[i]} & `;
+	}
+
+	return [value, textOption];
 }

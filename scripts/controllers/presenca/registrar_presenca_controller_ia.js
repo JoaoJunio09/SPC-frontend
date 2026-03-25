@@ -24,18 +24,34 @@ export function initPresenca() {
 }
 
 async function renderTurmas() {
-  const turmas = await EtapaService.findAllEtapa();
+  const turmas = await EtapaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
 
   const container = document.getElementById('listaTurmas');
-  container.innerHTML = turmas.map(t => `
-    <div class="turma-card" data-id="${t.id}">
-      <h4>${formatStep(t.etapa)}</h4>
-      <p>Catequista: ${t.catequista.firstName}</p>
-      <button class="btn-list-students" onclick="listarCatequizandos(${t.id}, '${t.etapa}')">
-        Listar Catequizandos
-      </button>
-    </div>
-  `).join('');
+
+  turmas.forEach(turma => {
+    let catechistName = "";
+
+    if (turma.catequistas.length === 1) {
+      catechistName = turma.catequistas[0].firstName+" "+turma.catequistas[0].lastName;
+    }
+    else {
+      for (let i = 0; i < turma.catequistas.length; i++) {
+        turma.catequistas.length - i === 1 
+          ? catechistName += `${turma.catequistas[i].firstName}`
+          : catechistName += `${turma.catequistas[i].firstName} e `;
+      }
+    }
+
+    container.innerHTML += `
+      <div class="turma-card" data-id="${turma.id}">
+        <h4>${formatStep(turma.etapa)}</h4>
+        <p>Catequista: ${catechistName}</p>
+        <button class="btn-list-students" onclick="listarCatequizandos(${turma.id}, '${turma.etapa}')">
+          Listar Catequizandos
+        </button>
+      </div>
+    `;
+  });
 }
 
 function toggleAccordion() {
@@ -46,8 +62,8 @@ function toggleAccordion() {
 async function listarCatequizandos(etapaId, nomeTurma) {
   document.getElementById('accordionContent').classList.remove('open');
 
-	catequizandos = await CatequizandoService.findByEtapaIdCatequizando(etapaId);
-
+	catequizandos = await CatequizandoService.findByEtapaIdAndNameCommunityOrParish(etapaId, sessionStorage.getItem('nameCommunityOrParish'));
+  console.log(catequizandos)
   renderList(catequizandos, `Turma: ${formatStep(nomeTurma)}`);
 }
 
@@ -66,28 +82,42 @@ function renderList(catequizandos, titulo) {
   document.getElementById('tituloListagem').innerText = titulo;
   document.getElementById('attendanceSection').style.display = 'block';
 
-  container.innerHTML = catequizandos.map(c => {
-    const estaPresente = presencasSelecionadas.some(p => p.catequizandoId === c.id);
+  catequizandos.forEach(catequizando => {
+    let catechistName = "";
 
-    return `
-      <div class="catequizando-card" data-id="${c.id}" data-etapa-id="${c.etapa.id}">
+    if (catequizando.etapa.catequistas.length === 1) {
+      catechistName = catequizando.etapa.catequistas[0].firstName+" "+catequizando.etapa.catequistas[0].lastName;
+    }
+    else {
+      for (let i = 0; i < catequizando.etapa.catequistas.length; i++) {
+        catequizando.etapa.catequistas.length - i === 1 
+          ? catechistName += `${catequizando.etapa.catequistas[i].firstName}`
+          : catechistName += `${catequizando.etapa.catequistas[i].firstName} e `;
+      }
+    }
+
+    const estaPresente = presencasSelecionadas.some(p => p.catequizandoId === catequizando.id);
+
+    container.innerHTML += `
+      <div class="catequizando-card" data-id="${catequizando.id}" data-etapa-id="${catequizando.etapa.id}">
         <div class="student-info">
-          <h4>${c.firstName+" "+c.lastName}</h4>
-          <p>${formatStep(c.etapa.etapa)} | Catequista: ${c.etapa.catequista.firstName}</p>
+          <h4>${catequizando.firstName+" "+catequizando.lastName}</h4>
+          <p>${formatStep(catequizando.etapa.etapa)} | Catequista: ${catechistName}</p>
         </div>
         <div class="attendance-controls">
           <button class="btn-toggle presente ${estaPresente ? 'active' : ''}" 
-                onclick="marcarPresenca(${c.id}, ${localStorage.getItem('missaId')}, '${c.firstName}', '${c.etapa.etapa}', '${c.etapa.catequista.firstName}')">
+                onclick="marcarPresenca(${catequizando.id}, ${localStorage.getItem('missaId')}, '${catequizando.firstName}', '${catequizando.etapa.etapa}', '${catechistName}')">
             <i data-lucide="check"></i> Presença
           </button>
           <button class="btn-toggle ausente ${!estaPresente ? 'active' : ''}" 
-                onclick="marcarAusencia(${c.id})">
+                onclick="marcarAusencia(${catequizando.id})">
             Ausência
           </button>
         </div>
       </div>
-    `
-  }).join('');
+    `;
+  });
+
   if(window.lucide) lucide.createIcons();
 }
 
@@ -108,6 +138,7 @@ function marcarPresenca(id, missaId, catequizandoName, etapaName, catequistaName
 
 function marcarAusencia(id) {
   presencasSelecionadas = presencasSelecionadas.filter(p => p.catequizandoId !== id);
+  console.log(presencasSelecionadas)
   atualizarUI();
 }
 
@@ -119,9 +150,11 @@ async function atualizarUI() {
   } 
 	else {
 		const catequizandoName = document.querySelector('#listaCatequizandos').querySelector('h4').innerText;
-		const etapaId = catequizandos.find(c => c.firstName === catequizandoName).etapa.id;
-    if(etapaId) {
-      const etapa = await EtapaService.findByIdEtapa(etapaId);
+
+		const etapa = catequizandos.find(c => c.firstName+" "+c.lastName === catequizandoName).etapa;
+
+    if(etapa.id) {
+      // const etapa = await CatequizandoService.findByEtapaIdAndNameCommunityOrParish(etapa.id, sessionStorage.getItem('nameCommunityOrParish'));
       listarCatequizandos(etapa.id, etapa.etapa);
     }
   }

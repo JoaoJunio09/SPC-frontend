@@ -3,6 +3,7 @@ import { UtilsDate } from "../../utils/utils_date.js";
 import { loadTemplate } from "../../utils/template_loader.js";
 import { Loading } from "../../utils/loading.js";
 import { Toast } from "../../utils/toast.js";
+import { verifyAuth } from "../../auth/verify_auth.js";
 
 export const dom = {
 	modal: document.getElementById('calendarModal'),
@@ -12,6 +13,26 @@ export const dom = {
 	btnOpenCalender: document.querySelector("#btn-open-calendar"),
 	btnCloseCalender: document.querySelector("#btn-close-calendar"),
 };
+
+document.addEventListener('DOMContentLoaded', async () => {
+	verifyAuth();
+	
+	await loadTemplate("../../../templates/loading.html");
+
+	Loading.showLoading();
+
+	const missas = await MissaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'))
+		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
+		.finally(() => { Loading.hideLoading() });
+
+	renderWeekDays(missas);
+
+	const active = document.querySelector(".day-card.active-day");
+
+	if (active) {
+		carregarEvento(active.getAttribute("data-date"));
+	}
+});
 
 function renderWeekDays(missas) {
 	const today = new Date();
@@ -82,7 +103,7 @@ function renderWeekDays(missas) {
 }
 
 export async function carregarEvento(data) {
-	const missas = await MissaService.findByNameCommunityOrParish(localStorage.getItem('nameCommunityOrParish'))
+	const missas = await MissaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'))
 		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
 		.finally(() => { Loading.hideLoading() });
 
@@ -124,7 +145,9 @@ export async function carregarEvento(data) {
 						</div>
 						<div class="info-item">
 							<span class="label">Horário:</span>
-							<span class="value">19h na Matriz</span>
+							<span class="value">
+								${UtilsDate.formatDateTimeThisMissaForTime(missa.dateTime)}h, na ${missa.location === "MATRIZ" ? "Matriz" : "Capela do Divino"}
+							</span>
 						</div>
 					</div>
 					<button class="btn-primary ${(actions_buttons_style !== null) ? actions_buttons_style : ''}" id="btn-register-attendance">
@@ -163,29 +186,10 @@ export async function carregarEvento(data) {
 	initializeButtons();
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-	await loadTemplate("../../../templates/loading.html");
-
-	Loading.showLoading();
-
-	const missas = await MissaService.findByNameCommunityOrParish(localStorage.getItem('nameCommunityOrParish'))
-		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
-		.finally(() => { Loading.hideLoading() });
-
-	console.log(missas);
-	renderWeekDays(missas);
-
-	const active = document.querySelector(".day-card.active-day");
-
-	if(active){
-		carregarEvento(active.getAttribute("data-date"));
-	}
-});
-
 function initializeButtons() {
 	document.querySelectorAll('#btn-register-attendance').forEach(btn => {
 		btn.addEventListener('click', (e) => {
-			localStorage.setItem('missaId', e.target.closest('.event-card').getAttribute('missa-id'));
+			sessionStorage.setItem('missaId', e.target.closest('.event-card').getAttribute('missa-id'));
 			window.location.href = '../../../registrarPresenca.html';
 		});
 	});

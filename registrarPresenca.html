@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Presença - SPC</title>
+    <title>SPC - Registrar Presença</title>
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/header.css">
     <link rel="stylesheet" href="styles/toast.css">
@@ -93,8 +93,10 @@
 
     <div id="toast-container"></div>
 
-    <script type="module">
-        import { initPresenca } from './scripts/controllers/presenca/registrar_presenca_controller.js';
+    <script type="module" src="scripts/controllers/presenca/register_presence_controller.js"></script>
+
+    <!-- <script type="module">
+        import { initPresenca } from './scripts/controllers/presenca/registrar_presenca_controller_ia.js';
         window.onload = () => {
             initPresenca();
             if(window.lucide) lucide.createIcons();
@@ -104,6 +106,6 @@
         function toggleMenu() {
             document.getElementById('mainNav').classList.toggle('open');
         }
-    </script>
+    </script> -->
 </body>
 </html>

@@ -70,22 +70,30 @@
         </section>
     </div>
 
-    <!-- MODAL DE CADASTRO -->
+    <!-- MODAL DE CADASTRO E ATUALIZAÇÃO -->
     <div class="modal-overlay" id="missaModal">
         <div class="modal-content">
             <h2 id="modalTitle">Registrar Nova Missa</h2>
             <form id="missaForm">
                 <div class="form-group">
-                    <label for="title">Título da Missa</label>
-                    <input type="text" id="title" placeholder="Ex: Domingo de Ramos" required>
+                    <label for="title">Missa</label>
+                    <select name="title" id="title">
+                        <option value="default">Selecione no Calendário Litúrgico</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="date">Data da Missa</label>
-                    <input type="date" id="date" required>
+                    <input type="date" id="date" class="date-register" required>
                 </div>
                 <div class="form-group">
                     <label for="time">Horário</label>
                     <input type="time" id="time" required>
+                </div>
+                 <div class="form-group">
+                    <label for="time">Localização</label>
+                    <select name="location" id="location">
+                        
+                    </select>
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="btn-cancel" id="btnCancel">Cancelar</button>

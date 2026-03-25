@@ -5,8 +5,13 @@ import { Loading } from "../../utils/loading.js";
 import { loadTemplate } from "../../utils/template_loader.js";
 import { UtilsDate } from "../../utils/utils_date.js";
 import { confirmModal } from "../../utils/confirmation.js";
+import { LiturgicalCalendarService } from "../../services/liturgical_calendar.js";
+import { verifyAuth } from "../../auth/verify_auth.js";
 
-let id = null;
+let global_variables = {
+	id: null,
+	massSelectedId: null,
+};
 
 const dom = {
 	grid: document.getElementById('missasGrid'),
@@ -14,7 +19,29 @@ const dom = {
 	form: document.getElementById('missaForm'),
 	btnOpenModal: document.getElementById('btnOpenModal'),
 	btnCancel: document.getElementById('btnCancel'),
+	selectLiturgicalCalendar: document.querySelector("#title"),
+	selectLocation: document.querySelector("#location"),
 };
+
+document.addEventListener('DOMContentLoaded', async () => {
+	verifyAuth();
+
+	await loadTemplate("../../../templates/missa_manager_template.html");
+	await loadTemplate("../../../templates/loading.html");
+
+	Loading.showLoading();
+
+	await fillInOptionsSelectMasses();
+
+	renderizarMissas().finally(() => Loading.hideLoading());
+});
+
+dom.selectLiturgicalCalendar.addEventListener('change', async (e) => {
+	const value = e.target.value;
+	const massSelected = await LiturgicalCalendarService.findByTitle(value);
+	document.querySelector(".date-register").value = massSelected.date;
+	global_variables.massSelectedId = massSelected.id;
+});
 
 dom.btnOpenModal.addEventListener('click', (e) => {
 	openModal(e);
@@ -30,12 +57,15 @@ dom.form.onsubmit = async (e) => {
 	const dateTime = `${dom.form.querySelector("#date").value}T${dom.form.querySelector("#time").value}`;
 
 	let missa = {
-		id: id,
+		id: global_variables.id,
 		title: dom.form.querySelector("#title").value,
 		dateTime: dateTime,
+		location: dom.selectLocation.value,
+		nameCommunityOrParish: sessionStorage.getItem('nameCommunityOrParish'),
+		massOfLiturgicalCalendarId: global_variables.massSelectedId,
 	};
 
-	if (id !== null) {	
+	if (global_variables.id !== null) {	
 		await MissaService.updateMissa(missa)
 			.then(() => { Toast.showToast({ message: 'Atualizado com sucesso', type: 'success' }) })
 			.catch(() => { Toast.showToast({ message: 'Erro ao atualizar Missa', type: 'error' }) });
@@ -43,26 +73,31 @@ dom.form.onsubmit = async (e) => {
 	else {
 		await MissaService.createMissa(missa)
 			.then(() => { Toast.showToast({ message: 'Criado com sucesso', type: 'success' }) })
-			.catch(() => { Toast.showToast({ message: 'Erro ao registrar Missa', type: 'error' }) });
+			.catch((e) => console.log(e));
 	}
 
 	renderizarMissas();
 	closeModal();
 };
 
-document.addEventListener('DOMContentLoaded', async () => {
-	await loadTemplate("../../../templates/missa_manager_template.html");
-	await loadTemplate("../../../templates/loading.html");
+async function fillInOptionsSelectMasses() {
+	const datesOfLiturgicalCalendar = await LiturgicalCalendarService.findAll();
 
-	Loading.showLoading();
+	datesOfLiturgicalCalendar.forEach(masse_of_calendar => {
+		dom.selectLiturgicalCalendar.innerHTML += `
+			<option value="${masse_of_calendar.title}">${masse_of_calendar.title}</option>
+		`;
+	});
 
-	renderizarMissas().finally(() => Loading.hideLoading());
-});
+	sessionStorage.getItem('nameCommunityOrParish') === 'SAO_SEBASTIAO'
+		? dom.selectLocation.innerHTML = `<option value="MATRIZ">Matriz</option>`
+		: dom.selectLocation.innerHTML = `<option value="CAPELA_DO_DIVINO">Capela do Divino</option>`;
+}
 
 async function renderizarMissas() {
-	const missas = await MissaService.findAllMissa()
+	const missas = await MissaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'))
 		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) });
-
+		
 	rendererMissasManager(missas, dom.grid);
 	initializeButtons();
 }
@@ -88,7 +123,7 @@ async function remove(e) {
 		await MissaService.deleteMissa(missaId)
 			.then(() => {
 				renderizarMissas();
-				Toast.showToast({ message: 'Missa removida com sucesso', type: 'sucecss' });
+				Toast.showToast({ message: 'Missa removida com sucesso', type: 'success' });
 			})
 			.catch((e) => {
 				Toast.showToast({ message: 'Não foi possível remover Missa', type: 'error' }) ;
@@ -96,18 +131,9 @@ async function remove(e) {
 	}
 }
 
-async function getData(e) {
-	id = Number.parseInt(e.target.closest('.missa-card').dataset.id);
-	const missa = await MissaService.findByIdMissa(id);
-
-	dom.form.querySelector("#title").value = missa.title;
-	dom.form.querySelector("#date").value = UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime);
-	dom.form.querySelector("#time").value = UtilsDate.formatDateTimeThisMissaForTime(missa.dateTime);
-}
-
 async function openModal(e) {
 	if (e.target.closest('.missa-card') === null) {
-		id = null;
+		global_variables.id = null;
 	} else {
 		getData(e);
 	}
@@ -116,4 +142,15 @@ async function openModal(e) {
 
 function closeModal() {
 	dom.modal.style.display = 'none';
+}
+
+async function getData(e) {
+	global_variables.id = Number.parseInt(e.target.closest('.missa-card').dataset.id);
+	global_variables.massSelectedId = Number.parseInt(e.target.closest('.missa-card').dataset.liturgicalCalendarId);
+
+	const missa = await MissaService.findByIdMissa(global_variables.id);
+
+	dom.form.querySelector("#title").value = missa.title;
+	dom.form.querySelector("#date").value = UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime);
+	dom.form.querySelector("#time").value = UtilsDate.formatDateTimeThisMissaForTime(missa.dateTime);
 }

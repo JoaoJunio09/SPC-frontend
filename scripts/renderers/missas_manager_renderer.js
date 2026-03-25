@@ -14,6 +14,7 @@ export function rendererMissasManager(missas, grid) {
 		}
 
 		missa_card.dataset.id = missa.id;
+		missa_card.dataset.liturgicalCalendarId = missa.massOfLiturgicalCalendarId;
 
 		const title = missa_card.querySelector("#title");
 		const date = missa_card.querySelector("#date");
@@ -27,5 +28,6 @@ export function rendererMissasManager(missas, grid) {
 function formatDateTime(dateTime) {
 	const day = UtilsDate.formatDateTimeThisMissaForDate(dateTime).slice(8, 10);
 	const month = UtilsDate.returnsMonthAsAString(UtilsDate.formatDateTimeThisMissaForDate(dateTime).slice(5, 7));
-	return `Dia ${day}, de ${month}`;
+	const time = UtilsDate.formatDateTimeThisMissaForTime(dateTime);
+	return `Dia ${day} de ${month}, às ${time}`;
 }

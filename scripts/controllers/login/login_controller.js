@@ -22,7 +22,7 @@ async function login() {
 		nameOfTheCommunityOrParish = "DIVINO_ESPIRITO_SANTO";
 	}
 
-	localStorage.setItem('nameCommunityOrParish', nameOfTheCommunityOrParish);
+	sessionStorage.setItem('nameCommunityOrParish', nameOfTheCommunityOrParish);
 
 	if (nameOfTheCommunityOrParish !== "") location.href = 'index.html';
 }
