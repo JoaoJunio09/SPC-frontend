@@ -3,8 +3,9 @@ const BASE_URL_DEV = "http://localhost:8080";
 
 const FIND_ALL_MISSAS_URL = `${BASE_URL_DEV}/api/missas/v1`;
 const FIND_BY_ID_MISSA_URL = `${BASE_URL_DEV}/api/missas/v1/{missaId}`;
+const FIND_BY_NAME_COMMUNITY_OR_PARISH_MISSAS_URL = `${BASE_URL_DEV}/api/missas/v1/find-by?communityOrParish={nameCmmunityOrParish}`;
 const FIND_BY_OCCURRED_TO_THIS_TODAY_MISSAS_URL = `${BASE_URL_DEV}/api/missas/v1/findByOccurredToThisToday`;
-const FIND_ALL_MASSES_DATES_URL = `${BASE_URL_DEV}/api/missas/v1/findAllMassesDates`;
+const FIND_ALL_MASSES_DATES_BY_COMMUNITY_OR_PARISH_URL = `${BASE_URL_DEV}/api/missas/v1/find-by/masses-dates?communityOrParish={nameCmmunityOrParish}`;
 const CREATE_MISSA_URL = `${BASE_URL_DEV}/api/missas/v1`;
 const UPDATE_MISSA_URL = `${BASE_URL_DEV}/api/missas/v1`;
 const DELETE_MISSA_URL = `${BASE_URL_DEV}/api/missas/v1/{missaId}`;
@@ -40,6 +41,22 @@ async function findById(missaId) {
 	return await response.json();
 }
 
+async function findByNameCommunityOrParish(nameCmmunityOrParish) {
+	const url = FIND_BY_NAME_COMMUNITY_OR_PARISH_MISSAS_URL.replace('{nameCmmunityOrParish}', nameCmmunityOrParish);
+	const response = await fetch(url, {
+		'method': 'GET',
+		'headers': {
+			'Accept': 'application/json'
+		}
+	});
+
+	if (!response.ok) {
+		throw new Error("Erro ao obter missas [findByNameCommunityOrParish]");
+	}
+
+	return await response.json();
+}
+
 async function findByOccurredToThisToday() {
 	const response = await fetch(FIND_BY_OCCURRED_TO_THIS_TODAY_MISSAS_URL, {
 		'method': 'GET',
@@ -55,8 +72,9 @@ async function findByOccurredToThisToday() {
 	return await response.json();
 }
 
-async function findAllMassesDates() {
-	const response = await fetch(FIND_ALL_MASSES_DATES_URL, {
+async function findAllMassesDatesByCommunityOrParish(nameCmmunityOrParish) {
+	const url = FIND_ALL_MASSES_DATES_BY_COMMUNITY_OR_PARISH_URL.replace('{nameCmmunityOrParish}', nameCmmunityOrParish);
+	const response = await fetch(url, {
 		'method': 'GET',
 		'headers': {
 			'Accept': 'application/json'
@@ -64,7 +82,7 @@ async function findAllMassesDates() {
 	});
 
 	if (!response.ok) {
-		throw new Error("Erro ao obter missas [findAllMassesDates]");
+		throw new Error("Erro ao obter missas [findAllMassesDatesByCommunityOrParish]");
 	}
 
 	return await response.json();
@@ -121,8 +139,9 @@ async function deleteMissa(missaId) {
 export const MissaService = {
 	findAllMissa: findAll,
 	findByIdMissa: findById,
+	findByNameCommunityOrParish: findByNameCommunityOrParish,
 	findByOccurredToThisTodayMissa: findByOccurredToThisToday,
-	findAllMassesDates: findAllMassesDates,
+	findAllMassesDatesByCommunityOrParish: findAllMassesDatesByCommunityOrParish,
 	createMissa: create,
 	updateMissa: update,
 	deleteMissa: deleteMissa

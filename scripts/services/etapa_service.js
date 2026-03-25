@@ -3,6 +3,7 @@ const BASE_URL_DEV = "http://localhost:8080";
 
 const FIND_ALL_ETAPAS_URL = `${BASE_URL_DEV}/api/etapas/v1`;
 const FIND_BY_ID_ETAPA_URL = `${BASE_URL_DEV}/api/etapas/v1/{etapaId}`;
+const FIND_BY_NAME_COMMUNITY_OR_PARISH_ETAPA_URL = `${BASE_URL_DEV}/api/etapas/v1/find-by?communityOrParish={nameCmmunityOrParish}`;
 const CREATE_ETAPA_URL = `${BASE_URL_DEV}/api/etapas/v1`;
 const UPDATE_ETAPA_URL = `${BASE_URL_DEV}/api/etapas/v1`;
 const DELETE_ETAPA_URL = `${BASE_URL_DEV}/api/etapas/v1/{etapaId}`;
@@ -33,6 +34,22 @@ async function findById(etapaId) {
 
 	if (!response.ok) {
 		throw new Error("Erro ao obter etapa [findById]");
+	}
+
+	return await response.json();
+}
+
+async function findByNameCommunityOrParish(nameCmmunityOrParish) {
+	const url = FIND_BY_NAME_COMMUNITY_OR_PARISH_ETAPA_URL.replace('{nameCmmunityOrParish}', nameCmmunityOrParish);
+	const response = await fetch(url, {
+		'method': 'GET',
+		'headers': {
+			'Accept': 'application/json'
+		}
+	});
+
+	if (!response.ok) {
+		throw new Error("Erro ao obter etapas [findByNameCommunityOrParish]");
 	}
 
 	return await response.json();
@@ -89,6 +106,7 @@ async function deleteEtapa(etapaId) {
 export const EtapaService = {
 	findAllEtapa: findAll,
 	findByIdEtapa: findById,
+	findByNameCommunityOrParish: findByNameCommunityOrParish,
 	createEtapa: create,
 	updateEtapa: update,
 	deleteEtapa: deleteEtapa

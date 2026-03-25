@@ -6,12 +6,23 @@ export function rendererCardSteps(steps, listSteps) {
 	steps.forEach(step => {
 		const frag = template.content.cloneNode(true);
 		const card = frag.querySelector(".card");
+		const container = card.querySelector(".catechists-container");
 
-		card.setAttribute('catechist-firstName', step.catequista.firstName);
-		card.setAttribute('step', step.etapa);
+		if (step.catequistas.length > 0) {
+			const catechists = step.catequistas.filter(catechist => catechist.firstName);
+			card.setAttribute('data-catechists', JSON.stringify(catechists));
+
+			catechists.forEach(catechist => {
+				const strong = document.createElement('strong');
+				strong.textContent =  `${catechist.firstName} ${catechist.lastName}`;
+				
+				container.appendChild(strong);
+				container.appendChild(document.createElement('br'));
+			});
+		}
 		
+		card.setAttribute('data-step', step.etapa);
 		card.querySelector("#step").textContent = formatStep(step.etapa);
-		card.querySelector("#firstNameCatechist").textContent = step.catequista.firstName;
 
 		listSteps.appendChild(card);
 	});

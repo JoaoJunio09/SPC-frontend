@@ -123,7 +123,7 @@ async function deleteCatequista(catequistaId) {
 export const CatequistaService = {
 	findAllCatequistas: findAll,
 	findByNameCommunityOrParish: findByNameCommunityOrParish,
-	findByIdCatequista: find,
+	findByIdCatequista: findById,
 	findByEtapaIdCatequista: findByEtapaId,
 	createCatequista: create,
 	updateCatequista: update,

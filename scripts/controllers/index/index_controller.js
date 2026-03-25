@@ -82,7 +82,7 @@ function renderWeekDays(missas) {
 }
 
 export async function carregarEvento(data) {
-	const missas = await MissaService.findAllMissa()
+	const missas = await MissaService.findByNameCommunityOrParish(localStorage.getItem('nameCommunityOrParish'))
 		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
 		.finally(() => { Loading.hideLoading() });
 
@@ -90,7 +90,6 @@ export async function carregarEvento(data) {
 	let thereIsMassToday = false;
 	
 	missas.forEach(missa => {
-		
 		if (UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime) === data) {
 			if (document.querySelector('.no-event-message')) {
 				document.querySelector('.no-event-message').style.display = 'none';
@@ -169,10 +168,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	Loading.showLoading();
 
-	const missas = await MissaService.findAllMissa()
+	const missas = await MissaService.findByNameCommunityOrParish(localStorage.getItem('nameCommunityOrParish'))
 		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
 		.finally(() => { Loading.hideLoading() });
 
+	console.log(missas);
 	renderWeekDays(missas);
 
 	const active = document.querySelector(".day-card.active-day");

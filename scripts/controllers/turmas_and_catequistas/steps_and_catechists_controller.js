@@ -76,8 +76,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	try {
 		const [catechists, steps] = await Promise.all([
-			CatequistaService.findAllCatequistas(),
-			EtapaService.findAllEtapa()
+			CatequistaService.findByNameCommunityOrParish(localStorage.getItem('nameCommunityOrParish')),
+			EtapaService.findByNameCommunityOrParish(localStorage.getItem('nameCommunityOrParish'))
 		]);
 
 		lists.catechists = catechists;
@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		loadCatechistsAndSteps(catechists, steps);
 	}
 	catch (e) {
+		console.log(e);
 		Toast.showToast({ 
 			message: 'Não foi possível carregar os Catequistas e as Turmas', 
 			type: 'error' 
@@ -131,10 +132,10 @@ function initializeButtonsSteps() {
 }
 
 async function viewCatechumens(e) {
-	const catechistName = e.target.closest('.card').getAttribute('catechist-firstName');
-	const step = e.target.closest('.card').getAttribute('step');
+	const catechists= JSON.parse(e.target.closest('.card').getAttribute('data-catechists'));
+	const step = e.target.closest('.card').getAttribute('data-step');
 
-	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechistName, step);
+	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechists[0].firstName, step);
 
 	rendererCardViewCatechumens(catechumens, step);
 }

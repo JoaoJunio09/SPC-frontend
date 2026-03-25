@@ -3,6 +3,7 @@ const BASE_URL_DEV = "http://localhost:8080";
 
 const FIND_ALL_CATEQUIZANDOS_URL = `${BASE_URL_DEV}/api/catequizandos/v1`;
 const FIND_BY_ID_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/{catequizandoId}`;
+const FIND_BY_NAME_COMMUNITY_OR_PARISH_CATECHUMENS_URL = `${BASE_URL_DEV}/api/catequizandos/v1/find-by?communityOrParish={nameCmmunityOrParish}`;
 const FIND_BY_ETAPA_ID_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/findByEtapaId/{etapaId}`;
 const SEARCH_BY_FULLNAME_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/search-by?firstName={firstName}`;
 const FILTER_CATECHUMENS_BY_CATECHIST_NAME_AND_STEP_URL = `${BASE_URL_DEV}/api/catequizandos/v1/filter?catechistName={catechistName}&step={step}`;
@@ -36,6 +37,22 @@ async function findById(catequizandoId) {
 
 	if (!response.ok) {
 		throw new Error("Erro ao obter catequizando [findById]");
+	}
+
+	return await response.json();
+}
+
+async function findByNameCommunityOrParish(nameCmmunityOrParish) {
+	const url = FIND_BY_NAME_COMMUNITY_OR_PARISH_CATECHUMENS_URL.replace('{nameCmmunityOrParish}', nameCmmunityOrParish);
+	const response = await fetch(url, {
+		'method': 'GET',
+		'headers': {
+			'Accept': 'application/json'
+		}
+	});
+
+	if (!response.ok) {
+		throw new Error("Erro ao obter catequizandos [findByNameCommunityOrParish]");
 	}
 
 	return await response.json();
@@ -141,6 +158,7 @@ async function deleteCatequizando(catequizandoId) {
 export const CatequizandoService = {
 	findAllCatequizando: findAll,
 	findByIdCatequizando: findById,
+	findByNameCommunityOrParish: findByNameCommunityOrParish,
 	findByEtapaIdCatequizando: findByEtapaId,
 	searchByFirstNameCatequizando: searchByFirstName,
 	filterCatechumensByCatechistNameAndStep: filterByCatechistNameAndStep,
