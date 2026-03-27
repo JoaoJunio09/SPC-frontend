@@ -27,7 +27,7 @@
                     <p>Presença Catequese</p>
                 </div>
             </div>
-            <button class="menu-toggle" id="btnMenu" onclick="toggleMenu()">
+            <button class="menu-toggle" id="btnMenu">
                 ☰ MENU
             </button>
             <nav class="main-nav" id="mainNav">
@@ -58,12 +58,12 @@
         <!-- Accordion de Turmas -->
         <section class="accordion-section">
             <div class="accordion-item">
-                <button class="accordion-header" onclick="toggleAccordion()">
+                <button class="accordion-header" id="toggle-accordion">
                     <span>Turmas Disponíveis</span>
                     <i data-lucide="chevron-down" id="accordion-icon"></i>
                 </button>
                 <div class="accordion-content" id="accordionContent">
-                    <div class="turmas-grid" id="listaTurmas">
+                    <div class="turmas-grid" id="listSteps">
                         <!-- Turmas injetadas via controller -->
                     </div>
                 </div>
@@ -94,6 +94,11 @@
     <div id="toast-container"></div>
 
     <script type="module" src="scripts/controllers/presenca/register_presence_controller.js"></script>
+    <script type="module" src="scripts/controllers/presenca/events_dom.js"></script>
+    <script type="module" src="scripts/utils/header.js"></script>
+    <script>
+        if(window.lucide) lucide.createIcons();
+    </script>
 
     <!-- <script type="module">
         import { initPresenca } from './scripts/controllers/presenca/registrar_presenca_controller_ia.js';

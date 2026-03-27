@@ -7,7 +7,7 @@ let currentDate = new Date();
 let masses_dates = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
-	masses_dates = await MissaService.findAllMassesDatesByCommunityOrParish(localStorage.getItem('nameCommunityOrParish'));
+	masses_dates = await MissaService.findAllMassesDatesByCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
 });
 
 function renderMonthDays() {
