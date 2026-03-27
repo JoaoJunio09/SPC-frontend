@@ -10,16 +10,15 @@ async function login() {
 	const accessCode = document.querySelector("#access-code").value;
 	let nameOfTheCommunityOrParish = "";
 
-	if (accessCode < 0 || accessCode > 1) {
-		Toast.showToast({ message: 'Digite um código válido', type: 'error' });
-	};
-
 	if (accessCode === 0){
 		nameOfTheCommunityOrParish = "SAO_SEBASTIAO";
-	} 
-	
-	if (accessCode === 1) {
+	}
+	else if (accessCode === 1) {
 		nameOfTheCommunityOrParish = "DIVINO_ESPIRITO_SANTO";
+	}
+	else {
+		Toast.showToast({ message: 'Digite um código válido', type: 'error' });
+		return;
 	}
 
 	sessionStorage.setItem('nameCommunityOrParish', nameOfTheCommunityOrParish);
