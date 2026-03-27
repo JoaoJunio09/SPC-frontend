@@ -1,8 +1,8 @@
 const BASE_URL_PROD = "https://spc-springboot-production.up.railway.app";
 const BASE_URL_DEV = "http://localhost:8080";
 
-const API_BASE_URL_FIND_ALL = `${BASE_URL_DEV}/api/liturgicalCalendar/v1`;
-const API_BASE_URL_FIND_DATE_BY_TITLE = `${BASE_URL_DEV}/api/liturgicalCalendar/v1/find-by?title={title}`;
+const API_BASE_URL_FIND_ALL = `${BASE_URL_PROD}/api/liturgicalCalendar/v1`;
+const API_BASE_URL_FIND_DATE_BY_TITLE = `${BASE_URL_PROD}/api/liturgicalCalendar/v1/find-by?title={title}`;
 
 async function findAll() {
 	const response = await fetch(API_BASE_URL_FIND_ALL, {
