@@ -14,11 +14,11 @@ async function login() {
 		Toast.showToast({ message: 'Digite um código válido', type: 'error' });
 	};
 
-	if (accessCode == 0){
+	if (accessCode === 0){
 		nameOfTheCommunityOrParish = "SAO_SEBASTIAO";
 	} 
 	
-	if (accessCode == 1) {
+	if (accessCode === 1) {
 		nameOfTheCommunityOrParish = "DIVINO_ESPIRITO_SANTO";
 	}
 
