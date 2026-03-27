@@ -10,10 +10,10 @@ async function login() {
 	const accessCode = document.querySelector("#access-code").value;
 	let nameOfTheCommunityOrParish = "";
 
-	if (accessCode === 0){
+	if (accessCode == 0){
 		nameOfTheCommunityOrParish = "SAO_SEBASTIAO";
 	}
-	else if (accessCode === 1) {
+	else if (accessCode == 1) {
 		nameOfTheCommunityOrParish = "DIVINO_ESPIRITO_SANTO";
 	}
 	else {
