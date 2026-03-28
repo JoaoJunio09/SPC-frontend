@@ -51,7 +51,7 @@
         <section class="search-section">
             <div class="search-container">
                 <i data-lucide="search" class="search-icon"></i>
-                <input type="text" id="inputBusca" placeholder="Pesquisar o nome do catequizando..." oninput="filtrarCatequizando()">
+                <input type="text" id="inputSearch" placeholder="Pesquisar o nome do catequizando...">
             </div>
         </section>
 
@@ -74,16 +74,16 @@
         <section class="attendance-section" id="attendanceSection" style="display: none;">
             <div class="section-header">
                 <h3 id="tituloListagem">Catequizandos</h3>
-                <button class="btn-clear" onclick="resetarPagina()">Limpar Seleção</button>
+                <button class="btn-clear" id="reset">Limpar Seleção</button>
             </div>
             
-            <div class="catequizandos-list" id="listaCatequizandos">
+            <div class="catequizandos-list" id="listCatechumens">
                 <!-- Cards injetados via controller -->
             </div>
 
             <!-- Botão de Revisão (Redireciona para confirmação) -->
-            <div class="actions-footer">
-                <button class="btn-confirm-final" onclick="irParaRevisao()">
+            <div class="actions-footer" id="actions-footer">
+                <button class="btn-confirm-final">
                     <i data-lucide="eye"></i>
                     Revisar (<span id="countSelected">0</span>)
                 </button>
@@ -93,24 +93,11 @@
 
     <div id="toast-container"></div>
 
-    <script type="module" src="scripts/controllers/presenca/register_presence_controller.js"></script>
-    <script type="module" src="scripts/controllers/presenca/events_dom.js"></script>
+    <script type="module" src="scripts/controllers/presenca/register/register_presence_controller.js"></script>
+    <script type="module" src="scripts/controllers/presenca/register/events_dom.js"></script>
     <script type="module" src="scripts/utils/header.js"></script>
     <script>
         if(window.lucide) lucide.createIcons();
     </script>
-
-    <!-- <script type="module">
-        import { initPresenca } from './scripts/controllers/presenca/registrar_presenca_controller_ia.js';
-        window.onload = () => {
-            initPresenca();
-            if(window.lucide) lucide.createIcons();
-        };
-    </script>
-    <script>
-        function toggleMenu() {
-            document.getElementById('mainNav').classList.toggle('open');
-        }
-    </script> -->
 </body>
 </html>

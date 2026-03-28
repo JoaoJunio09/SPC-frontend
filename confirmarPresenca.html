@@ -47,7 +47,7 @@
         </section>
 
         <section class="review-actions">
-            <button class="btn-back" onclick="window.location.href='registrarPresenca.html'">
+            <button class="btn-back">
                 <i data-lucide="arrow-left"></i> Voltar e Alterar
             </button>
             <button class="btn-confirm-submit" id="btnSubmit">
@@ -67,12 +67,11 @@
         </div>
     </template>
 
+    <script type="module" src="scripts/controllers/presenca/confirm/confirm_presence_controller.js"></script>
+    <script type="module" src="scripts/controllers/presenca/confirm/events_dom.js"></script>
+
     <script type="module">
-        import { initConfirmacao } from './scripts/controllers/presenca/confirmar_presenca_controller.js';
-        window.onload = () => {
-            initConfirmacao();
-            if(window.lucide) lucide.createIcons();
-        };
+      if(window.lucide) lucide.createIcons();
     </script>
 </body>
 </html>

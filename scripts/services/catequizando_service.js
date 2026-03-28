@@ -5,7 +5,7 @@ const FIND_ALL_CATEQUIZANDOS_URL = `${BASE_URL_DEV}/api/catequizandos/v1`;
 const FIND_BY_ID_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/{catequizandoId}`;
 const FIND_BY_NAME_COMMUNITY_OR_PARISH_CATECHUMENS_URL = `${BASE_URL_DEV}/api/catequizandos/v1/find-by/communityOrParish?name={nameCmmunityOrParish}`;
 const FIND_BY_ETAPA_ID_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/findByEtapaId/{etapaId}`;
-const FIND_BY_ETAPA_ID_AND_NAME_COMMUNITY_OR_PARISH_URL = `${BASE_URL_DEV}/api/catequizandos/v1/find-by/etapaIdAndCommunityOrParish?etapaId={etapaId}&communityOrParish={nameCommunityOrParish}`;
+const FIND_BY_ETAPA_ID_AND_NAME_COMMUNITY_OR_PARISH_URL = `${BASE_URL_DEV}/api/catequizandos/v1/find-by/etapaId?id={id}`;
 const SEARCH_BY_FULLNAME_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/search-by?firstName={firstName}`;
 const FILTER_CATECHUMENS_BY_CATECHIST_NAME_AND_STEP_URL = `${BASE_URL_DEV}/api/catequizandos/v1/filter?catechistName={catechistName}&step={step}`;
 const CREATE_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1`;
@@ -43,9 +43,8 @@ async function findById(catequizandoId) {
 	return await response.json();
 }
 
-async function findByEtapaIdAndNameCommunityOrParish(etapaId, nameCommunityOrParish) {
-	const urlEtapaId = FIND_BY_ETAPA_ID_AND_NAME_COMMUNITY_OR_PARISH_URL.replace('{etapaId}', etapaId);
-	const url = urlEtapaId.replace('{nameCommunityOrParish}', nameCommunityOrParish);
+async function findByStepId(etapaId) {
+	const url = FIND_BY_ETAPA_ID_AND_NAME_COMMUNITY_OR_PARISH_URL.replace('{id}', etapaId);
 	const response = await fetch(url, {
 		'method': 'GET',
 		'headers': {
@@ -176,7 +175,7 @@ async function deleteCatequizando(catequizandoId) {
 export const CatequizandoService = {
 	findAllCatequizando: findAll,
 	findByIdCatequizando: findById,
-	findByEtapaIdAndNameCommunityOrParish: findByEtapaIdAndNameCommunityOrParish,
+	findByStepId: findByStepId,
 	findByNameCommunityOrParish: findByNameCommunityOrParish,
 	findByEtapaIdCatequizando: findByEtapaId,
 	searchByFirstNameCatequizando: searchByFirstName,

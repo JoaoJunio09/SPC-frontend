@@ -1,4 +1,4 @@
-import { formatStep } from "../../utils/format_step.js";
+import { formatStep } from "../../../utils/format_step.js";
 
 export function rendererCardSteps(steps, container) {
 	const template = document.getElementById('card-step-template');
