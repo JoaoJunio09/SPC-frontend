@@ -138,9 +138,11 @@ async function viewCatechumens(e) {
 	const catechists= JSON.parse(e.target.closest('.card').getAttribute('data-catechists'));
 	const step = e.target.closest('.card').getAttribute('data-step');
 
+	Loading.showLoading();
 	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechists[0].firstName, step);
 
 	rendererCardViewCatechumens(catechumens, step);
+	Loading.hideLoading();
 }
 
 async function editCatechist() {

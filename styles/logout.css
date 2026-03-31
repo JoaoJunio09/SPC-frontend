@@ -1,0 +1,72 @@
+:root {
+	--primary: #F59E0B;
+	--primary-dark: #D97706;
+	--secondary: #EA580C;
+	--bg-site: #F8FAFC;
+	--text-main: #1E293B;
+	--text-muted: #64748B;
+	--white: #FFFFFF;
+	--shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	
+	--danger: #EF4444;
+	--danger-dark: #DC2626;
+}
+
+.logout-container {
+	position: fixed;
+	top: 16px;
+	right: 16px;
+	z-index: 9999; /* Garante que fique acima de outros elementos */
+}
+
+.btn-logout {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background-color: var(--danger);
+	color: var(--white);
+	border: none;
+	padding: 10px 18px;
+	border-radius: 10px;
+	font-family: 'Inter', sans-serif;
+	font-size: 1rem;
+	font-weight: 700;
+	cursor: pointer;
+	box-shadow: var(--shadow);
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	text-decoration: none; /* Caso seja usado como <a> */
+	outline: none;
+}
+
+/* Interações */
+.btn-logout:hover {
+	background-color: var(--danger-dark);
+	transform: translateY(-2px);
+	box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3);
+}
+
+.btn-logout:active {
+	transform: translateY(0);
+	filter: brightness(0.9);
+}
+
+.btn-logout i, 
+.btn-logout svg {
+	width: 18px;
+	height: 18px;
+}
+
+/* --- RESPONSIVIDADE (MOBILE) --- */
+@media (max-width: 480px) {
+	.logout-container {
+			top: 12px;
+			right: 12px;
+	}
+	
+	.btn-logout {
+			padding: 10px 14px;
+			font-size: 0.9rem;
+	}
+
+	/* Opcional: Esconder texto em telas muito pequenas se necessário */
+	/* .btn-logout span { display: none; } */

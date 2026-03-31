@@ -53,7 +53,14 @@ dom.filter_step_and_catechist.addEventListener('input', async (e) => {
 
 	filter_variables.catechist_value = catechist_value;
 	filter_variables.step_value = step_value;
-	await filter();
+
+	Loading.showLoading();
+	await filter()
+		.then(() => Loading.hideLoading())
+		.catch(err => showToast({
+			message: 'Erro ao filtrar catequizandos',
+			type: 'error'
+		}));
 });
 
 async function filter() {
