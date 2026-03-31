@@ -1,13 +1,13 @@
 const BASE_URL_PROD = "https://spc-springboot-production.up.railway.app";
 const BASE_URL_DEV = "http://localhost:8080";
 
-const FIND_ALL_CATEQUISTAS_URL = `${BASE_URL_DEV}/api/catequistas/v1`;
-const FIND_BY_NAME_COMMUNITY_OR_PARISH_CATEQUISTAS_URL = `${BASE_URL_DEV}/api/catequistas/v1/find-by?communityOrParish={nameCmmunityOrParish}`;
-const FIND_BY_ID_CATEQUISTA_URL = `${BASE_URL_DEV}/api/catequistas/v1/{catequistaId}`;
-const FIND_BY_ETAPA_ID_CATEQUISTA_URL = `${BASE_URL_DEV}/api/catequistas/v1/findByEtapaId/{etapaId}`;
-const CREATE_CATEQUISTA_URL = `${BASE_URL_DEV}/api/catequistas/v1`;
-const UPDATE_CATEQUISTA_URL = `${BASE_URL_DEV}/api/catequistas/v1`;
-const DELETE_CATEQUISTA_URL = `${BASE_URL_DEV}/api/catequistas/v1/{catequistaId}`;
+const FIND_ALL_CATEQUISTAS_URL = `${BASE_URL_PROD}/api/catequistas/v1`;
+const FIND_BY_NAME_COMMUNITY_OR_PARISH_CATEQUISTAS_URL = `${BASE_URL_PROD}/api/catequistas/v1/find-by?communityOrParish={nameCmmunityOrParish}`;
+const FIND_BY_ID_CATEQUISTA_URL = `${BASE_URL_PROD}/api/catequistas/v1/{catequistaId}`;
+const FIND_BY_ETAPA_ID_CATEQUISTA_URL = `${BASE_URL_PROD}/api/catequistas/v1/findByEtapaId/{etapaId}`;
+const CREATE_CATEQUISTA_URL = `${BASE_URL_PROD}/api/catequistas/v1`;
+const UPDATE_CATEQUISTA_URL = `${BASE_URL_PROD}/api/catequistas/v1`;
+const DELETE_CATEQUISTA_URL = `${BASE_URL_PROD}/api/catequistas/v1/{catequistaId}`;
 
 async function findAll() {
 	const response = await fetch(FIND_ALL_CATEQUISTAS_URL, {
