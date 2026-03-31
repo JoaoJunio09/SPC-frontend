@@ -136,7 +136,7 @@ export async function carregarEvento(data) {
 				<div>
 					<div class="card-header">
 						<span class="badge">Missa</span>
-						<h2>Missa: ${missa.title}</h2>
+						<h2>${missa.title}</h2>
 					</div>
 					<div class="card-body">
 						<div class="info-item">
@@ -190,6 +190,7 @@ function initializeButtons() {
 	document.querySelectorAll('#btn-register-attendance').forEach(btn => {
 		btn.addEventListener('click', (e) => {
 			sessionStorage.setItem('missaId', e.target.closest('.event-card').getAttribute('missa-id'));
+			sessionStorage.setItem('missaDoCalendarioLiturgico', e.target.closest('.event-card').querySelector('.card-header h2').textContent);
 			window.location.href = '../../../registrarPresenca.html';
 		});
 	});

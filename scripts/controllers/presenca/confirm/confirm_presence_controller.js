@@ -3,8 +3,9 @@ import { rendererCardCatechumensConfirm } from "../../../renderers/presence/conf
 import { loadTemplate } from "../../../utils/template_loader.js";
 import { MessageModal } from '../../../utils/modal_message.js';
 import { PresencaService } from '../../../services/presenca_service.js';
+import { arrays } from '../register/register_presence_controller.js';
 
-const arrays = {
+const arraysConfirm = {
 	catechumensPresent: []
 };
 
@@ -19,27 +20,25 @@ export async function init() {
 }
 
 async function renderCatechumensConfirm() {
-	arrays.catechumensPresent = JSON.parse(sessionStorage.getItem('catechumensPresent'));
+	arraysConfirm.catechumensPresent = JSON.parse(sessionStorage.getItem('catechumensPresent'));
 
-	if (arrays.catechumensPresent.length === 0) {
+	if (arraysConfirm.catechumensPresent.length === 0) {
 		document.getElementById('reviewList').style.display = 'block';
     document.getElementById('emptyState').disabled = true;
     document.getElementById('btnSubmit').style.opacity = '0.5';
 	}
 	else {
-		rendererCardCatechumensConfirm(arrays.catechumensPresent, dom.containerListCatechumens);
+		rendererCardCatechumensConfirm(arraysConfirm.catechumensPresent, dom.containerListCatechumens);
 	}
 }
 
 export async function confirmPresence() {
-	const confirmed = await confirmModal(`Deseja confirmar o registro de presença para os ${arrays.catechumensPresent.length} catequizandos listados?`);
+	const confirmed = await confirmModal(`Deseja confirmar o registro de presença para os ${arraysConfirm.catechumensPresent.length} catequizandos listados?`);
 	if (!confirmed) return;
 
 	try {
 
-		console.log(arrays.catechumensPresent);
-
-		const requests = arrays.catechumensPresent.map(async catechumenPresent => {
+		const requests = arraysConfirm.catechumensPresent.map(async catechumenPresent => {
 			const presence = {
 				catequizandoId: catechumenPresent.id,
 				missaId: sessionStorage.getItem('missaId'),
@@ -59,6 +58,8 @@ export async function confirmPresence() {
 		});
 
 		sessionStorage.removeItem("catechumensPresent");
+		arraysConfirm.catechumensPresent = [];
+		arrays.catechumensWithBlockAbsenceButton = [];
 
 		setTimeout(() => {
 			window.location.href = "index.html";

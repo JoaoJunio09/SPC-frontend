@@ -4,8 +4,10 @@ import { loadTemplate } from "../../../utils/template_loader.js";
 import { Toast } from "../../../utils/toast.js";
 import { EtapaService } from "../../../services/etapa_service.js";
 import { CatequizandoService } from "../../../services/catequizando_service.js";
+import { PresencaService } from "../../../services/presenca_service.js";
+import { MissaService } from "../../../services/missa_service.js";
 
-export const arrays = { catechumens: [], catechumensPresent: [] };
+export const arrays = { catechumens: [], catechumensPresent: [], catechumensWithBlockAbsenceButton: [] };
 
 export const dom = {
 	get containerListStep() 			 {return document.querySelector('#listSteps')},
@@ -29,6 +31,20 @@ export async function init() {
 	}
 }
 
+const checksExistinsPresence = async () => {
+	const massRegisteredLiturgicalCalendar = sessionStorage.getItem('missaDoCalendarioLiturgico');
+	const catechumensAlreadyPresent = await PresencaService.findAllPresenca();
+
+	catechumensAlreadyPresent.forEach(async presence => {
+		const mass = await MissaService.findByIdMissa(presence.missa.id);
+
+		if (mass.title === massRegisteredLiturgicalCalendar) {
+			const catechumen = await CatequizandoService.findByIdCatequizando(presence.catequizando.id);
+			arrays.catechumensWithBlockAbsenceButton.push(catechumen);
+		}
+	});
+}
+
 async function renderSteps() {
 	const steps = await EtapaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
 	rendererCardSteps(steps, dom.containerListStep);
@@ -41,11 +57,13 @@ export async function handleListCatechumens(stepId) {
 	requestAnimationFrame(() => { dom.accordionContent.style.maxHeight = "0px" });
 	
 	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
+	await checksExistinsPresence();
 }
 
 export async function search(value) {
 	arrays.catechumens = await CatequizandoService.searchByFirstNameCatequizando(value);
 	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
+	await checksExistinsPresence();
 }
 
 export function proceedReview() {
@@ -60,10 +78,19 @@ export function proceedReview() {
   window.location.href = 'confirmarPresenca.html';
 }
 
-export function markPresence(catechumen) { 
-	arrays.catechumensPresent.push(JSON.parse(catechumen));
-	sessionStorage.setItem('catechumensPresent', arrays.catechumensPresent);
-	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
+export function markPresence(catechumenJSON) {
+	const catechumen = JSON.parse(catechumenJSON);
+	const isPresent = arrays.catechumensPresent.some(catechumenPresent => catechumenPresent.id === catechumen.id);
+
+	if (isPresent) {
+		return false;
+	}
+	else {
+		arrays.catechumensPresent.push(catechumen);
+		sessionStorage.setItem('catechumensPresent', arrays.catechumensPresent);
+		rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
+		return true;
+	}
 }
 
 export function markAbsence(catechumenJSON) {
@@ -73,4 +100,5 @@ export function markAbsence(catechumenJSON) {
 	);
 	sessionStorage.setItem('catechumensPresent', arrays.catechumensPresent);
 	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
+	return true;
 }

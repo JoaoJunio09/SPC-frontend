@@ -22,13 +22,8 @@ export function rendererCardCatechumens(catechumens, container) {
 			}
 		}
 
-		const isPresent = arrays.catechumensPresent.some(catechumenPresent => catechumenPresent.id === catechumen.id);
-
-		if (isPresent) {
-			card.querySelector(".presente").classList.add('active');
-		} else {
-			card.querySelector(".ausente").classList.add('active');
-		}
+		isPresent(arrays.catechumensPresent, card, catechumen);
+		blocksAbsenceButton(arrays.catechumensWithBlockAbsenceButton, card, catechumen);
 
 		card.querySelector("#catechumen-name").textContent = catechumen.firstName+" "+catechumen.lastName;
 		card.querySelector("#step-and-catechist-name").innerHTML = stepAndCatechistName;
@@ -37,4 +32,22 @@ export function rendererCardCatechumens(catechumens, container) {
 
 		container.appendChild(card)
 	});
+}
+
+function isPresent(catechumensPresent, card, catechumen) {
+	const isPresent = catechumensPresent.some(catechumenPresent => catechumenPresent.id === catechumen.id);
+
+	isPresent
+		? card.querySelector(".presente").classList.add('active') 
+		: card.querySelector(".ausente").classList.add('active');
+}
+
+function blocksAbsenceButton(catechumensAlreadyPresent, card, catechumen) {
+	const isBlock = catechumensAlreadyPresent.some(catechumenPresent => catechumenPresent.id === catechumen.id);
+
+	if (isBlock) {
+		card.querySelector(".presente").classList.add('active');
+		card.querySelector(".btn-mark-absence").disabled = true;
+		card.querySelector(".btn-mark-presence").disabled = true;
+	}
 }

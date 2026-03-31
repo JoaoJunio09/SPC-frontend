@@ -1,16 +1,54 @@
 import { MissaService } from '../../services/missa_service.js';
 import { PresencaService } from '../../services/presenca_service.js';
+import { LiturgicalCalendarService } from '../../services/liturgical_calendar.js';
 
 export async function proccessTheFrequencyOfCatechumens(catechumen) {
-	const masses = await MissaService.findAllMissa();
-	const massesToThisToday = await MissaService.findByOccurredToThisTodayMissa();
+	
+	const totalMasses = await getTotalMasses();
+	const totalMassesToThisToday = await getMassesToThisToday();
 	const presencesOfCatechumen = await PresencaService.findByCatechumenIdPresenca(catechumen.id);
 
-	const totalMasses = masses.length;
-	const totalMassesToThisToday = massesToThisToday.length;
 	const attendanceAtMasses = presencesOfCatechumen.length;
 
 	return calculateFrequency(totalMasses, totalMassesToThisToday, attendanceAtMasses);
+}
+
+async function getTotalMasses() {
+	const masses = await MissaService.findAllMissa();
+	const totalDatesOfLiturgicalCalendar = await LiturgicalCalendarService.findAll();
+
+	let counterMass = [];
+
+	masses.forEach(mass => {
+		totalDatesOfLiturgicalCalendar.forEach(liturgicalCalendar => {
+			if (liturgicalCalendar.id === mass.massOfLiturgicalCalendarId) {
+				if (!counterMass.includes(liturgicalCalendar.id)) {
+					counterMass.push(liturgicalCalendar.id);
+				}
+			}
+		})
+	});
+
+	return counterMass.length;
+}
+
+async function getMassesToThisToday() {
+	const massesToThisToday = await MissaService.findByOccurredToThisTodayMissa();
+	const totalDatesOfLiturgicalCalendar = await LiturgicalCalendarService.findAll();
+
+	let counterMass = [];
+
+	massesToThisToday.forEach(mass => {
+		totalDatesOfLiturgicalCalendar.forEach(liturgicalCalendar => {
+			if (liturgicalCalendar.id === mass.massOfLiturgicalCalendarId) {
+				if (!counterMass.includes(liturgicalCalendar.id)) {
+					counterMass.push(liturgicalCalendar.id);
+				}
+			}
+		})
+	});
+
+	return counterMass.length;
 }
 
 function calculateFrequency(totalMasses, totalMassesToThisToday, attendanceAtMasses) {

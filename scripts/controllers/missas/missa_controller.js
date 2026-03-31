@@ -103,17 +103,9 @@ async function renderizarMissas() {
 }
 
 function initializeButtons() {
-	document.querySelectorAll(".btn-edit").forEach(btn => {
-		btn.addEventListener('click', (e) => { 
-			openModal(e);
-		});
-	});
+	document.querySelectorAll(".btn-edit").forEach(btn =>	btn.addEventListener('click', (e) => {openModal(e)}));
 
-	document.querySelectorAll(".btn-remove").forEach(btn => {
-		btn.addEventListener('click', async (e) => { 
-			await remove(e);
-		});
-	});
+	document.querySelectorAll(".btn-remove").forEach(btn =>  btn.addEventListener('click', async (e) => {await remove(e)}));
 }
 
 async function remove(e) {

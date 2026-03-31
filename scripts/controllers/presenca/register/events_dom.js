@@ -29,14 +29,16 @@ dom.containerListCatechumens.addEventListener('click', (e) => {
 	
 	if (btnMarkPresence) {
 		const catechumen = e.target.closest('.catechumen-card').dataset.catechumen;
-		markPresence(catechumen);
-		dom.countSelected.innerText++;
+		if (markPresence(catechumen)) {
+			dom.countSelected.innerText++;
+		}
 	}
 
 	if (btnMarkAbsence) {
 		const catechumen = e.target.closest('.catechumen-card').dataset.catechumen;
-		markAbsence(catechumen);
-		dom.countSelected.innerText--;
+		if (markAbsence(catechumen)) {
+			dom.countSelected.innerText--;
+		}
 	}
 });
 
@@ -49,5 +51,6 @@ dom.search.addEventListener('input', async (e) => { await search(e.target.value)
 
 dom.reset.addEventListener('click', () => {
 	arrays.catechumensPresent = [];
+	sessionStorage.setItem('catechumensPresent', []);
 	location.reload();
 });
