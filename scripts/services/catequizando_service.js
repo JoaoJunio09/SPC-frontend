@@ -1,16 +1,16 @@
 const BASE_URL_PROD = "https://spc-springboot-production.up.railway.app";
 const BASE_URL_DEV = "http://localhost:8080";
 
-const FIND_ALL_CATEQUIZANDOS_URL = `${BASE_URL_DEV}/api/catequizandos/v1`;
-const FIND_BY_ID_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/{catequizandoId}`;
-const FIND_BY_NAME_COMMUNITY_OR_PARISH_CATECHUMENS_URL = `${BASE_URL_DEV}/api/catequizandos/v1/find-by/communityOrParish?name={nameCmmunityOrParish}`;
-const FIND_BY_ETAPA_ID_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/findByEtapaId/{etapaId}`;
-const FIND_BY_ETAPA_ID_AND_NAME_COMMUNITY_OR_PARISH_URL = `${BASE_URL_DEV}/api/catequizandos/v1/find-by/etapaId?id={id}`;
-const SEARCH_BY_NAME_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/search-by?name={name}`;
-const FILTER_CATECHUMENS_BY_CATECHIST_NAME_AND_STEP_URL = `${BASE_URL_DEV}/api/catequizandos/v1/filter?catechistName={catechistName}&step={step}`;
-const CREATE_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1`;
-const UPDATE_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1`;
-const DELETE_CATEQUIZANDO_URL = `${BASE_URL_DEV}/api/catequizandos/v1/{catequizandoId}`;
+const FIND_ALL_CATEQUIZANDOS_URL = `${BASE_URL_PROD}/api/catequizandos/v1`;
+const FIND_BY_ID_CATEQUIZANDO_URL = `${BASE_URL_PROD}/api/catequizandos/v1/{catequizandoId}`;
+const FIND_BY_NAME_COMMUNITY_OR_PARISH_CATECHUMENS_URL = `${BASE_URL_PROD}/api/catequizandos/v1/find-by/communityOrParish?name={nameCmmunityOrParish}`;
+const FIND_BY_ETAPA_ID_CATEQUIZANDO_URL = `${BASE_URL_PROD}/api/catequizandos/v1/findByEtapaId/{etapaId}`;
+const FIND_BY_ETAPA_ID_AND_NAME_COMMUNITY_OR_PARISH_URL = `${BASE_URL_PROD}/api/catequizandos/v1/find-by/etapaId?id={id}`;
+const SEARCH_BY_NAME_CATEQUIZANDO_URL = `${BASE_URL_PROD}/api/catequizandos/v1/search-by?name={name}`;
+const FILTER_CATECHUMENS_BY_CATECHIST_NAME_AND_STEP_URL = `${BASE_URL_PROD}/api/catequizandos/v1/filter?catechistName={catechistName}&step={step}`;
+const CREATE_CATEQUIZANDO_URL = `${BASE_URL_PROD}/api/catequizandos/v1`;
+const UPDATE_CATEQUIZANDO_URL = `${BASE_URL_PROD}/api/catequizandos/v1`;
+const DELETE_CATEQUIZANDO_URL = `${BASE_URL_PROD}/api/catequizandos/v1/{catequizandoId}`;
 
 async function findAll() {
 	const response = await fetch(FIND_ALL_CATEQUIZANDOS_URL, {
