@@ -61,7 +61,7 @@ export async function handleListCatechumens(stepId) {
 }
 
 export async function search(value) {
-	arrays.catechumens = await CatequizandoService.searchByFirstNameCatequizando(value);
+	arrays.catechumens = await CatequizandoService.searchByNameCatequizando(value);
 	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
 	await checksExistinsPresence();
 }
