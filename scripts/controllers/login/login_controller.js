@@ -33,9 +33,9 @@ async function login() {
 		let nameOfTheCommunityOrParish = null;
 
 		if (accessCode === '0') {
-			nameOfTheCommunityOrParish = 'SAO_SEBASTIAO';
+			nameOfTheCommunityOrParish = "SAO_SEBASTIAO";
 		} else if (accessCode === '1') {
-			nameOfTheCommunityOrParish = 'DIVINO_ESPIRITO_SANTO';
+			nameOfTheCommunityOrParish = "DIVINO_ESPIRITO_SANTO";
 		}
 
 		arrays.catechists.forEach(c => {

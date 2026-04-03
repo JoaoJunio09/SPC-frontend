@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 	Loading.showLoading();
 
 	try {
-		console.log(sessionStorage.getItem('nameCommunityOrParish'))
 		const steps = await EtapaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
 		loadCatechistsAndStepsInTheFilter(steps);
 	}
