@@ -1,0 +1,25 @@
+<template id="card-mass-template">
+	<div class="event-card missa-card">
+		<div>
+			<div class="card-header">
+				<span class="badge">Missa</span>
+				<h2></h2>
+			</div>
+			<div class="card-body">
+				<div class="info-item">
+					<span class="label">Dia:</span>
+					<span class="value value-date">${date}</span>
+				</div>
+				<div class="info-item">
+					<span class="label">Horário:</span>
+					<span class="value value-time">
+						${UtilsDate.formatDateTimeThisMissaForTime(missa.dateTime)}h, na ${missa.location === "MATRIZ" ? "Matriz" : "Capela do Divino"}
+					</span>
+				</div>
+			</div>
+			<button class="btn-primary ${(actions_buttons_style !== null) ? actions_buttons_style : ''}" id="btn-register-attendance">
+				${(actions_buttons_style !== null) ? "Presença na Missa já foi registrada" : "Registrar Presença" }
+			</button>
+		</div>	
+	</div>
+</template>

@@ -6,6 +6,7 @@ import { EtapaService } from "../../../services/etapa_service.js";
 import { CatequizandoService } from "../../../services/catequizando_service.js";
 import { PresencaService } from "../../../services/presenca_service.js";
 import { MissaService } from "../../../services/missa_service.js";
+import { Loading } from "../../../utils/loading.js";
 
 export const arrays = { catechumens: [], catechumensPresent: [], catechumensWithBlockAbsenceButton: [] };
 
@@ -23,7 +24,12 @@ export const dom = {
 export async function init() {
 	await loadTemplate("../../../../templates/presence/register/card_steps_template.html");
 	await loadTemplate("../../../../templates/presence/register/card_catechumens_template.html");
+	await loadTemplate("../../../../templates/loading.html");
 	await renderSteps();
+
+	Loading.showLoading();
+
+	await checksExistinsPresence().then(() => Loading.hideLoading());
 
 	if (sessionStorage.getItem('catechumensPresent').length > 0) {
 		arrays.catechumensPresent = JSON.parse(sessionStorage.getItem('catechumensPresent'));
@@ -31,7 +37,7 @@ export async function init() {
 	}
 }
 
-const checksExistinsPresence = async () => {
+async function checksExistinsPresence() {
 	const massRegisteredLiturgicalCalendar = sessionStorage.getItem('missaDoCalendarioLiturgico');
 	const catechumensAlreadyPresent = await PresencaService.findAllPresenca();
 
@@ -56,14 +62,14 @@ export async function handleListCatechumens(stepId) {
 	dom.accordionContent.style.maxHeight = dom.accordionContent.scrollHeight  + "px";
 	requestAnimationFrame(() => { dom.accordionContent.style.maxHeight = "0px" });
 	
-	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
 	await checksExistinsPresence();
+	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
 }
 
 export async function search(value) {
 	arrays.catechumens = await CatequizandoService.searchByNameCatequizando(value);
-	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
 	await checksExistinsPresence();
+	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
 }
 
 export function proceedReview() {

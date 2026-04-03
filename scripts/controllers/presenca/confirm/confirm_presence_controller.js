@@ -33,13 +33,18 @@ async function renderCatechumensConfirm() {
 }
 
 export async function confirmPresence() {
-	const confirmed = await confirmModal(`Deseja confirmar o registro de presença para os ${arraysConfirm.catechumensPresent.length} catequizandos listados?`);
+	const confirmed = await confirmModal(
+		`Deseja confirmar o registro de presença para os ${arraysConfirm.catechumensPresent.length} catequizandos listados?`
+	);
 	if (!confirmed) return;
 
 	try {
+		console.log(sessionStorage.getItem('missaId'));
+		const catechist = JSON.parse(sessionStorage.getItem('catechist'));
 
 		const requests = arraysConfirm.catechumensPresent.map(async catechumenPresent => {
 			const presence = {
+				catequistaId: catechist.id,
 				catequizandoId: catechumenPresent.id,
 				missaId: sessionStorage.getItem('missaId'),
 				status: 'PRESENTE',
@@ -66,10 +71,11 @@ export async function confirmPresence() {
 		}, 4500);
 	}
 	catch (e) {
+		console.log(e);
 		MessageModal.show({ 
 			type: 'error', 
 			title: 'Falha na conexão', 
-			message: 'Não foi possível registrar presença dos catequizandos' 
+			message: 'Não foi possível registrar presença dos catequizandos'
 		});
 	}
 }

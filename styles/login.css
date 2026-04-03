@@ -111,7 +111,7 @@ body {
     padding-left: 4px;
 }
 
-.input-group input {
+.input-group input, .input-group select {
     width: 100%;
     padding: 1rem 1.25rem;
     font-size: 1.1rem;

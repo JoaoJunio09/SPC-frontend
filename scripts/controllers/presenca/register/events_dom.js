@@ -1,3 +1,4 @@
+import { Loading } from "../../../utils/loading.js";
 import { dom, init, handleListCatechumens, markPresence, markAbsence, arrays, search, proceedReview} from "./register_presence_controller.js";
 
 document.addEventListener('DOMContentLoaded', init);

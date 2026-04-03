@@ -34,7 +34,19 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+.welcome {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 60px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
 
+.welcome strong {
+    color: rgb(189, 55, 55);
+    font-size: 2.8rem;
+}
 
 .container {
     width: 100%;
@@ -332,6 +344,15 @@ body {
 
 /* --- NOVAS MEDIA QUERIES E REFINAMENTO DE RESPONSIVIDADE --- */
 
+@media (max-width: 370px) {
+    .welcome {
+        font-size: 1.2rem;
+    }
+
+    .welcome strong {
+        font-size: 2.5rem;
+    }
+}
 @media (max-width: 850px) {
     .header-container {
         flex-direction: column;
