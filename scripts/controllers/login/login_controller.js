@@ -30,7 +30,7 @@ async function login() {
 		const accessCode = document.querySelector("#access-code").value;
 		const catechistFullNameSelected = document.querySelector("#select-catechists").value;
 		let catechist = null;
-		let nameOfTheCommunityOrParish = "";
+		let nameOfTheCommunityOrParish = null;
 
 		accessCode == 0
 			? nameOfTheCommunityOrParish = "SAO_SEBASTIAO"
@@ -45,6 +45,10 @@ async function login() {
 				catechist = c;
 			}
 		});
+
+		if (nameOfTheCommunityOrParish === null || catechist === null) {
+			throw new Error('Informe todos os dados');
+		}
 
 		sessionStorage.setItem('nameCommunityOrParish', nameOfTheCommunityOrParish);
 		sessionStorage.setItem('catechist', JSON.stringify(catechist));
