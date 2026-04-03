@@ -46,6 +46,9 @@ async function login() {
 			}
 		});
 
+		console.log(catechist);
+		console.log(nameOfTheCommunityOrParish);
+
 		if (nameOfTheCommunityOrParish === null || catechist === null) {
 			throw new Error('Informe todos os dados');
 		}
