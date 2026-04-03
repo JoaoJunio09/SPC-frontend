@@ -32,9 +32,11 @@ async function login() {
 		let catechist = null;
 		let nameOfTheCommunityOrParish = null;
 
-		accessCode == 0
-			? nameOfTheCommunityOrParish = "SAO_SEBASTIAO"
-			: nameOfTheCommunityOrParish = "DIVINO_ESPIRITO_SANTO";
+		if (accessCode == 0) {
+			nameOfTheCommunityOrParish = "SAO_SEBASTIAO";
+		} else if (accessCode == 1) {
+			nameOfTheCommunityOrParish = "DIVINO_ESPIRITO_SANTO";
+		}
 
 		arrays.catechists.forEach(c => {
 			let fullName = c.firstName+" "+c.lastName;
