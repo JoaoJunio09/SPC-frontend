@@ -32,9 +32,9 @@ async function login() {
 		let catechist = null;
 		let nameOfTheCommunityOrParish = null;
 
-		if (accessCode === 0) {
+		if (accessCode == 0) {
 			nameOfTheCommunityOrParish = "SAO_SEBASTIAO";
-		} else if (accessCode === 1) {
+		} else if (accessCode == 1) {
 			nameOfTheCommunityOrParish = "DIVINO_ESPIRITO_SANTO";
 		}
 
@@ -45,6 +45,7 @@ async function login() {
 					throw new Error('Catequista Inválido');
 				}
 				catechist = c;
+				console.log(c);
 			}
 		});
 
