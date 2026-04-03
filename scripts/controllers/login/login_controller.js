@@ -27,15 +27,15 @@ async function fillInSelectForCatechistsName() {
 
 async function login() {
 	try {
-		const accessCode = document.querySelector("#access-code").value;
+		const accessCode = document.querySelector("#select-code").value;
 		const catechistFullNameSelected = document.querySelector("#select-catechists").value;
 		let catechist = null;
 		let nameOfTheCommunityOrParish = null;
 
-		if (accessCode == 0) {
-			nameOfTheCommunityOrParish = "SAO_SEBASTIAO";
-		} else if (accessCode == 1) {
-			nameOfTheCommunityOrParish = "DIVINO_ESPIRITO_SANTO";
+		if (accessCode === '0') {
+			nameOfTheCommunityOrParish = 'SAO_SEBASTIAO';
+		} else if (accessCode === '1') {
+			nameOfTheCommunityOrParish = 'DIVINO_ESPIRITO_SANTO';
 		}
 
 		arrays.catechists.forEach(c => {
@@ -45,21 +45,15 @@ async function login() {
 					throw new Error('Catequista Inválido');
 				}
 				catechist = c;
-				console.log(c);
 			}
 		});
 
-		console.log(catechist);
-		console.log(nameOfTheCommunityOrParish);
+		if (nameOfTheCommunityOrParish !== null && catechist !== null) {
+			sessionStorage.setItem('nameCommunityOrParish', nameOfTheCommunityOrParish);
+			sessionStorage.setItem('catechist', JSON.stringify(catechist));
 
-		if (nameOfTheCommunityOrParish === null || catechist === null) {
-			throw new Error('Informe todos os dados');
-		}
-
-		sessionStorage.setItem('nameCommunityOrParish', nameOfTheCommunityOrParish);
-		sessionStorage.setItem('catechist', JSON.stringify(catechist));
-
-		location.href = 'index.html';
+			location.href = 'index.html';
+		}		
 	}
 	catch (err) {
 		Toast.showToast({ message: err.message, type: 'error' });

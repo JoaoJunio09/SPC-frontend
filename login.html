@@ -32,21 +32,17 @@
             <div class="login-form">
                 <div class="input-group">
                     <label for="access-code">Quem é você?</label>
-                    <select name="select-catechists" id="select-catechists">
+                    <select name="select-catechists" id="select-catechists" required>
                         <option value=""></option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label for="access-code">Código de acesso</label>
-                    <input 
-                        type="text"
-                        id="access-code" 
-                        name="access-code" 
-                        placeholder="Digite o código" 
-                        required 
-                        autocomplete="off"
-                        inputmode="numeric"
-                    >
+                    <select name="select-code" id="select-code" required>
+                        <option value="default">Selecione o código</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                    </select>
                     <small class="input-hint">O código já foi fornecido pela paróquia.</small>
                 </div>
 
