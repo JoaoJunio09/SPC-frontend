@@ -70,11 +70,13 @@ dom.form.onsubmit = async (e) => {
 		await MassService.updateMissa(missa)
 			.then(() => { Toast.showToast({ message: 'Atualizado com sucesso', type: 'success' }) })
 			.catch(() => { Toast.showToast({ message: 'Erro ao atualizar Missa', type: 'error' }) });
+		MassService.clearCache();
 	} 
 	else {
 		await MassService.createMissa(missa)
 			.then(() => { Toast.showToast({ message: 'Criado com sucesso', type: 'success' }) })
 			.catch((e) => console.log(e));
+		MassService.clearCache();
 	}
 
 	renderizarMissas();

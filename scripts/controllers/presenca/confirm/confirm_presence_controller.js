@@ -39,7 +39,6 @@ export async function confirmPresence() {
 	if (!confirmed) return;
 
 	try {
-		console.log(sessionStorage.getItem('missaId'));
 		const catechist = JSON.parse(sessionStorage.getItem('catechist'));
 
 		const requests = arraysConfirm.catechumensPresent.map(async catechumenPresent => {
@@ -55,6 +54,7 @@ export async function confirmPresence() {
 		});
 
 		await Promise.all(requests);
+		PresencaService.clearCache();
 
 		MessageModal.show({ 
 			type: 'success', 

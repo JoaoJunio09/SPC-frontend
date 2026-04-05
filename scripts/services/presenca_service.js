@@ -139,5 +139,6 @@ export const PresencaService = {
 	findByCatechumenIdPresenca: findByCatechumenId,
 	createPresenca: create,
 	updatePresenca: update,
-	deletePresenca: deletePresenca
+	deletePresenca: deletePresenca,
+	clearCache,
 };
