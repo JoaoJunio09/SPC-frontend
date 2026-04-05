@@ -1,4 +1,4 @@
-import { MissaService } from "../../services/missa_service.js";
+import { MassService } from "../../services/mass_service.js";
 import { UtilsDate } from "../../utils/utils_date.js";
 import { loadTemplate } from "../../utils/template_loader.js";
 import { Loading } from "../../utils/loading.js";
@@ -6,7 +6,6 @@ import { Toast } from "../../utils/toast.js";
 import { verifyAuth } from "../../auth/verify_auth.js";
 import { PresencaService } from "../../services/presenca_service.js";
 import { rendererCardMass } from "../../renderers/index/card_mass_renderer.js";
-import { AppStore } from "../../store/appStore.js";
 
 export const dom = {
 	modal: document.getElementById('calendarModal'),
@@ -32,22 +31,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	try {
 		const [masses, presences] = await Promise.all([
-			MissaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish')),
+			MassService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish')),
 			PresencaService.findAllPresenca()
 		]);
 		
 		renderWeekDays(masses, presences);
 	}
 	catch (err) {
-		console.log(err)
-		Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' });
+		Toast.showToast({ message: 'Erro ao carregar as masses ou Presenças', type: 'error' });
 	}
 	finally {
 		Loading.hideLoading();
 	}
 });
 
-function renderWeekDays(missas, presences) {
+function renderWeekDays(masses, presences) {
 	const today = new Date();
 
 	const day = today.getDay();
@@ -79,7 +77,7 @@ function renderWeekDays(missas, presences) {
 			<span class="day-num">${dayNum}</span>
 		`;
 
-		missas.forEach(missa => {
+		masses.forEach(missa => {
 			if (UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime) === dateString) {
 				card.classList.add("has-missa");
 
@@ -97,7 +95,7 @@ function renderWeekDays(missas, presences) {
 
 		if(dateString === todayString) {
 			card.classList.add("active-day");
-			carregarEvento(dateString, presences, missas);
+			loadEvent(dateString, presences, masses);
 		}
 
 		// evento click
@@ -108,14 +106,14 @@ function renderWeekDays(missas, presences) {
 
 			card.classList.add("active-day");
 
-			carregarEvento(dateString, presences, missas);
+			loadEvent(dateString, presences, masses);
 		});
 
 		dom.weekGrid.appendChild(card);
 	}
 }
 
-export async function carregarEvento(date, presences, masses) {
+export async function loadEvent(date, presences, masses) {
 	rendererCardMass(masses, presences, date, dom.eventContainer);
 	initializeButtons();
 }

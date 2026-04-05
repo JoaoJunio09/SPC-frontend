@@ -5,7 +5,7 @@ import { Toast } from "../../../utils/toast.js";
 import { EtapaService } from "../../../services/etapa_service.js";
 import { CatequizandoService } from "../../../services/catequizando_service.js";
 import { PresencaService } from "../../../services/presenca_service.js";
-import { MissaService } from "../../../services/missa_service.js";
+import { MassService } from "../../../services/mass_service.js";
 import { Loading } from "../../../utils/loading.js";
 
 export const arrays = { catechumens: [], catechumensPresent: [], catechumensWithBlockAbsenceButton: [] };
@@ -42,7 +42,7 @@ async function checksExistinsPresence() {
 	const catechumensAlreadyPresent = await PresencaService.findAllPresenca();
 
 	catechumensAlreadyPresent.forEach(async presence => {
-		const mass = await MissaService.findByIdMissa(presence.missa.id);
+		const mass = await MassService.findByIdMissa(presence.missa.id);
 
 		if (mass.title === massRegisteredLiturgicalCalendar) {
 			const catechumen = await CatequizandoService.findByIdCatequizando(presence.catequizando.id);

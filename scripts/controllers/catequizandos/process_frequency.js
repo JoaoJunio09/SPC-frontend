@@ -1,4 +1,4 @@
-import { MissaService } from '../../services/missa_service.js';
+import { MassService } from '../../services/mass_service.js';
 import { PresencaService } from '../../services/presenca_service.js';
 import { LiturgicalCalendarService } from '../../services/liturgical_calendar.js';
 
@@ -14,7 +14,7 @@ export async function proccessTheFrequencyOfCatechumens(catechumen) {
 }
 
 async function getTotalMasses() {
-	const masses = await MissaService.findAllMissa();
+	const masses = await MassService.findAllMissa();
 	const totalDatesOfLiturgicalCalendar = await LiturgicalCalendarService.findAll();
 
 	let counterMass = [];
@@ -33,7 +33,7 @@ async function getTotalMasses() {
 }
 
 async function getMassesToThisToday() {
-	const massesToThisToday = await MissaService.findByOccurredToThisTodayMissa();
+	const massesToThisToday = await MassService.findByOccurredToThisTodayMissa();
 	const totalDatesOfLiturgicalCalendar = await LiturgicalCalendarService.findAll();
 
 	let counterMass = [];

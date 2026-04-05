@@ -1,5 +1,5 @@
 import { rendererMissasManager } from "../../renderers/missas_manager_renderer.js";
-import { MissaService } from "../../services/missa_service.js";
+import { MassService } from "../../services/mass_service.js";
 import { Toast } from "../../utils/toast.js";
 import { Loading } from "../../utils/loading.js";
 import { loadTemplate } from "../../utils/template_loader.js";
@@ -67,12 +67,12 @@ dom.form.onsubmit = async (e) => {
 	};
 
 	if (global_variables.id !== null) {	
-		await MissaService.updateMissa(missa)
+		await MassService.updateMissa(missa)
 			.then(() => { Toast.showToast({ message: 'Atualizado com sucesso', type: 'success' }) })
 			.catch(() => { Toast.showToast({ message: 'Erro ao atualizar Missa', type: 'error' }) });
 	} 
 	else {
-		await MissaService.createMissa(missa)
+		await MassService.createMissa(missa)
 			.then(() => { Toast.showToast({ message: 'Criado com sucesso', type: 'success' }) })
 			.catch((e) => console.log(e));
 	}
@@ -96,7 +96,7 @@ async function fillInOptionsSelectMasses() {
 }
 
 async function renderizarMissas() {
-	const missas = await MissaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'))
+	const missas = await MassService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'))
 		.catch(() => {
 			Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) 
 		});
@@ -115,7 +115,7 @@ async function remove(e) {
 	const missaId = Number.parseInt(e.target.closest('.missa-card').dataset.id);
 
 	if (await confirmModal("Deseja remover Missa?")) {
-		await MissaService.deleteMissa(missaId)
+		await MassService.deleteMissa(missaId)
 			.then(() => {
 				renderizarMissas();
 				Toast.showToast({ message: 'Missa removida com sucesso', type: 'success' });
@@ -143,7 +143,7 @@ async function getData(e) {
 	global_variables.id = Number.parseInt(e.target.closest('.missa-card').dataset.id);
 	global_variables.massSelectedId = Number.parseInt(e.target.closest('.missa-card').dataset.liturgicalCalendarId);
 
-	const missa = await MissaService.findByIdMissa(global_variables.id);
+	const missa = await MassService.findByIdMissa(global_variables.id);
 
 	dom.form.querySelector("#title").value = missa.title;
 	dom.form.querySelector("#date").value = UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime);

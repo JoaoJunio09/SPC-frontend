@@ -1,6 +1,6 @@
 import { dom } from "./index_controller.js";
-import { carregarEvento } from "./index_controller.js";
-import { MissaService } from "../../services/missa_service.js";
+import { loadEvent } from "./index_controller.js";
+import { MassService } from "../../services/mass_service.js";
 import { UtilsDate } from "../../utils/utils_date.js";
 import { AppStore } from "../../store/appStore.js";
 
@@ -8,7 +8,7 @@ let currentDate = new Date();
 let masses_dates = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
-	masses_dates = await MissaService.findAllMassesDatesByCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
+	masses_dates = await MassService.findAllMassesDatesByCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
 });
 
 function renderMonthDays() {
@@ -76,12 +76,10 @@ export function closeCalendarModal() {
 function initializeEventDayCalendar(dayDiv) {
   dayDiv.addEventListener('click', (e) => {
     const dataSelecionada = e.target.closest('div').getAttribute('data-date');
-    carregarEvento(dataSelecionada, AppStore.getPresences(), AppStore.getMasses());
+    loadEvent(dataSelecionada, AppStore.getPresences(), AppStore.getMasses());
     closeCalendarModal();
   });
 }
-
-// CRIAR UMA ROTA PARA RETORNAR OS DIAS QUE TEM MISSA;
 
 const btnPrev = document.querySelectorAll(".btn-nav-month")[0];
 const btnNext = document.querySelectorAll(".btn-nav-month")[1];

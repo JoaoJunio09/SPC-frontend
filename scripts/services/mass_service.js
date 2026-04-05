@@ -15,13 +15,13 @@ const DELETE_MISSA_URL = `${BASE_URL_DEV}/api/missas/v1/{missaId}`;
 const CACHE_KEY = 'masses_cache';
 
 function getFromCache() {
-	const inMemory = AppStore.getPresences();
+	const inMemory = AppStore.getMasses();
 	if (inMemory) return inMemory;
 
 	const cache = sessionStorage.getItem(CACHE_KEY);
 	if (cache) {
 		const parsed = JSON.parse(cache);
-		AppStore.setPresences(parsed);
+		AppStore.setMasses(parsed);
 		return parsed;
 	}
 	
@@ -167,7 +167,7 @@ async function deleteMissa(missaId) {
 	return response.status;
 }
 
-export const MissaService = {
+export const MassService = {
 	findAllMissa: findAll,
 	findByIdMissa: findById,
 	findByNameCommunityOrParish: findByNameCommunityOrParish,
