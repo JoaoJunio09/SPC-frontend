@@ -1,14 +1,40 @@
+import { AppStore } from "../store/appStore.js";
+
 const BASE_URL_PROD = "https://spc-springboot-production.up.railway.app";
 const BASE_URL_DEV = "http://localhost:8080";
 
-const FIND_ALL_PRESENCAS_URL = `${BASE_URL_PROD}/api/presencas/v1`;
-const FIND_BY_ID_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1/{presencaId}`;
-const FIND_BY_CATECHUMEN_ID_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1/findByCatechumenId/{catechumenId}`;
-const CREATE_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1`;
-const UPDATE_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1`;
-const DELETE_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1/{presencaId}`;
+const FIND_ALL_PRESENCAS_URL = `${BASE_URL_DEV}/api/presencas/v1`;
+const FIND_BY_ID_PRESENCA_URL = `${BASE_URL_DEV}/api/presencas/v1/{presencaId}`;
+const FIND_BY_CATECHUMEN_ID_PRESENCA_URL = `${BASE_URL_DEV}/api/presencas/v1/findByCatechumenId/{catechumenId}`;
+const CREATE_PRESENCA_URL = `${BASE_URL_DEV}/api/presencas/v1`;
+const UPDATE_PRESENCA_URL = `${BASE_URL_DEV}/api/presencas/v1`;
+const DELETE_PRESENCA_URL = `${BASE_URL_DEV}/api/presencas/v1/{presencaId}`;
+
+const CACHE_KEY = 'presences_cache';
+
+function getFromCache() {
+	const inMemory = AppStore.getPresences();
+	if (inMemory) return inMemory;
+
+	const cache = sessionStorage.getItem(CACHE_KEY);
+	if (cache) {
+		const parsed = JSON.parse(cache);
+		AppStore.setPresences(parsed);
+		return parsed;
+	}
+	
+	return null;
+}
+
+function clearCache() {
+	AppStore.setPresences(null);
+	sessionStorage.removeItem(CACHE_KEY);
+}
 
 async function findAll() {
+	const cached = getFromCache();
+	if (cached) return cached;
+
 	const response = await fetch(FIND_ALL_PRESENCAS_URL, {
 		'method': 'GET',
 		'headers': {
@@ -20,7 +46,11 @@ async function findAll() {
 		throw new Error("Erro ao obter presenças [findAll]");
 	}
 
-	return await response.json();
+	const data = await response.json();
+	AppStore.setPresences(data);
+	sessionStorage.setItem(CACHE_KEY, JSON.stringify(data));
+
+	return data;
 }
 
 async function findById(presencaId) {

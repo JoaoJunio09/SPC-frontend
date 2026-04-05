@@ -7,6 +7,7 @@ import { UtilsDate } from "../../utils/utils_date.js";
 import { confirmModal } from "../../utils/confirmation.js";
 import { LiturgicalCalendarService } from "../../services/liturgical_calendar.js";
 import { verifyAuth } from "../../auth/verify_auth.js";
+import { AppStore } from "../../store/appStore.js";
 
 let global_variables = {
 	id: null,
@@ -96,7 +97,9 @@ async function fillInOptionsSelectMasses() {
 
 async function renderizarMissas() {
 	const missas = await MissaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'))
-		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) });
+		.catch(() => {
+			Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) 
+		});
 		
 	rendererMissasManager(missas, dom.grid);
 	initializeButtons();

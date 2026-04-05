@@ -70,6 +70,8 @@ export function rendererCardMass(masses, presences, date, container) {
 function catechistRegisteredAttendance(presences, massId) {
 	const catechist = JSON.parse(sessionStorage.getItem('catechist'));
 	if (!catechist) return;
+
+	if (!presences) return;
 	
 	return presences.some(p => 
 		p.missa.id === massId &&

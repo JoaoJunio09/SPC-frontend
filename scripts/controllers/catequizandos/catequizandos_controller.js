@@ -32,15 +32,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 		loadCatechistsAndStepsInTheFilter(steps);
 	}
 	catch (e) {
-		console.log(e);
 		Toast.showToast({ 
 			message: 'Não foi possível carregar os dados de filtragem', 
 			type: 'error' 
 		});
 
-		// setTimeout(() => {
-		// 	window.location.href = '../../../index.html';
-		// }, 5000);
+		setTimeout(() => {
+			window.location.href = '../../../index.html';
+		}, 5000);
 	}
 	finally {
 		Loading.hideLoading();

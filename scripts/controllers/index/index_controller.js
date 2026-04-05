@@ -6,6 +6,7 @@ import { Toast } from "../../utils/toast.js";
 import { verifyAuth } from "../../auth/verify_auth.js";
 import { PresencaService } from "../../services/presenca_service.js";
 import { rendererCardMass } from "../../renderers/index/card_mass_renderer.js";
+import { AppStore } from "../../store/appStore.js";
 
 export const dom = {
 	modal: document.getElementById('calendarModal'),
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 		renderWeekDays(masses, presences);
 	}
 	catch (err) {
+		console.log(err)
 		Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' });
 	}
 	finally {
@@ -55,12 +57,6 @@ function renderWeekDays(missas, presences) {
 	monday.setDate(today.getDate() + diffToMonday);
 
 	const diasSemana = ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"];
-
-	const active = document.querySelector(".day-card.active-day");
-
-	if (active) {
-		carregarEvento(active.getAttribute("data-date"));
-	}
 
 	dom.weekGrid.innerHTML = '';
 
@@ -101,7 +97,7 @@ function renderWeekDays(missas, presences) {
 
 		if(dateString === todayString) {
 			card.classList.add("active-day");
-			carregarEvento(dateString, presences);
+			carregarEvento(dateString, presences, missas);
 		}
 
 		// evento click
@@ -112,124 +108,16 @@ function renderWeekDays(missas, presences) {
 
 			card.classList.add("active-day");
 
-			carregarEvento(dateString, presences);
+			carregarEvento(dateString, presences, missas);
 		});
 
 		dom.weekGrid.appendChild(card);
 	}
 }
 
-export async function carregarEvento(date, presences) {
-	const masses = await MissaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'))
-		.catch(() => { Toast.showToast({ message: 'Erro ao carregar as informações', type: 'error' }) })
-		.finally(() => { Loading.hideLoading() });
+export async function carregarEvento(date, presences, masses) {
 	rendererCardMass(masses, presences, date, dom.eventContainer);
 	initializeButtons();
-
-	// dom.eventContainer.innerHTML = '';
-	// let thereIsMassToday = false;
-
-	// let verifyRegisteredPresence = false;
-	
-	// missas.forEach(async missa => {
-	// 	if (UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime) === data) {
-	// 		if (document.querySelector('.no-event-message')) {
-	// 			document.querySelector('.no-event-message').style.display = 'none';
-	// 		}
-
-	// 		let day = missa.dateTime.slice(8, 10);
-	// 		let month = missa.dateTime.slice(5, 7);
-	// 		let date = `${day} de ${UtilsDate.returnsMonthAsAString(month)}`;
-
-	// 		const event_card = document.createElement('div');
-
-	// 		let actions_buttons_style = null;
-
-			// if (missa.registeredAttendance == true) {
-			// 	event_card.classList.add('event-card-register-presence');
-			// 	actions_buttons_style = 'btn-primary-register-presence';
-			// }
-
-			// verifico no se na tabela 'presenca':
-			// contém algum registro com o id da missa e do catequista logado do sistema
-			// se tiver, então o catequista já registrou presença nessa missa.
-
-			// const catechist = JSON.parse(sessionStorage.getItem('catechist'));
-			// const isCatechistRegisteredPresence = await catechistRegisteredAttendance(missa.id, catechist.id)
-			// 	.then(() => {
-			// 		event_card.classList.add('event-card-register-presence');
-			// 		actions_buttons_style = 'btn-primary-register-presence';
-			// 	})
-
-			// generateCard(missa, event_card, thereIsMassToday, actions_buttons_style, date);
-	// 	}
-	// });
-	
-	// if (verifyRegisteredPresence === true) {
-	// 	if (!thereIsMassToday) {
-	// 		const year = new Date().getFullYear();
-	// 		const month = String(new Date().getMonth()+1).padStart(2,'0');
-	// 		const dayNum = String(new Date().getDate()).padStart(2,'0');
-	// 		const dateString = `${year}-${month}-${dayNum}`;
-
-	// 		if (data === dateString) {
-	// 			dom.eventContainer.innerHTML = `
-	// 				<div class="no-event-message">
-	// 					<p>Não há missa hoje</p>
-	// 				</div>
-	// 			`;
-	// 		} 
-	// 		else {			
-	// 			dom.eventContainer.innerHTML = `
-	// 				<div class="no-event-message">
-	// 					<p>Não há missa na data ${data}</p>
-	// 				</div>
-	// 			`;
-	// 		}
-	// 	}
-	// }
-
-}
-
-function generateCard(missa, event_card, thereIsMassToday, actions_buttons_style, date) {
-	event_card.classList.add('event-card');
-	event_card.classList.add('missa-card');
-	event_card.setAttribute('missa-id', missa.id)
-	event_card.innerHTML = `
-		<div>
-			<div class="card-header">
-				<span class="badge">Missa</span>
-				<h2>${missa.title}</h2>
-			</div>
-			<div class="card-body">
-				<div class="info-item">
-					<span class="label">Dia:</span>
-					<span class="value">${date}</span>
-				</div>
-				<div class="info-item">
-					<span class="label">Horário:</span>
-					<span class="value">
-						${UtilsDate.formatDateTimeThisMissaForTime(missa.dateTime)}h, na ${missa.location === "MATRIZ" ? "Matriz" : "Capela do Divino"}
-					</span>
-				</div>
-			</div>
-			<button class="btn-primary ${(actions_buttons_style !== null) ? actions_buttons_style : ''}" id="btn-register-attendance">
-				${(actions_buttons_style !== null) ? "Presença na Missa já foi registrada" : "Registrar Presença" }
-			</button>
-		</div>	
-	`;
-
-	dom.eventContainer.appendChild(event_card);
-	thereIsMassToday = true;
-}
-
-async function catechistRegisteredAttendance(missaId, catechistId) {
-	const presences = await PresencaService.findAllPresenca();
-	presences.forEach(presence => {
-		if (presence.missa.id === missaId && presence.catequista.id === catechistId) {
-			return true;
-		}
-	});
 }
 
 function initializeButtons() {
