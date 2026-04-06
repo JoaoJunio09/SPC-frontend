@@ -124,7 +124,10 @@ async function remove(e) {
 			})
 			.catch((e) => {
 				Toast.showToast({ message: 'Não foi possível remover Missa', type: 'error' }) ;
-			})
+			});
+		
+		MassService.clearCache();
+		renderizarMissas();
 	}
 }
 
