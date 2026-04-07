@@ -1,14 +1,13 @@
 import { AppStore } from "../store/appStore.js";
 
-const BASE_URL_PROD = "https://spc-springboot-production.up.railway.app";
-const BASE_URL_DEV = "http://localhost:8080";
+const BASE_URL = "http://localhost:8080"; // "https://spc-springboot-production.up.railway.app";
 
-const FIND_ALL_PRESENCAS_URL = `${BASE_URL_PROD}/api/presencas/v1`;
-const FIND_BY_ID_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1/{presencaId}`;
-const FIND_BY_CATECHUMEN_ID_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1/findByCatechumenId/{catechumenId}`;
-const CREATE_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1`;
-const UPDATE_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1`;
-const DELETE_PRESENCA_URL = `${BASE_URL_PROD}/api/presencas/v1/{presencaId}`;
+const FIND_ALL_PRESENCAS_URL = `${BASE_URL}/api/presencas/v1`;
+const FIND_BY_ID_PRESENCA_URL = `${BASE_URL}/api/presencas/v1/{presencaId}`;
+const FIND_BY_CATECHUMEN_ID_PRESENCA_URL = `${BASE_URL}/api/presencas/v1/findByCatechumenId/{catechumenId}`;
+const CREATE_PRESENCA_URL = `${BASE_URL}/api/presencas/v1`;
+const UPDATE_PRESENCA_URL = `${BASE_URL}/api/presencas/v1`;
+const DELETE_PRESENCA_URL = `${BASE_URL}/api/presencas/v1/{presencaId}`;
 
 const CACHE_KEY = 'presences_cache';
 
