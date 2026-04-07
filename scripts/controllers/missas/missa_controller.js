@@ -77,8 +77,6 @@ dom.form.onsubmit = async (e) => {
 			.catch((e) => console.log(e));
 	}
 
-	console.log(AppStore.getMasses());
-
 	renderizarMissas();
 	closeModal();
 };

@@ -174,6 +174,5 @@ export const MassService = {
 	findAllMassesDatesByCommunityOrParish: findAllMassesDatesByCommunityOrParish,
 	createMissa: create,
 	updateMissa: update,
-	deleteMissa: deleteMissa,
-	clearCache,
+	deleteMissa: deleteMissa
 };
