@@ -1,7 +1,7 @@
 import { Exceptions } from "../exceptions/exceptions.js";
 import { AppStore } from "../store/appStore.js";
 
-const BASE_URL = "http://localhost:8080"; // "https://spc-springboot-production.up.railway.app";
+const BASE_URL = "https://spc-springboot-production.up.railway.app"; // "https://spc-springboot-production.up.railway.app";
 
 const FIND_ALL_PRESENCAS_URL = `${BASE_URL}/api/presencas/v1`;
 const FIND_BY_ID_PRESENCA_URL = `${BASE_URL}/api/presencas/v1/{presencaId}`;

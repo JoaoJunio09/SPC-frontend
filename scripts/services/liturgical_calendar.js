@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080"; // "https://spc-springboot-production.up.railway.app";
+const BASE_URL = "https://spc-springboot-production.up.railway.app"; // "https://spc-springboot-production.up.railway.app";
 
 const API_BASE_URL_FIND_ALL = `${BASE_URL}/api/liturgicalCalendar/v1`;
 const API_BASE_URL_FIND_DATE_BY_TITLE = `${BASE_URL}/api/liturgicalCalendar/v1/find-by?title={title}`;
