@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manutenção - SPC</title>
+    <link rel="stylesheet" href="./styles/manutencao.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- HEADER PADRÃO SPC -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <div class="system-title">
+                    <h1>SPC</h1>
+                    <p>Sistema de Presença da Catequese</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO DE MANUTENÇÃO -->
+    <main class="maintenance-wrapper">
+        <section class="maintenance-content">
+            <div class="icon-animated">
+                <i data-lucide="settings" class="gear-icon"></i>
+                <i data-lucide="wrench" class="wrench-icon"></i>
+            </div>
+            
+            <h2 class="maintenance-title">Sistema em Manutenção</h2>
+            <p class="maintenance-subtitle">
+                Estamos realizando melhorias importantes para oferecer uma melhor experiência.
+            </p>
+            
+            <p class="maintenance-secondary">
+                O sistema estará disponível novamente em breve.<br>
+                Agradecemos sua compreensão.
+            </p>
+
+            <button class="btn-main" id="btnOpenModal">
+                Saiba mais
+            </button>
+        </section>
+    </main>
+
+    <!-- MODAL DE ATUALIZAÇÕES -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-card">
+            <header class="modal-header">
+                <h3>Atualizações e melhorias</h3>
+            </header>
+            <div class="modal-body">
+                <ul class="improvement-list">
+									<li>Corrigindo erro ao confirmar presença dos catequizandos</li>
+									<li>Melhoria no tempo de carregamento das turmas</li>
+									<li>Melhoria no tempo de carregamento das Missas</li>
+									<li>Melhoria no tempo de carregamento das Presenças</li>
+									<li>Otimização para dispositivos móveis</li>
+                </ul>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn-close" id="btnCloseModal">Fechar</button>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+			document.addEventListener('DOMContentLoaded', () => {
+				// Inicializa ícones Lucide
+				if (window.lucide) {
+						lucide.createIcons();
+				}
+
+				const btnOpen = document.getElementById('btnOpenModal');
+				const btnClose = document.getElementById('btnCloseModal');
+				const modalOverlay = document.getElementById('modalOverlay');
+
+				// Abre o modal
+				btnOpen.addEventListener('click', () => {
+						modalOverlay.classList.add('active');
+						document.body.style.overflow = 'hidden'; // Impede scroll
+				});
+
+				// Fecha o modal
+				const closeModal = () => {
+						modalOverlay.classList.remove('active');
+						document.body.style.overflow = 'auto';
+				};
+
+				btnClose.addEventListener('click', closeModal);
+
+				// Fecha ao clicar fora do card (no overlay)
+				modalOverlay.addEventListener('click', (e) => {
+						if (e.target === modalOverlay) {
+								closeModal();
+						}
+				});
+
+				// Tecla ESC para fechar
+				document.addEventListener('keydown', (e) => {
+						if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+								closeModal();
+						}
+				});
+		});
+		</script>
+</body>
+</html>

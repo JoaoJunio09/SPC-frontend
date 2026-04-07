@@ -57,7 +57,7 @@ function calculateFrequency(totalMasses, totalMassesToThisToday, attendanceAtMas
 	}
 
 	const frequencyActual = (attendanceAtMasses * 100) / totalMassesToThisToday;
-	const frequencyTotal = (attendanceAtMasses * 100) / totalMasses;;
+	const frequencyTotal = (attendanceAtMasses * 100) / totalMasses;
 
 	return [frequencyActual, frequencyTotal];
 }

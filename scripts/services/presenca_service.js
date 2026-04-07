@@ -1,3 +1,4 @@
+import { Exceptions } from "../exceptions/exceptions.js";
 import { AppStore } from "../store/appStore.js";
 
 const BASE_URL = "http://localhost:8080"; // "https://spc-springboot-production.up.railway.app";
@@ -92,6 +93,10 @@ async function create(presenca) {
 		},
 		'body': JSON.stringify(presenca)
 	});
+
+	if (response.status === 409) {
+		throw new Exceptions.ConflictWhenSavingInTheDatabaseException('Conflit in the saved database this Presences.');
+	}
 
 	if (!response.ok) {
 		throw new Error("Erro ao salvar presença [create]");

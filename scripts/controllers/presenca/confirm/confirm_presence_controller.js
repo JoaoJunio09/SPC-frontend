@@ -4,6 +4,7 @@ import { loadTemplate } from "../../../utils/template_loader.js";
 import { MessageModal } from '../../../utils/modal_message.js';
 import { PresencaService } from '../../../services/presenca_service.js';
 import { arrays } from '../register/register_presence_controller.js';
+import { Exceptions } from '../../../exceptions/exceptions.js';
 
 const arraysConfirm = {
 	catechumensPresent: []
@@ -70,12 +71,29 @@ export async function confirmPresence() {
 			window.location.href = "index.html";
 		}, 4500);
 	}
-	catch (e) {
-		console.log(e);
-		MessageModal.show({ 
-			type: 'error', 
-			title: 'Falha na conexão', 
-			message: 'Não foi possível registrar presença dos catequizandos'
-		});
+	catch (err) {
+		if (err instanceof Exceptions.ConflictWhenSavingInTheDatabaseException) {
+			MessageModal.show({ 
+				type: 'info', 
+				title: 'Aviso', 
+				message: 'Você marcou 1 ou mais catequizandos que já estavam com presença, no entanto não houve nenhuma falha ao registrar presença dos demais.'
+			});
+
+			sessionStorage.removeItem("catechumensPresent");
+			arraysConfirm.catechumensPresent = [];
+			arrays.catechumensWithBlockAbsenceButton = [];
+
+			setTimeout(() => {
+				window.location.href = "index.html";
+			}, 4500);
+		} 
+		else {
+			console.log('oiii')
+			MessageModal.show({ 
+				type: 'error', 
+				title: 'Falha na conexão', 
+				message: 'Não foi possível registrar presença dos catequizandos'
+			});
+		}
 	}
 }

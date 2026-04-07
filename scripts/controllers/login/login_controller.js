@@ -52,7 +52,8 @@ async function login() {
 			sessionStorage.setItem('nameCommunityOrParish', nameOfTheCommunityOrParish);
 			sessionStorage.setItem('catechist', JSON.stringify(catechist));
 
-			location.href = 'index.html';
+			//location.href = 'index.html';
+			location.href = 'manutencao.html';
 		}		
 	}
 	catch (err) {
