@@ -34,11 +34,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 			MassService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish')),
 			PresencaService.findAllPresenca()
 		]);
+
+		console.log(presences);
 		
 		renderWeekDays(masses, presences);
 	}
 	catch (err) {
-		Toast.showToast({ message: 'Erro ao carregar as masses ou Presenças', type: 'error' });
+		console.log(err)
+		Toast.showToast({ message: 'Erro ao carregar as Missas ou Presenças', type: 'error' });
 	}
 	finally {
 		Loading.hideLoading();
@@ -114,6 +117,7 @@ function renderWeekDays(masses, presences) {
 }
 
 export async function loadEvent(date, presences, masses) {
+	console.log(presences);
 	rendererCardMass(masses, presences, date, dom.eventContainer);
 	initializeButtons();
 }

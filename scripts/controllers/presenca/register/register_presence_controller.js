@@ -37,6 +37,8 @@ export async function init() {
 	}
 }
 
+// criar query customizada para verificar se já existe presença na missa.
+
 async function checksExistinsPresence() {
 	const massRegisteredLiturgicalCalendar = sessionStorage.getItem('missaDoCalendarioLiturgico');
 	const catechumensAlreadyPresent = await PresencaService.findAllPresenca();

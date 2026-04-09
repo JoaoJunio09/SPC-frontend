@@ -73,6 +73,7 @@ export async function confirmPresence() {
 	}
 	catch (err) {
 		if (err instanceof Exceptions.ConflictWhenSavingInTheDatabaseException) {
+			PresencaService.clearCache();
 			MessageModal.show({ 
 				type: 'info', 
 				title: 'Aviso', 
@@ -85,10 +86,9 @@ export async function confirmPresence() {
 
 			setTimeout(() => {
 				window.location.href = "index.html";
-			}, 4500);
+			}, 6500);
 		} 
 		else {
-			console.log('oiii')
 			MessageModal.show({ 
 				type: 'error', 
 				title: 'Falha na conexão', 
