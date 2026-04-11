@@ -1,4 +1,6 @@
-const BASE_URL = "https://spc-springboot-production.up.railway.app"; // "https://spc-springboot-production.up.railway.app";
+const BASE_URL = "https://spc-springboot-production.up.railway.app"; 
+// "https://spc-springboot-production.up.railway.app";
+// "http://localhost:8080";
 
 const FIND_ALL_CATEQUISTAS_URL = `${BASE_URL}/api/catequistas/v1`;
 const FIND_BY_NAME_COMMUNITY_OR_PARISH_CATEQUISTAS_URL = `${BASE_URL}/api/catequistas/v1/find-by?communityOrParish={nameCmmunityOrParish}`;

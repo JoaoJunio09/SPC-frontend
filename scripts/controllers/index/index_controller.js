@@ -117,7 +117,6 @@ function renderWeekDays(masses, presences) {
 }
 
 export async function loadEvent(date, presences, masses) {
-	console.log(presences);
 	rendererCardMass(masses, presences, date, dom.eventContainer);
 	initializeButtons();
 }

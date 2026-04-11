@@ -1,5 +1,5 @@
 import { Loading } from "../../../utils/loading.js";
-import { dom, init, handleListCatechumens, markPresence, markAbsence, arrays, search, proceedReview} from "./register_presence_controller.js";
+import { dom, init, handleListCatechumens, markPresence, markAbsence, arrays, search, proceedReview, checksExistinsPresence} from "./register_presence_controller.js";
 
 document.addEventListener('DOMContentLoaded', init);
 
@@ -43,12 +43,15 @@ dom.containerListCatechumens.addEventListener('click', (e) => {
 	}
 });
 
-dom.actionsFooter.addEventListener('click', (e) => {
+dom.actionsFooter.addEventListener('click', async (e) => {
 	const btnConfirmAndProceedReview = e.target.closest('.btn-confirm-final');
-	if (btnConfirmAndProceedReview) proceedReview();
+	if (btnConfirmAndProceedReview) await proceedReview();
 });
 
-dom.search.addEventListener('input', async (e) => { await search(e.target.value); });
+dom.search.addEventListener('input', async (e) => { 
+	await checksExistinsPresence();
+	await search(e.target.value); 
+});
 
 dom.reset.addEventListener('click', () => {
 	arrays.catechumensPresent = [];

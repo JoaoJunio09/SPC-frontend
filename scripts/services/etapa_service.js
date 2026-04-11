@@ -1,4 +1,6 @@
-const BASE_URL = "https://spc-springboot-production.up.railway.app"; // "https://spc-springboot-production.up.railway.app";
+const BASE_URL = "https://spc-springboot-production.up.railway.app"; 
+// "https://spc-springboot-production.up.railway.app";
+// "http://localhost:8080";
 
 const FIND_ALL_ETAPAS_URL = `${BASE_URL}/api/etapas/v1`;
 const FIND_BY_ID_ETAPA_URL = `${BASE_URL}/api/etapas/v1/{etapaId}`;

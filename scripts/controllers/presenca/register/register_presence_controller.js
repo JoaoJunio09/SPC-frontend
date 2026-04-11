@@ -37,20 +37,13 @@ export async function init() {
 	}
 }
 
-// criar query customizada para verificar se já existe presença na missa.
-
-async function checksExistinsPresence() {
-	const massRegisteredLiturgicalCalendar = sessionStorage.getItem('missaDoCalendarioLiturgico');
-	const catechumensAlreadyPresent = await PresencaService.findAllPresenca();
-
-	catechumensAlreadyPresent.forEach(async presence => {
-		const mass = await MassService.findByIdMissa(presence.missa.id);
-
-		if (mass.title === massRegisteredLiturgicalCalendar) {
-			const catechumen = await CatequizandoService.findByIdCatequizando(presence.catequizando.id);
-			arrays.catechumensWithBlockAbsenceButton.push(catechumen);
-		}
-	});
+export async function checksExistinsPresence() {
+	const massTitle = sessionStorage.getItem('missaDoCalendarioLiturgico');
+	const catechumensIsPresent = await PresencaService.getPresentCatechumensByMass(massTitle);
+	
+	if (catechumensIsPresent) {
+		arrays.catechumensWithBlockAbsenceButton = catechumensIsPresent;
+	}
 }
 
 async function renderSteps() {
@@ -70,11 +63,11 @@ export async function handleListCatechumens(stepId) {
 
 export async function search(value) {
 	arrays.catechumens = await CatequizandoService.searchByNameCatequizando(value);
-	await checksExistinsPresence();
 	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
 }
 
-export function proceedReview() {
+export async function proceedReview() {
+	await checksExistinsPresence();
 	if (arrays.catechumensPresent.length === 0) {
 		Toast.showToast({
       message: 'Selecione ao menos 1 catequizando',

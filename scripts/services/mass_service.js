@@ -1,6 +1,8 @@
 import { AppStore } from "../store/appStore.js";
 
-const BASE_URL = "https://spc-springboot-production.up.railway.app"; // "https://spc-springboot-production.up.railway.app";
+const BASE_URL = "https://spc-springboot-production.up.railway.app"; 
+// "https://spc-springboot-production.up.railway.app";
+// "http://localhost:8080";
 
 const FIND_ALL_MISSAS_URL = `${BASE_URL}/api/missas/v1`;
 const FIND_BY_ID_MISSA_URL = `${BASE_URL}/api/missas/v1/{missaId}`;
