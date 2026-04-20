@@ -149,7 +149,7 @@ async function fillInOptionsSelectMasses() {
 
 async function renderizarMissas() {
 	try {
-		const communityOrParish = sessionStorage.getItem('nameCommunityOrParish');
+		const communityOrParish = sessionStorage.getItem('communityOrParish');
 		const missas = await MassService.getAll({communityOrParish: communityOrParish});
 			
 		rendererMissasManager(missas, dom.grid);
