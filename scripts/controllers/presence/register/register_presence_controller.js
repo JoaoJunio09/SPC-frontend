@@ -45,8 +45,8 @@ export async function init() {
 }
 
 export async function checksExistinsPresence() {
-	const massTitle = sessionStorage.getItem('massOfCalendarLiturgical');
-	const catechumensIsPresent = await PresenceService.getAll({massTitle: massTitle});
+	const titleMass = sessionStorage.getItem('massOfCalendarLiturgical');
+	const catechumensIsPresent = await PresenceService.getAll({titleMass: titleMass});
 	
 	if (catechumensIsPresent) {
 		arrays.catechumensWithBlockAbsenceButton = catechumensIsPresent;
