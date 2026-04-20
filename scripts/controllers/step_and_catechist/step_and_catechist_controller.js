@@ -92,7 +92,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 		loadCatechistsAndSteps(catechists, steps);
 	}
 	catch (e) {
-		console.log(e);
 		Toast.showToast({ 
 			message: 'Não foi possível carregar os Catequistas e as Turmas', 
 			type: 'error' 

@@ -90,7 +90,6 @@ export async function confirmPresence() {
 			}, 6500);
 		} 
 		else {
-			console.log(err)
 			MessageModal.show({ 
 				type: 'error', 
 				title: 'Falha na conexão', 

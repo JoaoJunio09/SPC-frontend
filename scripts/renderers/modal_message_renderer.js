@@ -6,7 +6,6 @@ export const MessageModalRenderer = {
 			// Busca o template no index.html
 		const template = document.getElementById('template-message-modal');
 		if (!template) {
-				console.error("Template 'template-message-modal' não encontrado no DOM.");
 				return null;
 		}
 
