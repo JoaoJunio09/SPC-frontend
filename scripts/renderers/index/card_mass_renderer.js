@@ -13,8 +13,8 @@ export function rendererCardMass(masses, presences, date, container) {
 			}
 
 			const frag = template.content.cloneNode(true);
-			const card = frag.querySelector('.missa-card');
-			card.setAttribute('missa-id', mass.id);
+			const card = frag.querySelector('.mass-card');
+			card.setAttribute('mass-id', mass.id);
 
 			thereIsMassToday = true;
 			let day = mass.dateTime.slice(8, 10);
@@ -74,7 +74,7 @@ function catechistRegisteredAttendance(presences, massId) {
 	if (!presences) return;
 	
 	return presences.some(p => 
-		p.missa.id === massId &&
-		p.catequista.id === catechist.id
+		p.mass.id === massId &&
+		p.catechist.id === catechist.id
 	);
 }

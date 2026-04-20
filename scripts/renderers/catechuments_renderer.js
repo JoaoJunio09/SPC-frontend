@@ -1,4 +1,4 @@
-import { proccessTheFrequencyOfCatechumens } from "../controllers/catequizandos/process_frequency.js";
+import { proccessTheFrequencyOfCatechumens } from "../controllers/catechumen/process_frequency.js";
 import { formatStep } from "../utils/format_step.js";
 
 export async function rendererCatechuments(emptyState, table, tbody, catechumens) {
@@ -20,20 +20,22 @@ export async function rendererCatechuments(emptyState, table, tbody, catechumens
 		const [frequencyActual, frequencyTotal] = await proccessTheFrequencyOfCatechumens(catechumen);
 
 		tr.querySelector("#firstName").textContent = `${catechumen.firstName} ${catechumen.lastName}`;
-		tr.querySelector("#step").textContent = formatStep(catechumen.etapa.etapa);
+		tr.querySelector("#step").textContent = formatStep(catechumen.step.stepName);
 
 		tr.querySelector(".freq-high").textContent = frequencyActual.toFixed(1) + "%";
 		tr.querySelector(".freq-medium").textContent = frequencyTotal.toFixed(1) + "%";
 
-		if (catechumen.etapa.catequistas.length === 1) {
-			tr.querySelector("#catechistFirstName").textContent = catechumen.etapa.catequistas[0].firstName;
+		const catechists = catechumen.step.catechists;
+
+		if (catechists.length === 1) {
+			tr.querySelector("#catechistFirstName").textContent = catechists[0].firstName;
 		}
 		else {
 			let textCatechistsName = "";
-			for (let i = 0; i < catechumen.etapa.catequistas.length; i++) {
+			for (let i = 0; i < catechists.length; i++) {
 				i === 0 
-					? textCatechistsName += catechumen.etapa.catequistas[i].firstName + " e "
-					: textCatechistsName += catechumen.etapa.catequistas[i].firstName;
+					? textCatechistsName += catechists[i].firstName + " e "
+					: textCatechistsName += catechists[i].firstName;
 			}
 			tr.querySelector("#catechistFirstName").textContent = textCatechistsName;
 		}

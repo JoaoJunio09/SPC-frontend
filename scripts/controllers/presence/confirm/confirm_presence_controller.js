@@ -2,7 +2,7 @@ import { confirmModal } from '../../../utils/confirmation.js';
 import { rendererCardCatechumensConfirm } from "../../../renderers/presence/confirm/card_catechumens_confirm_renderer.js";
 import { loadTemplate } from "../../../utils/template_loader.js";
 import { MessageModal } from '../../../utils/modal_message.js';
-import { PresencaService } from '../../../services/presenca_service.js';
+import { PresenceService } from '../../../services/presence_service.js';
 import { arrays } from '../register/register_presence_controller.js';
 import { Exceptions } from '../../../exceptions/exceptions.js';
 
@@ -37,6 +37,7 @@ export async function confirmPresence() {
 	const confirmed = await confirmModal(
 		`Deseja confirmar o registro de presença para os ${arraysConfirm.catechumensPresent.length} catequizandos listados?`
 	);
+
 	if (!confirmed) return;
 
 	try {
@@ -44,18 +45,18 @@ export async function confirmPresence() {
 
 		const requests = arraysConfirm.catechumensPresent.map(async catechumenPresent => {
 			const presence = {
-				catequistaId: catechist.id,
-				catequizandoId: catechumenPresent.id,
-				missaId: sessionStorage.getItem('missaId'),
+				catechistId: catechist.id,
+				catechumenId: catechumenPresent.id,
+				massId: sessionStorage.getItem('massId'),
 				status: 'PRESENTE',
 				justification: null
 			};
 			
-			await PresencaService.createPresenca(presence)
+			await PresenceService.create(presence);
 		});
 
 		await Promise.all(requests);
-		PresencaService.clearCache();
+		PresenceService.clearCache();
 
 		MessageModal.show({ 
 			type: 'success', 
@@ -73,7 +74,7 @@ export async function confirmPresence() {
 	}
 	catch (err) {
 		if (err instanceof Exceptions.ConflictWhenSavingInTheDatabaseException) {
-			PresencaService.clearCache();
+			PresenceService.clearCache();
 			MessageModal.show({ 
 				type: 'info', 
 				title: 'Aviso', 
@@ -89,6 +90,7 @@ export async function confirmPresence() {
 			}, 6500);
 		} 
 		else {
+			console.log(err)
 			MessageModal.show({ 
 				type: 'error', 
 				title: 'Falha na conexão', 

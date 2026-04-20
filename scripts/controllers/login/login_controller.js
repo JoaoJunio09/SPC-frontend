@@ -1,5 +1,5 @@
 import { Toast } from "../../utils/toast.js";
-import { CatequistaService } from '../../services/catequista_service.js';
+import { CatechistService } from '../../services/catechist_service.js';
 
 const dom = {
 	btnLogin: document.querySelector(".btn-login"),
@@ -9,15 +9,25 @@ const dom = {
 const arrays = { catechists: [] };
 
 document.addEventListener('DOMContentLoaded', async () => {
-	await fillInSelectForCatechistsName();
+	try {
+		await fillInSelectForCatechistsName();
+	}
+	catch (err) {
+		showToast({ message: 'Catequistas indisponíveis', type: 'info' });
+	}
 });
 
 dom.btnLogin.addEventListener('click', () => {
-	login();
+	try {
+		login();
+	} 
+	catch (err) {
+		showToast({ message: 'Não foi possível efetuar login', type: 'error' });
+	}
 });
 
 async function fillInSelectForCatechistsName() {
-	arrays.catechists = await CatequistaService.findAllCatequistas();
+	arrays.catechists = await CatechistService.getAll({});
 	arrays.catechists.map(catechist => {
 		dom.selectCatechists.innerHTML += `
 			<option value="${catechist.firstName} ${catechist.lastName}">${catechist.firstName} ${catechist.lastName}</option>
@@ -49,7 +59,7 @@ async function login() {
 		});
 
 		if (nameOfTheCommunityOrParish !== null && catechist !== null) {
-			sessionStorage.setItem('nameCommunityOrParish', nameOfTheCommunityOrParish);
+			sessionStorage.setItem('communityOrParish', nameOfTheCommunityOrParish);
 			sessionStorage.setItem('catechist', JSON.stringify(catechist));
 
 			location.href = 'index.html';

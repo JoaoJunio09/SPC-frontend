@@ -8,8 +8,8 @@ export function rendererCardSteps(steps, listSteps) {
 		const card = frag.querySelector(".card");
 		const container = card.querySelector(".catechists-container");
 
-		if (step.catequistas.length > 0) {
-			const catechists = step.catequistas.filter(catechist => catechist.firstName);
+		if (step.catechists.length > 0) {
+			const catechists = step.catechists.filter(catechist => catechist.firstName);
 			card.setAttribute('data-catechists', JSON.stringify(catechists));
 
 			catechists.forEach(catechist => {

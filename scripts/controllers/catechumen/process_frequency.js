@@ -1,12 +1,12 @@
 import { MassService } from '../../services/mass_service.js';
-import { PresencaService } from '../../services/presenca_service.js';
-import { LiturgicalCalendarService } from '../../services/liturgical_calendar.js';
+import { PresenceService } from '../../services/presence_service.js';
+import { LiturgicalCalendarService } from '../../services/liturgical_calendar_service.js';
 
 export async function proccessTheFrequencyOfCatechumens(catechumen) {
 	
 	const totalMasses = await getTotalMasses();
 	const totalMassesToThisToday = await getMassesToThisToday();
-	const presencesOfCatechumen = await PresencaService.findByCatechumenIdPresenca(catechumen.id);
+	const presencesOfCatechumen = await PresenceService.getAll({catechumenId: catechumen.id});
 
 	const attendanceAtMasses = presencesOfCatechumen.length;
 
@@ -14,8 +14,8 @@ export async function proccessTheFrequencyOfCatechumens(catechumen) {
 }
 
 async function getTotalMasses() {
-	const masses = await MassService.findAllMissa();
-	const totalDatesOfLiturgicalCalendar = await LiturgicalCalendarService.findAll();
+	const masses = await MassService.getAll({});
+	const totalDatesOfLiturgicalCalendar = await LiturgicalCalendarService.getAll({});
 
 	let counterMass = [];
 
@@ -33,8 +33,22 @@ async function getTotalMasses() {
 }
 
 async function getMassesToThisToday() {
-	const massesToThisToday = await MassService.findByOccurredToThisTodayMissa();
-	const totalDatesOfLiturgicalCalendar = await LiturgicalCalendarService.findAll();
+	const todayDate = new Date();
+
+	const year      = todayDate.getFullYear();
+	let month 			= todayDate.getMonth();
+	const day 			= todayDate.getDate();
+	const hours 		= todayDate.getHours();
+	const minutes 	= todayDate.getMinutes();
+
+	if (month.toString().charAt().length === 1) {
+		month = `0${month}`;
+	}
+
+	const today = `${year}-${month}-${day}T${hours}:${minutes}:00`;
+	
+	const massesToThisToday = await MassService.getAll({occurredUntil: today});
+	const totalDatesOfLiturgicalCalendar = await LiturgicalCalendarService.getAll({});
 
 	let counterMass = [];
 

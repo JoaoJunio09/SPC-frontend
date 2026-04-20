@@ -4,7 +4,7 @@ import { loadTemplate } from "../../utils/template_loader.js";
 import { Loading } from "../../utils/loading.js";
 import { Toast } from "../../utils/toast.js";
 import { verifyAuth } from "../../auth/verify_auth.js";
-import { PresencaService } from "../../services/presenca_service.js";
+import { PresenceService } from "../../services/presence_service.js";
 import { rendererCardMass } from "../../renderers/index/card_mass_renderer.js";
 
 export const dom = {
@@ -30,23 +30,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 	Loading.showLoading();
 
 	try {
+		const communityOrParish = sessionStorage.getItem('communityOrParish');
+
 		const [masses, presences] = await Promise.all([
-			MassService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish')),
-			PresencaService.findAllPresenca()
+			MassService.getAll({communityOrParish: communityOrParish}),
+			PresenceService.getAll({})
 		]);
 
-		console.log(presences);
-		
 		renderWeekDays(masses, presences);
 	}
 	catch (err) {
-		console.log(err)
 		Toast.showToast({ message: 'Erro ao carregar as Missas ou Presenças', type: 'error' });
 	}
 	finally {
 		Loading.hideLoading();
 	}
 });
+
+dom.eventContainer.addEventListener('click', (e) => {
+	try {
+		const btnRegisterPresence = e.target.closest('.btn-register-presence');
+
+		if (btnRegisterPresence) {
+			sessionStorage.setItem('massId', e.target.closest('.event-card').getAttribute('mass-id'));
+			sessionStorage.setItem('massOfCalendarLiturgical', e.target.closest('.event-card').querySelector('.card-header h2').textContent);
+			window.location.href = '../../../registrarPresenca.html';
+		}
+	}
+	catch (err) {
+		Toast.showToast({ message: 'Erro ao carregar a página', type: 'error' });
+	}
+});
+
+export async function loadEvent(date, presences, masses) {
+	rendererCardMass(masses, presences, date, dom.eventContainer);
+}
 
 function renderWeekDays(masses, presences) {
 	const today = new Date();
@@ -57,7 +75,7 @@ function renderWeekDays(masses, presences) {
 	const monday = new Date(today);
 	monday.setDate(today.getDate() + diffToMonday);
 
-	const diasSemana = ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"];
+	const daysOfWeek = ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"];
 
 	dom.weekGrid.innerHTML = '';
 
@@ -76,12 +94,12 @@ function renderWeekDays(masses, presences) {
 		card.setAttribute('data-date', dateString);
 
 		card.innerHTML = `
-			<span class="day-name">${diasSemana[i]}</span>
+			<span class="day-name">${daysOfWeek[i]}</span>
 			<span class="day-num">${dayNum}</span>
 		`;
 
-		masses.forEach(missa => {
-			if (UtilsDate.formatDateTimeThisMissaForDate(missa.dateTime) === dateString) {
+		masses.forEach(mass => {
+			if (UtilsDate.formatDateTimeThisMissaForDate(mass.dateTime) === dateString) {
 				card.classList.add("has-missa");
 
 				const indicator = document.createElement("div");
@@ -114,19 +132,4 @@ function renderWeekDays(masses, presences) {
 
 		dom.weekGrid.appendChild(card);
 	}
-}
-
-export async function loadEvent(date, presences, masses) {
-	rendererCardMass(masses, presences, date, dom.eventContainer);
-	initializeButtons();
-}
-
-function initializeButtons() {
-	document.querySelectorAll('#btn-register-attendance').forEach(btn => {
-		btn.addEventListener('click', (e) => {
-			sessionStorage.setItem('missaId', e.target.closest('.event-card').getAttribute('missa-id'));
-			sessionStorage.setItem('missaDoCalendarioLiturgico', e.target.closest('.event-card').querySelector('.card-header h2').textContent);
-			window.location.href = '../../../registrarPresenca.html';
-		});
-	});
 }

@@ -5,6 +5,14 @@ class ConflictWhenSavingInTheDatabaseException extends Error {
 	};
 }
 
+class DataCouldNotBeRenderedException extends Error {
+	constructor(message) {
+		super(message);
+		this.name = "DataCouldNotBeRenderedException";
+	}
+}
+
 export const Exceptions = {
 	ConflictWhenSavingInTheDatabaseException,
+	DataCouldNotBeRenderedException,
 };

@@ -16,7 +16,7 @@ function toggleMenu() {
 function initSystem() {
 	const systemNameLogin = document.querySelector(".system-title p");
 	const welcome = document.querySelector('.welcome');
-	if (sessionStorage.getItem('nameCommunityOrParish') === "SAO_SEBASTIAO") {
+	if (sessionStorage.getItem('communityOrParish') === "SAO_SEBASTIAO") {
 		systemNameLogin.innerHTML = 'Paróquia <strong>São Sebastião</strong>';
 	}
 	else {

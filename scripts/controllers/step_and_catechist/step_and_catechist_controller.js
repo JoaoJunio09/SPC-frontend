@@ -1,13 +1,14 @@
 import { rendererCardCatechists } from '../../renderers/steps_and_catechists/card_catechists_renderer.js';
 import { rendererCardSteps } from '../../renderers/steps_and_catechists/card_steps_renderer.js';
 import { rendererCardViewCatechumens } from '../../renderers/steps_and_catechists/card_view_catechumens_renderer.js';
-import { CatequistaService } from '../../services/catequista_service.js';
-import { EtapaService } from '../../services/etapa_service.js';
-import { CatequizandoService } from '../../services/catequizando_service.js';
+import { CatechistService } from '../../services/catechist_service.js';
+import { StepService } from '../../services/step_service.js';
+import { CatechumenService } from '../../services/catechumen_service.js';
 import { Loading } from '../../utils/loading.js';
 import { loadTemplate } from '../../utils/template_loader.js';
 import { Toast } from '../../utils/toast.js';
 import { verifyAuth } from '../../auth/verify_auth.js';
+import { PresenceService } from '../../services/presence_service.js';
 
 class TheCatechistDataIsNull extends Error {
 	constructor(message) {
@@ -78,9 +79,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 	Loading.showLoading();
 
 	try {
+		const communityOrparish = sessionStorage.getItem('nameCommunityOrParish');
+
 		const [catechists, steps] = await Promise.all([
-			CatequistaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish')),
-			EtapaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'))
+			CatechistService.getAll({communityOrparish: communityOrparish}),
+			StepService.getAll({communityOrparish: communityOrparish})
 		]);
 
 		lists.catechists = catechists;
@@ -139,7 +142,7 @@ async function viewCatechumens(e) {
 	const step = e.target.closest('.card').getAttribute('data-step');
 
 	Loading.showLoading();
-	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechists[0].firstName, step);
+	const catechumens = await CatechumenService.getAll({stepId: step.id, catechistId: catechists[0].id});
 
 	rendererCardViewCatechumens(catechumens, step);
 	Loading.hideLoading();

@@ -8,7 +8,8 @@ let currentDate = new Date();
 let masses_dates = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
-	masses_dates = await MassService.findAllMassesDatesByCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
+	const communityOrParish = sessionStorage.getItem('communityOrParish');
+	masses_dates = await MassService.getMassesDatesByCommunityOrParirsh(communityOrParish);
 });
 
 function renderMonthDays() {

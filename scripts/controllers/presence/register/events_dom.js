@@ -50,7 +50,7 @@ dom.actionsFooter.addEventListener('click', async (e) => {
 
 dom.search.addEventListener('input', async (e) => { 
 	await checksExistinsPresence();
-	await search(e.target.value); 
+	await search(e.target.value);
 });
 
 dom.reset.addEventListener('click', () => {

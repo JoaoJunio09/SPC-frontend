@@ -1,9 +1,17 @@
-import { arrays } from "../../../controllers/presenca/register/register_presence_controller.js";
+import { arrays } from "../../../controllers/presence/register/register_presence_controller.js";
 import { formatStep } from "../../../utils/format_step.js";
 
-export function rendererCardCatechumens(catechumens, container) {
+const isSearch = {
+	is: null,
+	content: null
+};
+
+export function rendererCardCatechumens(catechumens, container, isSearch) {
 	container.innerHTML = '';
-	document.getElementById('tituloListagem').innerText = `Catequizandos: ${formatStep(catechumens[0]?.etapa.etapa)}`;
+	isSearch.is
+		? document.getElementById('tituloListagem').innerText = `Resultados para: ${isSearch.content}`
+		: document.getElementById('tituloListagem').innerText = `Catequizandos: ${formatStep(catechumens[0]?.step.stepName)}`;
+	
 	document.getElementById('attendanceSection').style.display = 'block';
 
 	const template = document.getElementById('card-catechumens-template');
@@ -12,13 +20,14 @@ export function rendererCardCatechumens(catechumens, container) {
 		const frag = template.content.cloneNode(true);
 		const card = frag.querySelector(".catequizando-card");
 
-		let stepAndCatechistName = formatStep(catechumen.etapa.etapa) + "<br>";
+		let stepAndCatechistName = formatStep(catechumen.step.stepName) + "<br>";
 
-		if (catechumen.etapa.catequistas.length > 0) {
-			for (let i = 0; i < catechumen.etapa.catequistas.length; i++) {
-				catechumen.etapa.catequistas.length - i == 1
-					? stepAndCatechistName += catechumen.etapa.catequistas[i].firstName+" "+catechumen.etapa.catequistas[i].lastName
-					: stepAndCatechistName += catechumen.etapa.catequistas[i].firstName+" "+catechumen.etapa.catequistas[i].lastName + "<br>";
+		const catechists = catechumen.step.catechists;
+		if (catechists.length > 0) {
+			for (let i = 0; i < catechists.length; i++) {
+				catechists.length - i == 1
+					? stepAndCatechistName += catechists[i].firstName+" "+catechists[i].lastName
+					: stepAndCatechistName += catechists[i].firstName+" "+catechists[i].lastName + "<br>";
 			}
 		}
 
@@ -43,9 +52,9 @@ function isPresent(catechumensPresent, card, catechumen) {
 }
 
 function blocksAbsenceButton(catechumensAlreadyPresent, card, catechumen) {
-	const isBlock = catechumensAlreadyPresent.some(catechumenPresent => catechumenPresent.id === catechumen.id);
+	const isBlock = catechumensAlreadyPresent.some(catechumenPresent => catechumenPresent.catechumen.id === catechumen.id);
 
-	if (isBlock) {
+	if (isBlock === true) {
 		card.querySelector(".presente").classList.add('active');
 		card.querySelector(".btn-mark-absence").disabled = true;
 		card.querySelector(".btn-mark-presence").disabled = true;

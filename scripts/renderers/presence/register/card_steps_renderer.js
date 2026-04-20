@@ -9,15 +9,15 @@ export function rendererCardSteps(steps, container) {
 
 		let nameCatechists = "";
 
-		if (step.catequistas.length > 0) {
-			for (let i = 0; i < step.catequistas.length; i++) {
-				step.catequistas.length - i == 1
-					? nameCatechists += step.catequistas[i].firstName+" "+step.catequistas[i].lastName
-					: nameCatechists += step.catequistas[i].firstName+" "+step.catequistas[i].lastName + "<br>";
+		if (step.catechists.length > 0) {
+			for (let i = 0; i < step.catechists.length; i++) {
+				step.catechists.length - i == 1
+					? nameCatechists += step.catechists[i].firstName+" "+step.catechists[i].lastName
+					: nameCatechists += step.catechists[i].firstName+" "+step.catechists[i].lastName + "<br>";
 			}
 		}
 
-		card.querySelector("h4").textContent = formatStep(step.etapa);
+		card.querySelector("h4").textContent = formatStep(step.stepName);
 		card.querySelector("p").innerHTML = nameCatechists;
 		
 		card.dataset.id = step.id;

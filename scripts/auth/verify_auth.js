@@ -1,5 +1,5 @@
 export function verifyAuth() {
-	if (sessionStorage.getItem('nameCommunityOrParish') === null) {
+	if (sessionStorage.getItem('communityOrParish') === null) {
 		window.location.replace('../../../login.html');
 	}
 }

@@ -2,11 +2,16 @@ import { rendererCardSteps } from "../../../renderers/presence/register/card_ste
 import { rendererCardCatechumens } from "../../../renderers/presence/register/card_catechumens_renderer.js";
 import { loadTemplate } from "../../../utils/template_loader.js";
 import { Toast } from "../../../utils/toast.js";
-import { EtapaService } from "../../../services/etapa_service.js";
-import { CatequizandoService } from "../../../services/catequizando_service.js";
-import { PresencaService } from "../../../services/presenca_service.js";
+import { StepService } from "../../../services/step_service.js";
+import { CatechumenService } from "../../../services/catechumen_service.js";
+import { PresenceService } from "../../../services/presence_service.js";
 import { MassService } from "../../../services/mass_service.js";
 import { Loading } from "../../../utils/loading.js";
+
+const isSearch = {
+	is: null,
+	content: null
+};
 
 export const arrays = { catechumens: [], catechumensPresent: [], catechumensWithBlockAbsenceButton: [] };
 
@@ -31,15 +36,17 @@ export async function init() {
 
 	await checksExistinsPresence().then(() => Loading.hideLoading());
 
-	if (sessionStorage.getItem('catechumensPresent').length > 0) {
-		arrays.catechumensPresent = JSON.parse(sessionStorage.getItem('catechumensPresent'));
-		dom.countSelected.innerText = arrays.catechumensPresent.length;
+	if (sessionStorage.getItem('catechumensPresent') !== null) {
+		if (sessionStorage.getItem('catechumensPresent').length > 0) {
+			arrays.catechumensPresent = JSON.parse(sessionStorage.getItem('catechumensPresent'));
+			dom.countSelected.innerText = arrays.catechumensPresent.length;
+		}
 	}
 }
 
 export async function checksExistinsPresence() {
-	const massTitle = sessionStorage.getItem('missaDoCalendarioLiturgico');
-	const catechumensIsPresent = await PresencaService.getPresentCatechumensByMass(massTitle);
+	const massTitle = sessionStorage.getItem('massOfCalendarLiturgical');
+	const catechumensIsPresent = await PresenceService.getAll({massTitle: massTitle});
 	
 	if (catechumensIsPresent) {
 		arrays.catechumensWithBlockAbsenceButton = catechumensIsPresent;
@@ -47,23 +54,32 @@ export async function checksExistinsPresence() {
 }
 
 async function renderSteps() {
-	const steps = await EtapaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
+	const communityOrParish = sessionStorage.getItem('communityOrParish');
+	const steps = await StepService.getAll({communityOrParish: communityOrParish});
 	rendererCardSteps(steps, dom.containerListStep);
 }
 
 export async function handleListCatechumens(stepId) {
-	arrays.catechumens = await CatequizandoService.findByStepId(stepId);
+	arrays.catechumens = await CatechumenService.getAll({stepId: stepId});
 
 	dom.accordionContent.style.maxHeight = dom.accordionContent.scrollHeight  + "px";
 	requestAnimationFrame(() => { dom.accordionContent.style.maxHeight = "0px" });
 	
 	await checksExistinsPresence();
-	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
+
+	isSearch.is = null;
+	isSearch.content = null;
+
+	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens, isSearch);
 }
 
-export async function search(value) {
-	arrays.catechumens = await CatequizandoService.searchByNameCatequizando(value);
-	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
+export async function search(fullName) {
+	arrays.catechumens = await CatechumenService.getAll({fullName: fullName});
+
+	isSearch.is = true;
+	isSearch.content = fullName;
+
+	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens, isSearch);
 }
 
 export async function proceedReview() {
@@ -89,7 +105,7 @@ export function markPresence(catechumenJSON) {
 	else {
 		arrays.catechumensPresent.push(catechumen);
 		sessionStorage.setItem('catechumensPresent', arrays.catechumensPresent);
-		rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
+		rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens, isSearch);
 		return true;
 	}
 }
@@ -100,6 +116,6 @@ export function markAbsence(catechumenJSON) {
 		c => c.id !== catechumen.id
 	);
 	sessionStorage.setItem('catechumensPresent', arrays.catechumensPresent);
-	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens);
+	rendererCardCatechumens(arrays.catechumens, dom.containerListCatechumens, isSearch);
 	return true;
 }

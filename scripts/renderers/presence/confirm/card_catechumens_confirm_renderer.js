@@ -7,13 +7,15 @@ export function rendererCardCatechumensConfirm(catechumens, container) {
 		const frag = template.content.cloneNode(true);
 		const card = frag.querySelector('.review-card');
 
-		let stepAndCatechistName = formatStep(catechumen.etapa.etapa) + " • ";
+		let stepAndCatechistName = formatStep(catechumen.step.stepName) + " • ";
 
-		if (catechumen.etapa.catequistas.length > 0) {
-			for (let i = 0; i < catechumen.etapa.catequistas.length; i++) {
-				catechumen.etapa.catequistas.length - i == 1
-					? stepAndCatechistName += catechumen.etapa.catequistas[i].firstName+" "+catechumen.etapa.catequistas[i].lastName
-					: stepAndCatechistName += "<br>" + catechumen.etapa.catequistas[i].firstName+" "+catechumen.etapa.catequistas[i].lastName + "<br>";
+		const catechists = catechumen.step.catechists;
+		if (catechists.length > 0) {
+			
+			for (let i = 0; i < catechists.length; i++) {
+				catechists.length - i == 1
+					? stepAndCatechistName += catechists[i].firstName+" "+catechists[i].lastName
+					: stepAndCatechistName += "<br>" + catechists[i].firstName+" "+catechists[i].lastName + "<br>";
 			}
 		}
 	

@@ -1,4 +1,4 @@
-import { proccessTheFrequencyOfCatechumens } from "../../controllers/catequizandos/process_frequency.js";
+import { proccessTheFrequencyOfCatechumens } from "../../controllers/catechumen/process_frequency.js";
 
 
 export function rendererCardCatechumen(list, catechumens) {

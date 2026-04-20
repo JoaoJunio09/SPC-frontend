@@ -1,5 +1,5 @@
-import { CatequizandoService } from '../../services/catequizando_service.js';
-import { EtapaService } from '../../services/etapa_service.js';
+import { CatechumenService } from '../../services/catechumen_service.js';
+import { StepService } from '../../services/step_service.js';
 import { Toast } from '../../utils/toast.js';
 import { Loading } from '../../utils/loading.js';
 import { loadTemplate } from '../../utils/template_loader.js';
@@ -15,8 +15,8 @@ const dom = {
 };
 
 const filter_variables = {
-	catechist_value: "",
-	step_value: ""
+	catechistId: null,
+	stepId: null
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -28,7 +28,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 	Loading.showLoading();
 
 	try {
-		const steps = await EtapaService.findByNameCommunityOrParish(sessionStorage.getItem('nameCommunityOrParish'));
+		const communityOrParish = sessionStorage.getItem('nameCommunityOrParish');
+		const steps = await StepService.getAll({communityOrParish: communityOrParish});
 		loadCatechistsAndStepsInTheFilter(steps);
 	}
 	catch (e) {
@@ -48,13 +49,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 dom.filter_step_and_catechist.addEventListener('input', async (e) => {
 	const value = e.target.value.split('-');
-	const step_value = value[0];
-	const catechist_value = value[1];
+	const step_value_id = value[0];
+	const catechist_value_id = value[1];
 
-	filter_variables.catechist_value = catechist_value;
-	filter_variables.step_value = step_value;
+	filter_variables.catechistId = catechist_value_id;
+	filter_variables.stepId = step_value_id;
 
 	Loading.showLoading();
+
 	await filter()
 		.then(() => Loading.hideLoading())
 		.catch(err => showToast({
@@ -64,38 +66,34 @@ dom.filter_step_and_catechist.addEventListener('input', async (e) => {
 });
 
 async function filter() {
-	if (filter_variables.catechist_value === "" || filter_variables.step_value === "") {
+	if (filter_variables.catechistId === "" || filter_variables.stepId === "") {
 		return;
 	}
 
-	const catechist = filter_variables.catechist_value;
-	const step = filter_variables.step_value;
-
-	const catechumens = await CatequizandoService.filterCatechumensByCatechistNameAndStep(catechist, step);
+	const catechumens = await CatechumenService.getAll({stepId: filter_variables.stepId, catechistId: filter_variables.catechistId});
 
 	await rendererCatechuments(dom.emptyStateInitial, dom.table, dom.tbody, catechumens);
 }
 
 function loadCatechistsAndStepsInTheFilter(steps) {
-
-	let array_names_catechists = [];
+	let array_names_catechists_and_id = [];
 
 	steps.forEach(step => {
-		if (step.catequistas.length === 1) {
-			step.catequistas.forEach(catechist => {
+		if (step.catechists.length === 1) {
+			step.catechists.forEach(catechist => {
 				dom.filter_step_and_catechist.innerHTML += `
-					<option value="${step.etapa}-${catechist.firstName}">
-						${formatStep(step.etapa)} - ${catechist.firstName+" "+catechist.lastName}
+					<option value="${step.id}-${catechist.id}">
+						${formatStep(step.stepName)} - ${catechist.firstName+" "+catechist.lastName}
 					</option>
 				`;
 			});
 		}
-		else if (step.catequistas.length > 1) {
-			step.catequistas.forEach(catechist => {
-				array_names_catechists.push(catechist.firstName);
+		else if (step.catechists.length > 1) {
+			step.catechists.forEach(catechist => {
+				array_names_catechists_and_id.push({name: catechist.firstName, id: catechist.id});
 			});
 
-			const [value, textOption] = defineValueAndOptionOfCatechists(array_names_catechists, step);
+			const [value, textOption] = defineValueAndOptionOfCatechists(array_names_catechists_and_id, step);
 
 			dom.filter_step_and_catechist.innerHTML += `
 				<option value="${value}">
@@ -106,19 +104,19 @@ function loadCatechistsAndStepsInTheFilter(steps) {
 	});
 }
 
-function defineValueAndOptionOfCatechists(names, step) {
+function defineValueAndOptionOfCatechists(namesAndId, step) {
 	let value = "";
 	let textOption = "";
 
-	for (let i = 0; i < names.length; i++) {
+	for (let i = 0; i < namesAndId.length; i++) {
 		if (i === 0) {
-			textOption = formatStep(step.etapa) + " - ";
-			value += `${step.etapa}-${names[0]}`;
+			textOption = formatStep(step.stepName) + " - ";
+			value += `${step.id}-${namesAndId[0].id}`;
 		}
 
-		names.length - i === 1 
-			? textOption += `${names[i]}`
-			: textOption += `${names[i]} & `;
+		namesAndId.length - i === 1 
+			? textOption += `${namesAndId[i].name}`
+			: textOption += `${namesAndId[i].name} & `;
 	}
 
 	return [value, textOption];
