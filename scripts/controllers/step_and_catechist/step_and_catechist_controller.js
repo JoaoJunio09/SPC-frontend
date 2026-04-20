@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	Loading.showLoading();
 
 	try {
-		const communityOrparish = sessionStorage.getItem('nameCommunityOrParish');
+		const communityOrparish = sessionStorage.getItem('communityOrParish');
 
 		const [catechists, steps] = await Promise.all([
 			CatechistService.getAll({communityOrparish: communityOrparish}),
