@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 	Loading.showLoading();
 
 	try {
-		const communityOrParish = sessionStorage.getItem('nameCommunityOrParish');
+		const communityOrParish = sessionStorage.getItem('communityOrParish');
 		const steps = await StepService.getAll({communityOrParish: communityOrParish});
 		loadCatechistsAndStepsInTheFilter(steps);
 	}
